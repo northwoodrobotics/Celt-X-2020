@@ -41,12 +41,12 @@ public final class Constants {
     public static final double DRIVE_GEAR_RATIO =11;
     public static final double INTAKE_GEAR_RATIO =4;
     public static final double HOPPER_GEAR_RATIO =12;
-    public static final double TURRET_GEAR_RATIO = 20*(210/22); //20:1 gearbox + 22 tooth pinion driving a 210 tooth ring
-    public static final double HOOD_GEAR_RATIO =1; //fix - approximately 1 degree/revolution
-    public static final double BOOSTER_GEAR_RATIO =1/2; //overdriven
-    public static final double SHOOTER_GEAR_RATIO =3/4; //overdriven
+    public static final double TURRET_GEAR_RATIO = 20.0*(210.0/22.0); //20:1 gearbox + 22 tooth pinion driving a 210 tooth ring
+    public static final double HOOD_GEAR_RATIO =1.0; //fix - approximately 1 degree/revolution
+    public static final double BOOSTER_GEAR_RATIO =1.0/2.0; //overdriven
+    public static final double SHOOTER_GEAR_RATIO =3.0/4.0; //overdriven
 
     //Wheel Diameters
-    public static final double DRIVE_WHEEL_DIAMETER =6; //inches
+    public static final double DRIVE_WHEEL_DIAMETER =6.0; //inches
 
 }
