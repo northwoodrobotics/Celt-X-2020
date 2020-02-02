@@ -16,4 +16,37 @@ package frc.team5406.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    //CAN IDs
+    public static final int LEFT_DRIVE_MOTOR_ONE =1; //SparkMax, NEO
+    public static final int LEFT_DRIVE_MOTOR_TWO =2; //SparkMax, NEO
+    public static final int RIGHT_DRIVE_MOTOR_ONE =3; //SparkMax, NEO
+    public static final int RIGHT_DRIVE_MOTOR_TWO =4; //SparkMax, NEO
+    public static final int INTAKE_ROLLER_MOTOR =5; //SparkMax, NEO550
+    public static final int HOPPER_BRUSH_MOTOR =6; //SparkMax, NEO550
+    public static final int THROAT_SERIALIZER_MOTOR =7; //TalonSRX, 2xBAG
+    public static final int FEEDER_MOTOR =8; //TalonSRX, 2xBAG
+    public static final int TURRET_AZIMUTH_MOTOR =9; //SparkMax, NEO550
+    public static final int HOOD_MOTOR =10; //SparkMax, NEO550
+    public static final int BOOSTER_ROLLER_MOTOR =11; //SparkMax, NEO
+    public static final int SHOOTER_WHEEL_MOTOR_ONE =12; //SparkMax, NEO
+    public static final int SHOOTER_WHEEL_MOTOR_TWO =13; //SparkMax, NEO
+    public static final int LEFT_CLIMBER_MOTOR =14; //SparkMax, NEO
+    public static final int RIGHT_CLIMBER_MOTOR =15; //SparkMax, NEO
+
+    //PCM PORTS
+    public static final int INTAKE_CYLINDER =1;
+    public static final int POP_UP_CYLINDER =2;
+
+    //Gear Ratios
+    public static final double DRIVE_GEAR_RATIO =11;
+    public static final double INTAKE_GEAR_RATIO =4;
+    public static final double HOPPER_GEAR_RATIO =12;
+    public static final double TURRET_GEAR_RATIO = 20*(210/22); //20:1 gearbox + 22 tooth pinion driving a 210 tooth ring
+    public static final double HOOD_GEAR_RATIO =1; //fix - approximately 1 degree/revolution
+    public static final double BOOSTER_GEAR_RATIO =1/2; //overdriven
+    public static final double SHOOTER_GEAR_RATIO =3/4; //overdriven
+
+    //Wheel Diameters
+    public static final double DRIVE_WHEEL_DIAMETER =6; //inches
+
 }
