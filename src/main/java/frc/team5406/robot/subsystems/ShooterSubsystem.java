@@ -10,7 +10,6 @@ package frc.team5406.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
@@ -21,17 +20,62 @@ import frc.team5406.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-  private CANSparkMax shooterMaster = new CANSparkMax(Constants.SHOOTER_WHEEL_MOTOR_ONE, MotorType.kBrushless);
-  private CANSparkMax shooterSlave = new CANSparkMax(Constants.SHOOTER_WHEEL_MOTOR_TWO, MotorType.kBrushless);
-  private CANSparkMax booster = new CANSparkMax(Constants.BOOSTER_ROLLER_MOTOR, MotorType.kBrushless);
-  private CANSparkMax hood = new CANSparkMax(Constants.HOOD_MOTOR, MotorType.kBrushless);
-  private CANSparkMax turret = new CANSparkMax(Constants.TURRET_AZIMUTH_MOTOR, MotorType.kBrushless);
+  private static CANSparkMax shooterMaster = new CANSparkMax(Constants.SHOOTER_WHEEL_MOTOR_ONE, MotorType.kBrushless);
+  private static CANSparkMax shooterSlave = new CANSparkMax(Constants.SHOOTER_WHEEL_MOTOR_TWO, MotorType.kBrushless);
+  private static CANSparkMax booster = new CANSparkMax(Constants.BOOSTER_ROLLER_MOTOR, MotorType.kBrushless);
+  private static CANSparkMax hood = new CANSparkMax(Constants.HOOD_MOTOR, MotorType.kBrushless);
+  private static CANSparkMax turret = new CANSparkMax(Constants.TURRET_AZIMUTH_MOTOR, MotorType.kBrushless);
   
-  private TalonSRX feeder = new TalonSRX(Constants.FEEDER_MOTOR);
+  private static TalonSRX feeder = new TalonSRX(Constants.FEEDER_MOTOR);
 
-  private CANEncoder shooterEncoder, boosterEncoder, hoodEncoder;
-  private CANPIDController shooterPID, boosterPID, hoodPID;
+  private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder;
+  private static CANPIDController shooterPID, boosterPID, hoodPID;
   
+  public static void setupMotors() {
+
+    shooterEncoder = shooterMaster.getEncoder();
+    boosterEncoder = booster.getEncoder();
+    hoodEncoder = hood.getEncoder();
+
+    shooterPID = shooterMaster.getPIDController();
+    boosterPID = booster.getPIDController();
+    hoodPID = booster.getPIDController();
+
+    shooterPID.setP(Constants.SHOOTER_PID0_P, 0);
+    shooterPID.setI(Constants.SHOOTER_PID0_I, 0);
+    shooterPID.setD(Constants.SHOOTER_PID0_D, 0);
+    shooterPID.setIZone(0, 0);
+    shooterPID.setFF(Constants.SHOOTER_PID0_F, 0);
+    shooterPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
+
+    boosterPID.setP(Constants.BOOSTER_PID0_P);
+    boosterPID.setI(Constants.BOOSTER_PID0_I, 0);
+    boosterPID.setD(Constants.BOOSTER_PID0_D, 0);
+    boosterPID.setIZone(0, 0);
+    boosterPID.setFF(Constants.BOOSTER_PID0_F, 0);
+    boosterPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
+
+    hoodPID.setP(Constants.HOOD_PID0_P, 0);
+    hoodPID.setI(Constants.HOOD_PID0_I);
+    hoodPID.setD(Constants.HOOD_PID0_D, 0);
+    hoodPID.setIZone(0, 0);
+    hoodPID.setFF(Constants.HOOD_PID0_F, 0);
+    hoodPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
+
+    shooterMaster.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
+    booster.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
+    hood.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
+
+    resetEncoders();
+  }
+
+  public static void resetEncoders() {
+
+    shooterEncoder.setPosition(0);
+    boosterEncoder.setPosition(0);
+    hoodEncoder.setPosition(0);
+  }
+
   public ShooterSubsystem() {
 
   }
