@@ -52,5 +52,26 @@ public final class Constants {
     
     //Other Constants
     public final static int CAN_TIMEOUT = 15; //ms
+    public static final double OUTPUT_RANGE_MIN = -1;
+    public static final double OUTPUT_RANGE_MAX = 1;
+
+    //Closed-loop Ramp Rates
+    public static final double SHOOTER_CLOSED_LOOP_RAMP_RATE = 0.02; //seconds
+
+    //PIDs
+    public static final double SHOOTER_PID0_P = 5e-5;
+    public static final double SHOOTER_PID0_I = 0;
+    public static final double SHOOTER_PID0_D = 0;
+    public static final double SHOOTER_PID0_F = 1.9e-4;
+    
+    public static final double BOOSTER_PID0_P = 3e-5;
+    public static final double BOOSTER_PID0_I = 0;
+    public static final double BOOSTER_PID0_D = 0;
+    public static final double BOOSTER_PID0_F = 1.9e-4;
+
+    public static final double HOOD_PID0_P = 8e-5;
+    public static final double HOOD_PID0_I = 0;
+    public static final double HOOD_PID0_D = 0;
+    public static final double HOOD_PID0_F = 0.03;
 
 }
