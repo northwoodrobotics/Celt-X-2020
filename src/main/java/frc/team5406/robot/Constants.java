@@ -49,4 +49,8 @@ public final class Constants {
     //Wheel Diameters
     public static final double DRIVE_WHEEL_DIAMETER =6.0; //inches
 
+    
+    //Other Constants
+    public final static int CAN_TIMEOUT = 15; //ms
+
 }
