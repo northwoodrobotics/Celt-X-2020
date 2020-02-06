@@ -17,37 +17,37 @@ package frc.team5406.robot;
  */
 public final class Constants {
     //CAN IDs
-    public static final int LEFT_DRIVE_MOTOR_ONE =1; //SparkMax, NEO
-    public static final int LEFT_DRIVE_MOTOR_TWO =2; //SparkMax, NEO
-    public static final int RIGHT_DRIVE_MOTOR_ONE =3; //SparkMax, NEO
-    public static final int RIGHT_DRIVE_MOTOR_TWO =4; //SparkMax, NEO
-    public static final int INTAKE_ROLLER_MOTOR =5; //SparkMax, NEO550
-    public static final int HOPPER_BRUSH_MOTOR =6; //SparkMax, NEO550
-    public static final int THROAT_SERIALIZER_MOTOR =7; //TalonSRX, 2xBAG
-    public static final int FEEDER_MOTOR =8; //TalonSRX, 2xBAG
-    public static final int TURRET_AZIMUTH_MOTOR =9; //SparkMax, NEO550
-    public static final int HOOD_MOTOR =10; //SparkMax, NEO550
-    public static final int BOOSTER_ROLLER_MOTOR =11; //SparkMax, NEO
-    public static final int SHOOTER_WHEEL_MOTOR_ONE =12; //SparkMax, NEO
-    public static final int SHOOTER_WHEEL_MOTOR_TWO =13; //SparkMax, NEO
-    public static final int LEFT_CLIMBER_MOTOR =14; //SparkMax, NEO
-    public static final int RIGHT_CLIMBER_MOTOR =15; //SparkMax, NEO
+    public static final int LEFT_DRIVE_MOTOR_ONE = 1; //SparkMax, NEO
+    public static final int LEFT_DRIVE_MOTOR_TWO = 2; //SparkMax, NEO
+    public static final int RIGHT_DRIVE_MOTOR_ONE = 3; //SparkMax, NEO
+    public static final int RIGHT_DRIVE_MOTOR_TWO = 4; //SparkMax, NEO
+    public static final int INTAKE_ROLLER_MOTOR = 5; //SparkMax, NEO550
+    public static final int HOPPER_BRUSH_MOTOR = 6; //SparkMax, NEO550
+    public static final int THROAT_SERIALIZER_MOTOR = 7; //TalonSRX, 2xBAG
+    public static final int FEEDER_MOTOR = 8; //TalonSRX, 2xBAG
+    public static final int TURRET_AZIMUTH_MOTOR = 9; //SparkMax, NEO550
+    public static final int HOOD_MOTOR = 10; //SparkMax, NEO550
+    public static final int BOOSTER_ROLLER_MOTOR = 11; //SparkMax, NEO
+    public static final int SHOOTER_WHEEL_MOTOR_ONE = 12; //SparkMax, NEO
+    public static final int SHOOTER_WHEEL_MOTOR_TWO = 13; //SparkMax, NEO
+    public static final int LEFT_CLIMBER_MOTOR = 14; //SparkMax, NEO
+    public static final int RIGHT_CLIMBER_MOTOR = 15; //SparkMax, NEO
 
     //PCM PORTS
-    public static final int INTAKE_CYLINDER =1;
-    public static final int POP_UP_CYLINDER =2;
+    public static final int INTAKE_CYLINDER = 1;
+    public static final int POP_UP_CYLINDER = 2;
 
     //Gear Ratios
-    public static final double DRIVE_GEAR_RATIO =11;
-    public static final double INTAKE_GEAR_RATIO =4;
-    public static final double HOPPER_GEAR_RATIO =12;
+    public static final double DRIVE_GEAR_RATIO = 11;
+    public static final double INTAKE_GEAR_RATIO = 4;
+    public static final double HOPPER_GEAR_RATIO = 12;
     public static final double TURRET_GEAR_RATIO = 20.0*(210.0/22.0); //20:1 gearbox + 22 tooth pinion driving a 210 tooth ring
-    public static final double HOOD_GEAR_RATIO =1.0; //fix - approximately 1 degree/revolution
-    public static final double BOOSTER_GEAR_RATIO =1.0/2.0; //overdriven
-    public static final double SHOOTER_GEAR_RATIO =3.0/4.0; //overdriven
+    public static final double HOOD_GEAR_RATIO = 1.0; //fix - approximately 1 degree/revolution
+    public static final double BOOSTER_GEAR_RATIO = 1.0/2.0; //overdriven
+    public static final double SHOOTER_GEAR_RATIO = 3.0/4.0; //overdriven
 
     //Wheel Diameters
-    public static final double DRIVE_WHEEL_DIAMETER =6.0; //inches
+    public static final double DRIVE_WHEEL_DIAMETER = 6.0; //inches
 
     
     //Other Constants
@@ -57,6 +57,7 @@ public final class Constants {
 
     //Closed-loop Ramp Rates
     public static final double SHOOTER_CLOSED_LOOP_RAMP_RATE = 0.02; //seconds
+    public static final double DRIVE_CLOSED_LOOP_RAMP_RATE = 0.05; //seconds
 
     //PIDs
     public static final double SHOOTER_PID0_P = 5e-5;
@@ -73,5 +74,16 @@ public final class Constants {
     public static final double HOOD_PID0_I = 0;
     public static final double HOOD_PID0_D = 0;
     public static final double HOOD_PID0_F = 0.03;
+
+    //Current Limits
+    public static final int NEO550_CURRENT_LIMIT = 40;
+    public static final int NEO_CURRENT_LIMIT = 60;
+    public static final int BAG_CURRENT_LIMIT = 2*15; //running 2 motors on a single controller
+    public static final int PEAK_CURRENT_DURATION = 50; //running 2 motors on a single controller
+    public static final int SHOOTER_CURRENT_LIMIT = 50;
+    public static final int BOOSTER_CURRENT_LIMIT = 50;
+    public static final int HOOD_CURRENT_LIMIT = 30;
+
+    
 
 }
