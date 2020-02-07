@@ -33,6 +33,10 @@ public final class Constants {
     public static final int LEFT_CLIMBER_MOTOR = 14; //SparkMax, NEO
     public static final int RIGHT_CLIMBER_MOTOR = 15; //SparkMax, NEO
 
+    //CANcoder PORTS
+    public static final int HOOD_ENCODER = 30;
+    public static final int TURRET_ENCODER = 31;
+
     //PCM PORTS
     public static final int INTAKE_CYLINDER = 1;
     public static final int POP_UP_CYLINDER = 2;
@@ -48,7 +52,8 @@ public final class Constants {
 
     //Wheel Diameters
     public static final double DRIVE_WHEEL_DIAMETER = 6.0; //inches
-
+    public static final double COLOUR_WHEEL_DIAMETER = 2.25; //inches
+    
     //Other Constants
     public final static int CAN_TIMEOUT = 15; //ms
     public static final double OUTPUT_RANGE_MIN = -1;
@@ -61,18 +66,12 @@ public final class Constants {
     public static final boolean INTAKE_EXTEND = true;
     public static final boolean INTAKE_RETRACT = false;
 
-    //Current Limits
-    public static final int NEO550_CURRENT_LIMIT = 40;
-    public static final int NEO_CURRENT_LIMIT = 60;
-    public static final int BAG_CURRENT_LIMIT = 2*15; //running 2 motors on a single controller
-    public static final int PEAK_CURRENT_DURATION = 50; //running 2 motors on a single controller
-
     //Closed-loop Ramp Rates
     public static final double SHOOTER_CLOSED_LOOP_RAMP_RATE = 0.02; //seconds
     public static final double DRIVE_CLOSED_LOOP_RAMP_RATE = 0.05; //seconds
 
     //PIDs
-    public static final double SHOOTER_PID0_P = 5e-5;
+    public static final double SHOOTER_PID0_P = 8e-4;
     public static final double SHOOTER_PID0_I = 0;
     public static final double SHOOTER_PID0_D = 0;
     public static final double SHOOTER_PID0_F = 1.9e-4;
@@ -91,11 +90,9 @@ public final class Constants {
     public static final int NEO550_CURRENT_LIMIT = 40;
     public static final int NEO_CURRENT_LIMIT = 60;
     public static final int BAG_CURRENT_LIMIT = 2*15; //running 2 motors on a single controller
-    public static final int PEAK_CURRENT_DURATION = 50; //running 2 motors on a single controller
+    public static final int PEAK_CURRENT_DURATION = 50;
     public static final int SHOOTER_CURRENT_LIMIT = 50;
     public static final int BOOSTER_CURRENT_LIMIT = 50;
     public static final int HOOD_CURRENT_LIMIT = 30;
-
-    
 
 }
