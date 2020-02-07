@@ -87,4 +87,15 @@ public final class Constants {
     public static final double HOOD_PID0_D = 0;
     public static final double HOOD_PID0_F = 0.03;
 
+    //Current Limits
+    public static final int NEO550_CURRENT_LIMIT = 40;
+    public static final int NEO_CURRENT_LIMIT = 60;
+    public static final int BAG_CURRENT_LIMIT = 2*15; //running 2 motors on a single controller
+    public static final int PEAK_CURRENT_DURATION = 50; //running 2 motors on a single controller
+    public static final int SHOOTER_CURRENT_LIMIT = 50;
+    public static final int BOOSTER_CURRENT_LIMIT = 50;
+    public static final int HOOD_CURRENT_LIMIT = 30;
+
+    
+
 }

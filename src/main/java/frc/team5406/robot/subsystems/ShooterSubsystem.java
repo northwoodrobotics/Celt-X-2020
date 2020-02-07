@@ -10,10 +10,11 @@ package frc.team5406.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
-
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 import frc.team5406.robot.Constants;
@@ -41,6 +42,9 @@ public class ShooterSubsystem extends SubsystemBase {
     boosterPID = booster.getPIDController();
     hoodPID = booster.getPIDController();
 
+    shooterSlave.follow(shooterMaster, true);
+    feeder.setInverted(true);
+
     shooterPID.setP(Constants.SHOOTER_PID0_P, 0);
     shooterPID.setI(Constants.SHOOTER_PID0_I, 0);
     shooterPID.setD(Constants.SHOOTER_PID0_D, 0);
@@ -65,6 +69,16 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMaster.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
     booster.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
     hood.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
+    
+    shooterMaster.setSmartCurrentLimit(Constants.SHOOTER_CURRENT_LIMIT);
+    shooterSlave.setSmartCurrentLimit(Constants.SHOOTER_CURRENT_LIMIT);
+    booster.setSmartCurrentLimit(Constants.BOOSTER_CURRENT_LIMIT);
+    hood.setSmartCurrentLimit(Constants.HOOD_CURRENT_LIMIT);
+
+    feeder.enableCurrentLimit(true);
+    feeder.configContinuousCurrentLimit(Constants.BAG_CURRENT_LIMIT);
+    feeder.configPeakCurrentLimit(Constants.BAG_CURRENT_LIMIT);
+    feeder.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
 
     resetEncoders();
   }
@@ -74,6 +88,83 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterEncoder.setPosition(0);
     boosterEncoder.setPosition(0);
     hoodEncoder.setPosition(0);
+  }
+
+  public static void spinShooter(double RPM) {
+
+      if (RPM == 0) {
+        stopShooter();
+
+    } else {
+      shooterPID.setReference(RPM * 1 / Constants.SHOOTER_GEAR_RATIO, ControlType.kVelocity);
+    }
+
+  }
+
+  public static double getShooterSpeed() {
+
+    return shooterEncoder.getVelocity() * 1 / Constants.SHOOTER_GEAR_RATIO;
+  }
+
+  public static void spinBooster(double RPM) {
+
+    if (RPM == 0) {
+      stopBooster();
+
+  } else {
+    boosterPID.setReference(RPM * 1 / Constants.BOOSTER_GEAR_RATIO, ControlType.kVelocity);
+    }
+
+  }
+
+  public static double getBoosterSpeed() {
+
+    return boosterEncoder.getVelocity() * 1 / Constants.BOOSTER_GEAR_RATIO;
+  }
+
+  public static void setHoodAngle(double angle) {
+
+    hoodPID.setReference(angle, ControlType.kPosition);
+  }
+
+  public static double getHoodAngle() {
+
+    return hoodEncoder.getPosition();
+  }
+
+  public static void releaseHood() {
+
+    hood.set(0);
+  }
+
+  public static double getHoodVoltage() {
+
+    return hood.getAppliedOutput();
+  }
+
+  public static void stopShooter() {
+
+    shooterMaster.set(0);
+  }
+
+  public static void stopBooster() {
+
+    booster.set(0);
+  }
+
+  public static void spinFeeder() {
+   
+    feeder.set(ControlMode.PercentOutput, 0.8);
+  }
+
+  public static void stopFeeder() {
+
+    feeder.set(ControlMode.PercentOutput, 0);
+  }
+
+  public static void getRPM() {
+
+    //stuff goes in here to prep for more complex feeder
   }
 
   public ShooterSubsystem() {
