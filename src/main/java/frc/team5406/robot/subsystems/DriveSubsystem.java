@@ -10,13 +10,17 @@ package frc.team5406.robot.subsystems;
 import frc.team5406.robot.Constants;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANError;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 
 public class DriveSubsystem extends SubsystemBase {
   /**
@@ -27,12 +31,13 @@ public class DriveSubsystem extends SubsystemBase {
   private static CANSparkMax leftDriveSlave = new CANSparkMax(Constants.LEFT_DRIVE_MOTOR_TWO, MotorType.kBrushless);
   private static CANSparkMax rightDriveMotor = new CANSparkMax(Constants.RIGHT_DRIVE_MOTOR_ONE, MotorType.kBrushless);
   private static CANSparkMax rightDriveSlave = new CANSparkMax(Constants.RIGHT_DRIVE_MOTOR_TWO, MotorType.kBrushless);
-
-  private CANEncoder leftEncoder, righEncoder;
+  AHRS gyro = new AHRS(SPI.Port.kMXP);
+  
+  private CANEncoder leftEncoder, rightEncoder;
   private CANPIDController leftMotorPID, rightMotorPID;
   DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
 
-  public static void startMotors() {
+  public static void setupMotors() {
     leftDriveSlave.follow(leftDriveMotor);
     rightDriveSlave.follow(rightDriveMotor);
     rightDriveSlave.setInverted(true);
@@ -44,33 +49,84 @@ public class DriveSubsystem extends SubsystemBase {
     rightDriveMotor.setSmartCurrentLimit(80);
     rightDriveSlave.setSmartCurrentLimit(80);
     m_button = new XboxController(0);
-    leftDriveMotor.set(0.3);
-    rightDriveMotor.set(0.3);
-    leftDriveSlave.set(0.3);
-    rightDriveSlave.set(0.3);
   }
 
-  public static void stopMotors(){
-    leftDriveMotor.set(0);
-    rightDriveMotor.set(0);
-    leftDriveSlave.set(0);
-    rightDriveSlave.set(0);
+  // Set Speed For Both
+  public void setSpeed(double left, double right) {
+    leftDriveMotor.set(left);
+    rightDriveMotor.set(right);
   }
 
-  public static void getLeftOutput(){
-    leftDriveMotor.getOutputCurrent();
+  // Set Left & Right Speed
+  public void setLeftSpeed(double speed) {
+    leftDriveMotor.set(speed);
   }
 
-  public static void getRightOutput(){
-    rightDriveMotor.getOutputCurrent();
+  public void setRightSpeed(double speed) {
+    rightDriveMotor.set(speed);
   }
 
-public static void getLeftSpeed(){
-  leftDriveMotor.get();
+  // Set Output for Both Motors
+  public void setOutput(double left, double right) {
+    leftDriveMotor.setVoltage(left);
+    rightDriveMotor.setVoltage(right);
+  }
+
+  // Set Left and Right Motors Output
+  public void setLeftOutput(double output) {
+    leftDriveMotor.setVoltage(output);
+  }
+
+  public void setRightOutput(double output) {
+    rightDriveMotor.setVoltage(output);
+  }
+
+  // Stop Motors
+  public static void stopMotors() {
+    leftDriveMotor.stopMotor();
+    rightDriveMotor.stopMotor();
+    leftDriveSlave.stopMotor();
+    rightDriveSlave.stopMotor();
+  }
+
+  // Get Left & Right Output
+  public static double getLeftOutput() {
+    return leftDriveMotor.getOutputCurrent();
+  }
+
+  public static double getRightOutput() {
+    return rightDriveMotor.getOutputCurrent();
+  }
+
+  // Get Left & Right Speed
+  public static double getLeftSpeed() {
+    return leftDriveMotor.get();
+  }
+
+  public static double getRightSpeed() {
+    return rightDriveMotor.get();
+  }
+
+//Get Distance
+public double getLeftDistnace() {
+    return (leftEncoder.getPosition()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER;
+}
+public double getRightDistance(){
+  return (rightEncoder.getPosition()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER;
 }
 
-public static void getRightSpeed(){
-  rightDriveMotor.get();
+  // Reset Encoders
+  public void resetEnoders() {
+    leftEncoder.setPosition(0); 
+    rightEncoder.setPosition(0);
+}
+
+//
+public double getHeading(){
+  return gyro.getCompassHeading();
+}
+public void setHeading(){
+   gyro.reset();
 }
 
     public DriveSubsystem() {
