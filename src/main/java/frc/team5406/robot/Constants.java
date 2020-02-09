@@ -32,14 +32,17 @@ public final class Constants {
     public static final int SHOOTER_WHEEL_MOTOR_TWO = 13; //SparkMax, NEO
     public static final int LEFT_CLIMBER_MOTOR = 14; //SparkMax, NEO
     public static final int RIGHT_CLIMBER_MOTOR = 15; //SparkMax, NEO
+    public static final int THROAT_SERIALIZER_MOTOR_TWO = 21; //SparkMax, NEO
+    public static final int UPPER_FEEDER_MOTOR = 22; //SparkMax, NEO
+    
 
     //CANcoder PORTS
     public static final int HOOD_ENCODER = 30;
     public static final int TURRET_ENCODER = 31;
 
     //PCM PORTS
-    public static final int INTAKE_CYLINDER = 1;
-    public static final int POP_UP_CYLINDER = 2;
+    public static final int INTAKE_CYLINDER = 0;
+    public static final int POP_UP_CYLINDER = 1;
 
     //Gear Ratios
     public static final double DRIVE_GEAR_RATIO = 11;
