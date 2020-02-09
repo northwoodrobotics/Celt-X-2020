@@ -23,7 +23,7 @@ public final class Constants {
     public static final int RIGHT_DRIVE_MOTOR_TWO = 4; //SparkMax, NEO
     public static final int INTAKE_ROLLER_MOTOR = 5; //SparkMax, NEO550
     public static final int HOPPER_BRUSH_MOTOR = 6; //SparkMax, NEO550
-    public static final int THROAT_SERIALIZER_MOTOR_ONE = 7; //TalonSRX, 2xBAG
+    public static final int THROAT_SERIALIZER_MOTOR_ONE = 7; //TalonSRX, BAG
     public static final int FEEDER_MOTOR = 8; //TalonSRX, 2xBAG
     public static final int TURRET_AZIMUTH_MOTOR = 9; //SparkMax, NEO550
     public static final int HOOD_MOTOR = 10; //SparkMax, NEO550
@@ -32,7 +32,7 @@ public final class Constants {
     public static final int SHOOTER_WHEEL_MOTOR_TWO = 13; //SparkMax, NEO
     public static final int LEFT_CLIMBER_MOTOR = 14; //SparkMax, NEO
     public static final int RIGHT_CLIMBER_MOTOR = 15; //SparkMax, NEO
-    public static final int THROAT_SERIALIZER_MOTOR_TWO = 21; //SparkMax, NEO
+    public static final int THROAT_SERIALIZER_MOTOR_TWO = 21; //TalonSRX, BAG
     public static final int UPPER_FEEDER_MOTOR = 22; //SparkMax, NEO
     
 
@@ -66,6 +66,8 @@ public final class Constants {
     public static final double INTAKE_ROLLER_OUTPUT = 0.8;
     public static final double HOPPER_BRUSH_OUTPUT = 0.8;
     public static final double SERIALIZER_OUTPUT = 0.8;
+    public static final double UPPER_FEEDER_OUTPUT = 1;
+    
     public static final boolean INTAKE_EXTEND = true;
     public static final boolean INTAKE_RETRACT = false;
 
@@ -92,7 +94,7 @@ public final class Constants {
     //Current Limits
     public static final int NEO550_CURRENT_LIMIT = 40;
     public static final int NEO_CURRENT_LIMIT = 60;
-    public static final int BAG_CURRENT_LIMIT = 2*15; //running 2 motors on a single controller
+    public static final int BAG_CURRENT_LIMIT = 15;
     public static final int PEAK_CURRENT_DURATION = 50;
     public static final int SHOOTER_CURRENT_LIMIT = 50;
     public static final int BOOSTER_CURRENT_LIMIT = 50;

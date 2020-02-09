@@ -13,6 +13,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANError;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -38,6 +39,10 @@ public class DriveSubsystem extends SubsystemBase {
   DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
 
   public static void setupMotors() {
+    leftDriveMotor.setIdleMode(IdleMode.kCoast);
+    leftDriveSlave.setIdleMode(IdleMode.kCoast);
+    rightDriveMotor.setIdleMode(IdleMode.kCoast);
+    rightDriveSlave.setIdleMode(IdleMode.kCoast);
     leftDriveSlave.follow(leftDriveMotor);
     rightDriveSlave.follow(rightDriveMotor);
     rightDriveSlave.setInverted(true);
@@ -49,6 +54,10 @@ public class DriveSubsystem extends SubsystemBase {
     rightDriveMotor.setSmartCurrentLimit(80);
     rightDriveSlave.setSmartCurrentLimit(80);
     m_button = new XboxController(0);
+  }
+
+  public void arcadeDrive(double speed, double turn){
+    drive.arcadeDrive(turn, speed);
   }
 
   // Set Speed For Both
