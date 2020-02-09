@@ -23,7 +23,8 @@ public final class Constants {
     public static final int RIGHT_DRIVE_MOTOR_TWO = 4; //SparkMax, NEO
     public static final int INTAKE_ROLLER_MOTOR = 5; //SparkMax, NEO550
     public static final int HOPPER_BRUSH_MOTOR = 6; //SparkMax, NEO550
-    public static final int THROAT_SERIALIZER_MOTOR = 7; //TalonSRX, 2xBAG
+    public static final int THROAT_SERIALIZER_MOTOR_ONE = 7; //TalonSRX, 2xBAG
+    public static final int THROAT_SERIALIZER_MOTOR_TWO = 20; //TalonSRX
     public static final int FEEDER_MOTOR = 8; //TalonSRX, 2xBAG
     public static final int TURRET_AZIMUTH_MOTOR = 9; //SparkMax, NEO550
     public static final int HOOD_MOTOR = 10; //SparkMax, NEO550
