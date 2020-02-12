@@ -10,6 +10,12 @@ package frc.team5406.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.team5406.robot.subsystems.DriveSubsystem;
+import frc.team5406.robot.subsystems.IntakeSubsystem;
+import frc.team5406.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -22,6 +28,9 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  XboxController operatorGamepad = new XboxController(0);
+  private DriveSubsystem robotDrive = new DriveSubsystem();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -31,6 +40,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    DriveSubsystem.setupMotors();
+    ShooterSubsystem.setupMotors();
+    IntakeSubsystem.setupMotors();
+
   }
 
   /**
@@ -96,6 +109,37 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
+    SmartDashboard.putNumber("Shooter RPM", ShooterSubsystem.getShooterSpeed());
+    SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getBoosterSpeed());
+    //SmartDashboard.putNumber("Hood Angle", Shooter.getHoodPosition());
+    //SmartDashboard.putNumber("Hood Output", Shooter.getHoodVoltage());
+
+    if (operatorGamepad.getAButton()) { 
+      ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
+      ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Feeder Target RPM", 6500));
+      //Shooter.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+     } else {
+      ShooterSubsystem.stopShooter();
+      ShooterSubsystem.stopBooster();
+      //Shooter.releaseHood();
+     }
+    
+     if (operatorGamepad.getXButton()) { 
+      ShooterSubsystem.spinFeeder();
+      IntakeSubsystem.serialize();
+     } else {
+      ShooterSubsystem.stopFeeder();
+      IntakeSubsystem.stopSerialize();
+     }
+
+     if (operatorGamepad.getBButton()) { 
+      IntakeSubsystem.spinBrushes();
+      IntakeSubsystem.spinRollers();      
+     } else {
+      IntakeSubsystem.stopIntake();
+     }
+
   }
 
   @Override

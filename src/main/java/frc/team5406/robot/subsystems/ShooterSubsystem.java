@@ -30,6 +30,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private static CANSparkMax turret = new CANSparkMax(Constants.TURRET_AZIMUTH_MOTOR, MotorType.kBrushless);
   
   private static TalonSRX feeder = new TalonSRX(Constants.FEEDER_MOTOR);
+  private static CANSparkMax upperFeeder = new CANSparkMax(Constants.UPPER_FEEDER_MOTOR, MotorType.kBrushless);
 
   private static CANCoder turretEncoder, hoodAbsoluteEncoder;
   private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder;
@@ -84,6 +85,8 @@ public class ShooterSubsystem extends SubsystemBase {
     feeder.configContinuousCurrentLimit(Constants.BAG_CURRENT_LIMIT);
     feeder.configPeakCurrentLimit(Constants.BAG_CURRENT_LIMIT);
     feeder.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
+
+    upperFeeder.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
 
     resetEncoders();
   }
@@ -160,11 +163,14 @@ public class ShooterSubsystem extends SubsystemBase {
   public static void spinFeeder() {
    
     feeder.set(ControlMode.PercentOutput, 0.8);
+    upperFeeder.set(Constants.UPPER_FEEDER_OUTPUT);
+
   }
 
   public static void stopFeeder() {
 
     feeder.set(ControlMode.PercentOutput, 0);
+    upperFeeder.set(0);
   }
 
   public static void getRPM() {

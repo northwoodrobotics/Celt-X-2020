@@ -29,7 +29,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private static Solenoid intakeCylinder;
 
-  public static void setUpMotors() {
+  public static void setupMotors() {
 
     intakeRollers.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
     hopperBrushes.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
@@ -44,7 +44,8 @@ public class IntakeSubsystem extends SubsystemBase {
     throatSerializerTwo.configPeakCurrentLimit(Constants.BAG_CURRENT_LIMIT);
     throatSerializerTwo.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
 
-    throatSerializerTwo.setInverted(true);
+    throatSerializerTwo.setInverted(false);
+    throatSerializerOne.setInverted(true);
 
     intakeCylinder = new Solenoid(Constants.INTAKE_CYLINDER);
   }
@@ -95,7 +96,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeCylinder.set(Constants.INTAKE_RETRACT);
   }
 
-  public static void spinIntake() {
+  public static void spinBrushes() {
 
     setBrushSpeed(Constants.HOPPER_BRUSH_OUTPUT);
     //Water engineer and code mentor (Danny) says it's very important that spinIntake() be renamed gobbleBalls()
