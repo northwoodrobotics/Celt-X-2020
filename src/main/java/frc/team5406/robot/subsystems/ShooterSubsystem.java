@@ -41,7 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     shooterPID = shooterMaster.getPIDController();
     boosterPID = booster.getPIDController();
-    hoodPID = booster.getPIDController();
+    hoodPID = hood.getPIDController();
 
     shooterSlave.follow(shooterMaster, true);
     feeder.setInverted(true);
@@ -127,12 +127,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public static void setHoodAngle(double angle) {
 
-    hoodPID.setReference(angle, ControlType.kPosition);
+    hoodPID.setReference(angle*Constants.HOOD_GEAR_RATIO, ControlType.kPosition);
   }
 
   public static double getHoodAngle() {
 
-    return hoodEncoder.getPosition();
+    return hoodEncoder.getPosition()/Constants.HOOD_GEAR_RATIO;
   }
 
   public static void releaseHood() {

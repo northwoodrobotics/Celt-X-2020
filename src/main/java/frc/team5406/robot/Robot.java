@@ -43,6 +43,9 @@ public class Robot extends TimedRobot {
     DriveSubsystem.setupMotors();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
+    SmartDashboard.putNumber("Shooter Target RPM", 5000);
+    SmartDashboard.putNumber("Feeder Target RPM", 6500);
+    SmartDashboard.putNumber("Hood Target Angle", 0);
 
   }
 
@@ -112,17 +115,23 @@ public class Robot extends TimedRobot {
     robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
     SmartDashboard.putNumber("Shooter RPM", ShooterSubsystem.getShooterSpeed());
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getBoosterSpeed());
-    //SmartDashboard.putNumber("Hood Angle", Shooter.getHoodPosition());
-    //SmartDashboard.putNumber("Hood Output", Shooter.getHoodVoltage());
+    SmartDashboard.putNumber("Hood Angle", ShooterSubsystem.getHoodAngle());
+    SmartDashboard.putNumber("Hood Output", ShooterSubsystem.getHoodVoltage());
 
     if (operatorGamepad.getAButton()) { 
-      ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
+     ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Feeder Target RPM", 6500));
-      //Shooter.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+      ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
      } else {
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();
-      //Shooter.releaseHood();
+      ShooterSubsystem.releaseHood();
+     }
+
+     if (operatorGamepad.getYButton()){
+      IntakeSubsystem.intakeExtend();
+     }else{
+      IntakeSubsystem.intakeRetract();
      }
     
      if (operatorGamepad.getXButton()) { 
