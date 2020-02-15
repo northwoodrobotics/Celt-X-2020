@@ -99,6 +99,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public static void spinBrushes() {
 
     setBrushSpeed(Constants.HOPPER_BRUSH_OUTPUT);
+    //Water engineer and code mentor (Danny) says it's very important that spinIntake() be renamed gobbleBalls()
   } 
 
   public static void reverseIntake() {

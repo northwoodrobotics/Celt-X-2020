@@ -16,6 +16,8 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
 import frc.team5406.robot.Constants;
 
@@ -30,6 +32,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private static TalonSRX feeder = new TalonSRX(Constants.FEEDER_MOTOR);
   private static CANSparkMax upperFeeder = new CANSparkMax(Constants.UPPER_FEEDER_MOTOR, MotorType.kBrushless);
 
+  private static CANCoder turretEncoder, hoodAbsoluteEncoder;
   private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder;
   private static CANPIDController shooterPID, boosterPID, hoodPID;
   
@@ -38,10 +41,12 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterEncoder = shooterMaster.getEncoder();
     boosterEncoder = booster.getEncoder();
     hoodEncoder = hood.getEncoder();
+    turretEncoder = new CANCoder(Constants.TURRET_ENCODER);
+    hoodAbsoluteEncoder = new CANCoder(Constants.HOOD_ENCODER);
 
     shooterPID = shooterMaster.getPIDController();
     boosterPID = booster.getPIDController();
-    hoodPID = booster.getPIDController();
+    hoodPID = hood.getPIDController();
 
     shooterSlave.follow(shooterMaster, true);
     feeder.setInverted(true);
@@ -127,12 +132,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public static void setHoodAngle(double angle) {
 
-    hoodPID.setReference(angle, ControlType.kPosition);
+    hoodPID.setReference(angle*Constants.HOOD_GEAR_RATIO, ControlType.kPosition);
   }
 
   public static double getHoodAngle() {
 
-    return hoodEncoder.getPosition();
+    return hoodEncoder.getPosition()/Constants.HOOD_GEAR_RATIO;
   }
 
   public static void releaseHood() {
