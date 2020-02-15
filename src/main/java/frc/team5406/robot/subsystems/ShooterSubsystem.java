@@ -7,6 +7,7 @@
 
 package frc.team5406.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkMax;
@@ -35,6 +36,16 @@ public class ShooterSubsystem extends SubsystemBase {
   private static CANCoder turretEncoder, hoodAbsoluteEncoder;
   private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder;
   private static CANPIDController shooterPID, boosterPID, hoodPID;
+
+  public static boolean llHasValidTarget = false;
+  public static double llSteer = 0.0;
+
+  public static double llLastError = 0; 
+  public static double llTotalError = 0;
+
+  private static double hoodAngle = 0;
+  private static double rpm = 0; 
+ 
   
   public static void setupMotors() {
 
@@ -106,7 +117,12 @@ public class ShooterSubsystem extends SubsystemBase {
     } else {
       shooterPID.setReference(RPM * 1 / Constants.SHOOTER_GEAR_RATIO, ControlType.kVelocity);
     }
-
+  }
+  public static void spinShooterAuto(){
+      spinShooter(rpm);
+  }
+  public static void setHoodAngleAuto(){
+      setHoodAngle(hoodAngle);
   }
 
   public static double getShooterSpeed() {
@@ -162,8 +178,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public static void spinFeeder() {
    
-    feeder.set(ControlMode.PercentOutput, 0.8);
+    feeder.set(ControlMode.PercentOutput, 1);
     upperFeeder.set(Constants.UPPER_FEEDER_OUTPUT);
+
+  }
+  public static void reverseFeeder() {
+   
+    feeder.set(ControlMode.PercentOutput, -0.8);
+    upperFeeder.set(-1 * Constants.UPPER_FEEDER_OUTPUT);
 
   }
 
@@ -181,6 +203,68 @@ public class ShooterSubsystem extends SubsystemBase {
   public static void turnTurret(double turn){
     turret.set(turn);
   }
+
+  public static void updateLimelightTracking()
+{
+      double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+      double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+      double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+
+    // ts: close to 0 - left, close to 90 - right
+    // tx: negative - left, positive - right
+
+    // These numbers must be tuned for your Robot!  Be careful!
+    final double STEER_KP = 0.025;                    // how hard to turn toward the target
+    final double STEER_KD = 0.005;
+    final double STEER_KI = 0.1;
+    final double MAX_DRIVE = 0.3;                   // Simple speed limit so we don't drive too fast
+
+      if (tv < 1.0)
+      {
+        llHasValidTarget = false;
+        llSteer = 0.0;
+        rpm = 1500;
+        hoodAngle = 0; 
+        return;
+      }
+      double d = 0.8597*(Math.pow(ty, 2)) - 6.5784 * ty + 128;
+       hoodAngle = -0.0327 * (Math.pow(d, 2)) + 2.667*d + 15;
+       rpm = 96.972*d + 1580;
+       
+       if(hoodAngle > 60){
+         hoodAngle = 60;
+       }
+       if(hoodAngle < 0){
+         hoodAngle = 0;
+       }
+       if(rpm > 6500){
+        rpm = 6500;
+       }
+       if(rpm > 0){
+         rpm = 0;
+       }
+       System.out.println("hood " + hoodAngle);
+       System.out.println("rpm " + rpm);
+       System.out.println("ty " + ty);
+       System.out.println("d " + d);
+      llHasValidTarget = true;
+      llTotalError += tx;
+
+      // Start with proportional steering
+      llSteer = tx * STEER_KP; //+ STEER_KD * (tx - llLastError) / 0.02 + STEER_KI * llTotalError * 0.02;
+      
+
+      // try to drive forward until the target area reaches our desired area
+      llLastError = tx;
+      if (Math.abs(llSteer) > MAX_DRIVE)
+      {
+        llSteer = Math.signum(llSteer) * MAX_DRIVE;
+      }
+}
+
+  public double maxllArea(double angle){
+return -0.0054*angle*angle + 0.6546*angle - 12.084;
+}
 
   public ShooterSubsystem() {
 
