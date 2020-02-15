@@ -173,6 +173,10 @@ public class ShooterSubsystem extends SubsystemBase {
     //stuff goes in here to prep for more complex feeder
   }
 
+  public static void turnTurret(double turn){
+    turret.set(turn);
+  }
+
   public ShooterSubsystem() {
 
   }

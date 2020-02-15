@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   XboxController operatorGamepad = new XboxController(0);
+  XboxController driverGamepad = new XboxController(1);
   private DriveSubsystem robotDrive = new DriveSubsystem();
 
   /**
@@ -115,7 +116,7 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("Hood Angle", Shooter.getHoodPosition());
     //SmartDashboard.putNumber("Hood Output", Shooter.getHoodVoltage());
 
-    if (operatorGamepad.getAButton()) { 
+   if (operatorGamepad.getAButton()) { 
       ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Feeder Target RPM", 6500));
       //Shooter.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
@@ -139,6 +140,14 @@ public class Robot extends TimedRobot {
      } else {
       IntakeSubsystem.stopIntake();
      }
+     if(Math.abs(driverGamepad.getX(Hand.kLeft)) > 0.1){
+      ShooterSubsystem.turnTurret(0.5 * driverGamepad.getX(Hand.kLeft));
+     }
+     else{
+       ShooterSubsystem.turnTurret(0);
+     }
+    
+     
 
   }
 
