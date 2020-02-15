@@ -7,6 +7,7 @@
 
 package frc.team5406.robot;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -120,9 +121,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hood Output", ShooterSubsystem.getHoodVoltage());
 
    if (operatorGamepad.getAButton()) { 
-      ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
+   //   ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Feeder Target RPM", 6500));
-      ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+      //ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+      ShooterSubsystem.spinShooterAuto();
+      ShooterSubsystem.setHoodAngleAuto();
      } else {
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();
@@ -138,7 +141,7 @@ public class Robot extends TimedRobot {
      if (operatorGamepad.getXButton()) { 
       ShooterSubsystem.spinFeeder();
       IntakeSubsystem.serialize();
-     } else {
+     } else if (!operatorGamepad.getBumper(Hand.kRight)) {
       ShooterSubsystem.stopFeeder();
       IntakeSubsystem.stopSerialize();
      }
@@ -146,17 +149,29 @@ public class Robot extends TimedRobot {
      if (operatorGamepad.getBButton()) { 
       IntakeSubsystem.spinBrushes();
       IntakeSubsystem.spinRollers();      
-     } else {
+     } else if (!operatorGamepad.getBumper(Hand.kRight)) {
       IntakeSubsystem.stopIntake();
      }
+
+     if(operatorGamepad.getBumper(Hand.kRight)){
+       IntakeSubsystem.reverseIntake();
+       IntakeSubsystem.reverseSerialize();
+       ShooterSubsystem.reverseFeeder();
+     }
+
+     ShooterSubsystem.updateLimelightTracking();
      if(Math.abs(driverGamepad.getX(Hand.kLeft)) > 0.1){
       ShooterSubsystem.turnTurret(0.5 * driverGamepad.getX(Hand.kLeft));
      }
-     else{
+     else if(driverGamepad.getAButton()){
+      if (ShooterSubsystem.llHasValidTarget){
+        ShooterSubsystem.turnTurret(ShooterSubsystem.llSteer);
+      }
+     }
+      else{
        ShooterSubsystem.turnTurret(0);
      }
-    
-     
+
 
   }
 
