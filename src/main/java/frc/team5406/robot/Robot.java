@@ -114,7 +114,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
+    /*robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
     SmartDashboard.putNumber("Shooter RPM", ShooterSubsystem.getShooterSpeed());
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getBoosterSpeed());
     SmartDashboard.putNumber("Hood Angle", ShooterSubsystem.getHoodAngle());
@@ -177,7 +177,7 @@ public class Robot extends TimedRobot {
       else{
        ShooterSubsystem.turnTurret(0);
      }
-
+     */
 
   }
 
