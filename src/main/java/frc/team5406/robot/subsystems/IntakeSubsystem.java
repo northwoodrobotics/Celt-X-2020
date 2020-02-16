@@ -66,6 +66,12 @@ public class IntakeSubsystem extends SubsystemBase {
     throatSerializerTwo.set(ControlMode.PercentOutput, output / 4);
   }
 
+  public static void setSerializerCircle() {
+
+    throatSerializerOne.set(ControlMode.PercentOutput, Constants.SERIALIZER_OUTPUT);
+    throatSerializerTwo.set(ControlMode.PercentOutput, -1*Constants.SERIALIZER_OUTPUT / 4);
+  }
+
   public static void stopRollers() {
 
     setIntakeSpeed(0);
@@ -121,7 +127,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     setIntakeSpeed(Constants.INTAKE_ROLLER_OUTPUT);
   }
-
+  
   public IntakeSubsystem() {
 
   }

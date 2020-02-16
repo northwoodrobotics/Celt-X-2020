@@ -44,6 +44,10 @@ public final class Constants {
     public static final int INTAKE_CYLINDER = 0;
     public static final int POP_UP_CYLINDER = 1;
 
+    //XBoxController Ports
+    public static final int OPERATOR_CONTROLLER = 0;
+    public static final int DRIVER_CONTROLLER = 1;
+
     //Gear Ratios
     public static final double DRIVE_GEAR_RATIO = 11;
     public static final double INTAKE_GEAR_RATIO = 4;

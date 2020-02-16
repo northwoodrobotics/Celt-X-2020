@@ -227,7 +227,7 @@ public class ShooterSubsystem extends SubsystemBase {
         hoodAngle = 0; 
         return;
       }
-      double d = 0.8597*(Math.pow(ty, 2)) - 6.5784 * ty + 128;
+      double d = (0.8597*(Math.pow(ty, 2)) - 6.5784 * ty + 128)/12;
        hoodAngle = -0.0327 * (Math.pow(d, 2)) + 2.667*d + 15;
        rpm = 96.972*d + 1580;
        
@@ -240,13 +240,13 @@ public class ShooterSubsystem extends SubsystemBase {
        if(rpm > 6500){
         rpm = 6500;
        }
-       if(rpm > 0){
+       if(rpm < 0){
          rpm = 0;
        }
-       System.out.println("hood " + hoodAngle);
+      /* System.out.println("hood " + hoodAngle);
        System.out.println("rpm " + rpm);
        System.out.println("ty " + ty);
-       System.out.println("d " + d);
+       System.out.println("d " + d);*/
       llHasValidTarget = true;
       llTotalError += tx;
 
