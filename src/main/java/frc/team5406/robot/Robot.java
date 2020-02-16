@@ -121,11 +121,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hood Output", ShooterSubsystem.getHoodVoltage());
 
    if (operatorGamepad.getAButton()) { 
-      ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
+      //ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Feeder Target RPM", 6500));
-      ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
-      //ShooterSubsystem.spinShooterAuto();
-      //ShooterSubsystem.setHoodAngleAuto();
+      //ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+      ShooterSubsystem.spinShooterAuto();
+      ShooterSubsystem.setHoodAngleAuto();
      } else {
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();
@@ -134,47 +134,30 @@ public class Robot extends TimedRobot {
 
      if (operatorGamepad.getYButton()){
       IntakeSubsystem.intakeExtend();
+      IntakeSubsystem.spinRollers(); 
       //IntakeSubsystem.setSerializerCircle();
-     }else{
+     }else if(!operatorGamepad.getXButton()){
       IntakeSubsystem.intakeRetract();
+      IntakeSubsystem.stopRollers();
      }
     
      if (operatorGamepad.getXButton()) { 
-      intakePulseCount++;
+       IntakeSubsystem.pulseRollers();
       ShooterSubsystem.spinFeeder();
+      //ShooterSubsystem.compressorDisabled(); 
       if(!operatorGamepad.getYButton()){
       IntakeSubsystem.serialize();
       }
-      System.out.println(intakePulseCount);
-      if(!operatorGamepad.getBButton()){
-      if(intakePulseCount >15 && intakePulseCount < 25){
-        IntakeSubsystem.spinRollers();
-      }else if(intakePulseCount > 25){
-        intakePulseCount =0;
-          IntakeSubsystem.stopIntake();
-        }else{
-          IntakeSubsystem.stopIntake();
-        }
-      }
+
      } else if (!operatorGamepad.getBumper(Hand.kRight)) {
       ShooterSubsystem.stopFeeder();
+      //ShooterSubsystem.compressorEnabled();
       if(!operatorGamepad.getYButton()){
         IntakeSubsystem.stopSerialize();
       }
       
      }
 
-     if (operatorGamepad.getBButton()) { 
-      IntakeSubsystem.spinBrushes();
-      if(operatorGamepad.getYButton()){
-      IntakeSubsystem.spinRollers(); 
-      }
-            
-
-              
-     } else if (!operatorGamepad.getBumper(Hand.kRight) && (intakePulseCount < 15 || intakePulseCount > 25)) {
-      IntakeSubsystem.stopIntake();
-     }
 
      if(operatorGamepad.getBumper(Hand.kRight)){
        IntakeSubsystem.reverseIntake();

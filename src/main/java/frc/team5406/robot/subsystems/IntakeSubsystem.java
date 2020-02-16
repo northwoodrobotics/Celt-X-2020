@@ -29,6 +29,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private static Solenoid intakeCylinder;
 
+  private static int intakePulseCount = 0;
+
   public static void setupMotors() {
 
     intakeRollers.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
@@ -126,6 +128,20 @@ public class IntakeSubsystem extends SubsystemBase {
   public static void spinRollers() {
 
     setIntakeSpeed(Constants.INTAKE_ROLLER_OUTPUT);
+  }
+  
+  public static void pulseRollers(){
+   
+      intakePulseCount++;
+    
+      if(intakePulseCount >15 && intakePulseCount < 25){
+        IntakeSubsystem.spinRollers();
+      }else if(intakePulseCount > 25){
+        intakePulseCount =0;
+          IntakeSubsystem.stopIntake();
+        }else{
+          IntakeSubsystem.stopIntake();
+        }
   }
   
   public IntakeSubsystem() {
