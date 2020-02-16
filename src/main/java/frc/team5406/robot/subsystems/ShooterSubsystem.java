@@ -19,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import edu.wpi.first.wpilibj.Compressor;
 
 import frc.team5406.robot.Constants;
 
@@ -46,9 +47,11 @@ public class ShooterSubsystem extends SubsystemBase {
   private static double hoodAngle = 0;
   private static double rpm = 0; 
  
+  static Compressor compressor = new Compressor();
   
   public static void setupMotors() {
 
+    
     shooterEncoder = shooterMaster.getEncoder();
     boosterEncoder = booster.getEncoder();
     hoodEncoder = hood.getEncoder();
@@ -264,6 +267,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public double maxllArea(double angle){
 return -0.0054*angle*angle + 0.6546*angle - 12.084;
+}
+
+public static void compressorEnabled() {
+  compressor.start();
+}
+public static void compressorDisabled() {
+  compressor.stop();
 }
 
   public ShooterSubsystem() {
