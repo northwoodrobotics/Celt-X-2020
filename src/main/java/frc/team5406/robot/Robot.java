@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.team5406.robot.subsystems.DriveSubsystem;
 import frc.team5406.robot.subsystems.IntakeSubsystem;
 import frc.team5406.robot.subsystems.ShooterSubsystem;
+import frc.team5406.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,10 +46,11 @@ public class Robot extends TimedRobot {
     DriveSubsystem.setupMotors();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
+    ClimbSubsystem.setupMotors();
     SmartDashboard.putNumber("Shooter Target RPM", 5000);
     SmartDashboard.putNumber("Feeder Target RPM", 6500);
     SmartDashboard.putNumber("Hood Target Angle", 0);
-
+    
   }
 
   /**
@@ -107,6 +109,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    ShooterSubsystem.resetEncoders();
   }
 
   /**
@@ -115,6 +118,20 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
+    if (driverGamepad.getBButton()) { 
+      double leftSpeed = driverGamepad.getY(Hand.kRight);
+      double speedMultiplier = driverGamepad.getX(Hand.kRight)+1;
+     /* System.out.println(leftSpeed);
+      System.out.println(speedMultiplier);*/
+      ClimbSubsystem.setSpeed(leftSpeed,leftSpeed*speedMultiplier);
+
+      
+    //ClimbSubsystem.setLeftPosition(leftSpeed);
+    //ClimbSubsystem.setRightPosition(leftSpeed*speedMultiplier);
+    }else{
+      ClimbSubsystem.setSpeed(0,0);
+    }
+
     SmartDashboard.putNumber("Shooter RPM", ShooterSubsystem.getShooterSpeed());
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getBoosterSpeed());
     SmartDashboard.putNumber("Hood Angle", ShooterSubsystem.getHoodAngle());
@@ -124,8 +141,8 @@ public class Robot extends TimedRobot {
       ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Feeder Target RPM", 6500));
       ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
-      //ShooterSubsystem.spinShooterAuto();
-      //ShooterSubsystem.setHoodAngleAuto();
+      /*ShooterSubsystem.spinShooterAuto();
+      ShooterSubsystem.setHoodAngleAuto();*/
      } else {
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();
@@ -165,7 +182,6 @@ public class Robot extends TimedRobot {
      }
 
      if (operatorGamepad.getBButton()) { 
-      IntakeSubsystem.spinBrushes();
       if(operatorGamepad.getYButton()){
       IntakeSubsystem.spinRollers(); 
       }

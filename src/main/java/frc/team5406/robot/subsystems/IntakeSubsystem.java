@@ -22,7 +22,6 @@ import frc.team5406.robot.Constants;
 public class IntakeSubsystem extends SubsystemBase {
 
   private static CANSparkMax intakeRollers = new CANSparkMax(Constants.INTAKE_ROLLER_MOTOR, MotorType.kBrushless);
-  private static CANSparkMax hopperBrushes = new CANSparkMax(Constants.HOPPER_BRUSH_MOTOR, MotorType.kBrushless);
 
   private static TalonSRX throatSerializerOne = new TalonSRX(Constants.THROAT_SERIALIZER_MOTOR_ONE);
   private static TalonSRX throatSerializerTwo = new TalonSRX(Constants.THROAT_SERIALIZER_MOTOR_TWO);
@@ -32,7 +31,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public static void setupMotors() {
 
     intakeRollers.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
-    hopperBrushes.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
 
     throatSerializerOne.enableCurrentLimit(true);
     throatSerializerOne.configContinuousCurrentLimit(Constants.BAG_CURRENT_LIMIT);
@@ -55,10 +53,6 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeRollers.set(speed);
   }
 
-  public static void setBrushSpeed(double speed) {
-
-    hopperBrushes.set(speed);
-  }
 
   public static void setSerializerOutput(double output) {
 
@@ -85,7 +79,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public static void stopIntake() {
 
     setIntakeSpeed(0);
-    setBrushSpeed(0);
   }
 
   public static void setIntakePosition(boolean out){}
@@ -102,11 +95,6 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeCylinder.set(Constants.INTAKE_RETRACT);
   }
 
-  public static void spinBrushes() {
-
-    setBrushSpeed(Constants.HOPPER_BRUSH_OUTPUT);
-    //Water engineer and code mentor (Danny) says it's very important that spinIntake() be renamed gobbleBalls()
-  } 
 
   public static void reverseIntake() {
 
