@@ -9,23 +9,25 @@ package frc.team5406.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.team5406.robot.commands.ExampleCommand;
-import frc.team5406.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 
-/**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
- */
+import frc.team5406.robot.commands.ExampleCommand;
+import frc.team5406.robot.commands.SpinIntake;
+import frc.team5406.robot.subsystems.DriveSubsystem;
+import frc.team5406.robot.subsystems.IntakeSubsystem;
+import frc.team5406.robot.Constants;
+
+
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem m_exampleSubsystem = new DriveSubsystem();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final DriveSubsystem drive = new DriveSubsystem();
+  private final IntakeSubsystem intake = new IntakeSubsystem();
 
+  private final ExampleCommand m_autoCommand = new ExampleCommand(drive);
 
+  XboxController driverGamepad = new XboxController(Constants.DRIVER_CONTROLLER);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -42,6 +44,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    // Spin brushes when B is held.
+    new JoystickButton(driverGamepad, Button.kB.value)
+        .whenHeld(new SpinIntake(intake));
   }
 
 
