@@ -132,7 +132,7 @@ public double getRightDistance(){
 
 //
 public double getHeading(){
-  return gyro.getCompassHeading();
+  return gyro.getAngle();
 }
 public void setHeading(){
    gyro.reset();
@@ -145,5 +145,6 @@ public void setHeading(){
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    //System.out.println("Angle: " + getHeading());
   }
 }

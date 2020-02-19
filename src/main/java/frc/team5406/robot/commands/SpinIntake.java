@@ -22,7 +22,7 @@ public class SpinIntake extends CommandBase {
 
   @Override
   public void initialize() {
-    intake.spinBrushes();
+    //intake.spinBrushes();
   }
 
   @Override
