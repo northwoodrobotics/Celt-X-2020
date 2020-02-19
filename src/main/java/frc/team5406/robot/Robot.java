@@ -118,8 +118,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
-<<<<<<< HEAD
-=======
     if (driverGamepad.getBButton()) { 
       double leftSpeed = driverGamepad.getY(Hand.kRight);
       double speedMultiplier = driverGamepad.getX(Hand.kRight)+1;
@@ -134,7 +132,6 @@ public class Robot extends TimedRobot {
       ClimbSubsystem.setSpeed(0,0);
     }
 
->>>>>>> 9ad98c793a3a32bbcd60aab4a6dbdef7f110b104
     SmartDashboard.putNumber("Shooter RPM", ShooterSubsystem.getShooterSpeed());
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getBoosterSpeed());
     SmartDashboard.putNumber("Hood Angle", ShooterSubsystem.getHoodAngle());

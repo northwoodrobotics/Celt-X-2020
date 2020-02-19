@@ -20,6 +20,7 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.util.Units;
 
 import frc.team5406.robot.Constants;
 
@@ -102,6 +103,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     shooterEncoder.setPosition(0);
     boosterEncoder.setPosition(0);
+    hoodEncoder.setPosition(getAbsHoodPosition()*Constants.HOOD_GEAR_RATIO);
     hoodEncoder.setPosition(0);
   }
 
@@ -197,6 +199,10 @@ public class ShooterSubsystem extends SubsystemBase {
     turret.set(turn);
   }
 
+  public static double getAbsHoodPosition(){
+    return hoodAbsoluteEncoder.getAbsolutePosition();
+  }
+
   public static void updateLimelightTracking()
 {
       double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
@@ -220,12 +226,12 @@ public class ShooterSubsystem extends SubsystemBase {
         hoodAngle = 0; 
         return;
       }
-      double d = (0.8597*(Math.pow(ty, 2)) - 6.5784 * ty + 128)/12;
-       hoodAngle = 0.6*(-0.0327 * (Math.pow(d, 2)) + 2.667*d + 15);
-       rpm = 0.75*(96.972*d + 1580);
+      double d = (67.5 / Math.tan(Units.degreesToRadians(30+ty)))/12;
+       hoodAngle = (-0.0327 * (Math.pow(d, 2)) + 2.667*d + 26);
+       rpm = (96.972*d + 2580);
        
-       if(hoodAngle > 60){
-         hoodAngle = 60;
+       if(hoodAngle > 65){
+         hoodAngle = 65;
        }
        if(hoodAngle < 0){
          hoodAngle = 0;
