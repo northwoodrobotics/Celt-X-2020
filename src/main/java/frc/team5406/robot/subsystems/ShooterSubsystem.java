@@ -31,7 +31,6 @@ public class ShooterSubsystem extends SubsystemBase {
   private static CANSparkMax hood = new CANSparkMax(Constants.HOOD_MOTOR, MotorType.kBrushless);
   private static CANSparkMax turret = new CANSparkMax(Constants.TURRET_AZIMUTH_MOTOR, MotorType.kBrushless);
   
-  private static TalonSRX feeder = new TalonSRX(Constants.FEEDER_MOTOR);
   private static CANSparkMax upperFeeder = new CANSparkMax(Constants.UPPER_FEEDER_MOTOR, MotorType.kBrushless);
 
   private static CANCoder turretEncoder, hoodAbsoluteEncoder;
@@ -63,7 +62,6 @@ public class ShooterSubsystem extends SubsystemBase {
     hoodPID = hood.getPIDController();
 
     shooterSlave.follow(shooterMaster, true);
-    feeder.setInverted(true);
 
     shooterPID.setP(Constants.SHOOTER_PID0_P, 0);
     shooterPID.setI(Constants.SHOOTER_PID0_I, 0);
@@ -94,11 +92,6 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterSlave.setSmartCurrentLimit(Constants.SHOOTER_CURRENT_LIMIT);
     booster.setSmartCurrentLimit(Constants.BOOSTER_CURRENT_LIMIT);
     hood.setSmartCurrentLimit(Constants.HOOD_CURRENT_LIMIT);
-
-    feeder.enableCurrentLimit(true);
-    feeder.configContinuousCurrentLimit(Constants.BAG_CURRENT_LIMIT);
-    feeder.configPeakCurrentLimit(Constants.BAG_CURRENT_LIMIT);
-    feeder.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
 
     upperFeeder.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
 
@@ -181,20 +174,17 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public static void spinFeeder() {
    
-    feeder.set(ControlMode.PercentOutput, 1);
     upperFeeder.set(Constants.UPPER_FEEDER_OUTPUT);
 
   }
   public static void reverseFeeder() {
    
-    feeder.set(ControlMode.PercentOutput, -0.8);
     upperFeeder.set(-1 * Constants.UPPER_FEEDER_OUTPUT);
 
   }
 
   public static void stopFeeder() {
 
-    feeder.set(ControlMode.PercentOutput, 0);
     upperFeeder.set(0);
   }
 
@@ -231,8 +221,8 @@ public class ShooterSubsystem extends SubsystemBase {
         return;
       }
       double d = (0.8597*(Math.pow(ty, 2)) - 6.5784 * ty + 128)/12;
-       hoodAngle = -0.0327 * (Math.pow(d, 2)) + 2.667*d + 15;
-       rpm = 96.972*d + 1580;
+       hoodAngle = 0.6*(-0.0327 * (Math.pow(d, 2)) + 2.667*d + 15);
+       rpm = 0.75*(96.972*d + 1580);
        
        if(hoodAngle > 60){
          hoodAngle = 60;
@@ -246,7 +236,7 @@ public class ShooterSubsystem extends SubsystemBase {
        if(rpm < 0){
          rpm = 0;
        }
-      /* System.out.println("hood " + hoodAngle);
+       /*System.out.println("hood " + hoodAngle);
        System.out.println("rpm " + rpm);
        System.out.println("ty " + ty);
        System.out.println("d " + d);*/

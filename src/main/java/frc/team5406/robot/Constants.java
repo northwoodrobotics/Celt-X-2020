@@ -24,7 +24,6 @@ public final class Constants {
     public static final int INTAKE_ROLLER_MOTOR = 5; //SparkMax, NEO550
     public static final int HOPPER_BRUSH_MOTOR = 6; //SparkMax, NEO550
     public static final int THROAT_SERIALIZER_MOTOR_ONE = 7; //TalonSRX, BAG
-    public static final int FEEDER_MOTOR = 8; //TalonSRX, 2xBAG
     public static final int TURRET_AZIMUTH_MOTOR = 9; //SparkMax, NEO550
     public static final int HOOD_MOTOR = 10; //SparkMax, NEO550
     public static final int BOOSTER_ROLLER_MOTOR = 11; //SparkMax, NEO
@@ -53,7 +52,7 @@ public final class Constants {
     public static final double INTAKE_GEAR_RATIO = 4;
     public static final double HOPPER_GEAR_RATIO = 12;
     public static final double TURRET_GEAR_RATIO = 20.0*(210.0/22.0); //20:1 gearbox + 22 tooth pinion driving a 210 tooth ring
-    public static final double HOOD_GEAR_RATIO = 2.0; //fix - approximately 1 degree/revolution
+    public static final double HOOD_GEAR_RATIO = 0.5; //fix - approximately 1 degree/revolution
     public static final double BOOSTER_GEAR_RATIO = 1.0/2.0; //overdriven
     public static final double SHOOTER_GEAR_RATIO = 3.0/4.0; //overdriven
 
@@ -90,10 +89,21 @@ public final class Constants {
     public static final double BOOSTER_PID0_D = 0;
     public static final double BOOSTER_PID0_F = 1.9e-4;
 
-    public static final double HOOD_PID0_P = 8e-1;
+    public static final double HOOD_PID0_P = 9e-1;
     public static final double HOOD_PID0_I = 0;
     public static final double HOOD_PID0_D = 0;
-    public static final double HOOD_PID0_F = 0.03;
+    public static final double HOOD_PID0_F = 0.04;
+
+    public static final double LEFT_CLIMBER_PID0_P = 3e-4;
+    public static final double LEFT_CLIMBER_PID0_I = 0;
+    public static final double LEFT_CLIMBER_PID0_D = 0;
+    public static final double LEFT_CLIMBER_PID0_F = 1.9e-3;
+
+    public static final double RIGHT_CLIMBER_PID0_P = 3e-4;
+    public static final double RIGHT_CLIMBER_PID0_I = 0;
+    public static final double RIGHT_CLIMBER_PID0_D = 0;
+    public static final double RIGHT_CLIMBER_PID0_F = 1.9e-3;
+
 
     //Current Limits
     public static final int NEO550_CURRENT_LIMIT = 40;
