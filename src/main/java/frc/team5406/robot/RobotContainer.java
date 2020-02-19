@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 
-import frc.team5406.robot.commands.ExampleCommand;
+import frc.team5406.robot.commands.Drive;
 import frc.team5406.robot.commands.SpinIntake;
 import frc.team5406.robot.subsystems.DriveSubsystem;
 import frc.team5406.robot.subsystems.IntakeSubsystem;
@@ -25,7 +25,7 @@ public class RobotContainer {
   private final DriveSubsystem drive = new DriveSubsystem();
   private final IntakeSubsystem intake = new IntakeSubsystem();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(drive);
+  //private final Drive m_autoCommand = new Drive(drive);
 
   XboxController driverGamepad = new XboxController(Constants.DRIVER_CONTROLLER);
 
@@ -46,8 +46,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // Spin brushes when B is held.
-    new JoystickButton(driverGamepad, Button.kB.value)
-        .whenHeld(new SpinIntake(intake));
+  /*  new JoystickButton(driverGamepad, Button.kB.value)
+        .whenHeld(new SpinIntake(intake)); */
   }
 
 
@@ -56,8 +56,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  /*public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
-  }
+  }*/
 }
