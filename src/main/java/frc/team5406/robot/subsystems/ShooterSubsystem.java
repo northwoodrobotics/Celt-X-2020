@@ -111,7 +111,7 @@ public class ShooterSubsystem extends SubsystemBase {
         stopShooter();
 
     } else {
-      shooterPID.setReference(RPM * 1 / Constants.SHOOTER_GEAR_RATIO, ControlType.kVelocity);
+      shooterPID.setReference(RPM *  Constants.SHOOTER_GEAR_RATIO, ControlType.kVelocity);
     }
   }
   public static void spinShooterAuto(){
@@ -132,7 +132,7 @@ public class ShooterSubsystem extends SubsystemBase {
       stopBooster();
 
   } else {
-    boosterPID.setReference(RPM * 1 / Constants.BOOSTER_GEAR_RATIO, ControlType.kVelocity);
+    boosterPID.setReference(RPM *  Constants.BOOSTER_GEAR_RATIO, ControlType.kVelocity);
     }
 
   }
