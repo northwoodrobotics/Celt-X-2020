@@ -46,8 +46,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // Spin brushes when B is held.
-    new JoystickButton(driverGamepad, Button.kB.value)
-        .whenHeld(new SpinIntake(intake));
+  /*  new JoystickButton(driverGamepad, Button.kB.value)
+        .whenHeld(new SpinIntake(intake)); */
   }
 
 
