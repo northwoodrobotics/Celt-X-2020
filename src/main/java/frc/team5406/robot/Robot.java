@@ -67,6 +67,9 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber("Hood Abs Position", ShooterSubsystem.getAbsHoodPosition());
+    SmartDashboard.putNumber("Hood Angle", ShooterSubsystem.getHoodAngle());
+
   }
 
   /**
@@ -118,6 +121,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
+    if(driverGamepad.getXButton()){
+      ClimbSubsystem.climbExtend();
+    }
+    if(driverGamepad.getYButton()){
+      ClimbSubsystem.climbRetract();
+    }
     if (driverGamepad.getBButton()) { 
       double leftSpeed = driverGamepad.getY(Hand.kRight);
       double speedMultiplier = driverGamepad.getX(Hand.kRight)+1;
@@ -134,7 +143,6 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Shooter RPM", ShooterSubsystem.getShooterSpeed());
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getBoosterSpeed());
-    SmartDashboard.putNumber("Hood Angle", ShooterSubsystem.getHoodAngle());
     SmartDashboard.putNumber("Hood Output", ShooterSubsystem.getHoodVoltage());
 
    if (operatorGamepad.getAButton()) { 

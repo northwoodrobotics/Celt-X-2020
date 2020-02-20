@@ -41,7 +41,7 @@ public final class Constants {
 
     //PCM PORTS
     public static final int INTAKE_CYLINDER = 0;
-    public static final int POP_UP_CYLINDER = 1;
+    public static final int CLIMB_CYLINDER = 1;
 
     //XBoxController Ports
     public static final int OPERATOR_CONTROLLER = 0;
@@ -52,9 +52,10 @@ public final class Constants {
     public static final double INTAKE_GEAR_RATIO = 4;
     public static final double HOPPER_GEAR_RATIO = 12;
     public static final double TURRET_GEAR_RATIO = 20.0*(210.0/22.0); //20:1 gearbox + 22 tooth pinion driving a 210 tooth ring
-    public static final double HOOD_GEAR_RATIO = 0.5; //fix - approximately 1 degree/revolution
+    public static final double HOOD_GEAR_RATIO = (23.1*10)/360;//(19.25*10)/360; //Doesn't match CAD?
     public static final double BOOSTER_GEAR_RATIO = 1.0/2.0; //overdriven
     public static final double SHOOTER_GEAR_RATIO = 3.0/4.0; //overdriven
+    public static final double HOOD_ENC_GEAR_RATIO = 3.0/.9;
 
     //Wheel Diameters
     public static final double DRIVE_WHEEL_DIAMETER = 6.0; //inches
@@ -73,6 +74,8 @@ public final class Constants {
     
     public static final boolean INTAKE_EXTEND = true;
     public static final boolean INTAKE_RETRACT = false;
+    public static final boolean CLIMB_EXTEND = true;
+    public static final boolean CLIMB_RETRACT = false;
 
     //Closed-loop Ramp Rates
     public static final double SHOOTER_CLOSED_LOOP_RAMP_RATE = 0.02; //seconds

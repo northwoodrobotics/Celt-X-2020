@@ -21,6 +21,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Solenoid;
 
 
 public class ClimbSubsystem extends SubsystemBase {
@@ -32,6 +33,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private static CANEncoder leftClimbEncoder, rightClimbEncoder;
 
   private static CANPIDController leftClimbPID, rightClimbPID;
+  private static Solenoid climbCylinder;
 
   public static void setupMotors() {
     leftClimbMotor.setIdleMode(IdleMode.kCoast);
@@ -61,8 +63,25 @@ public class ClimbSubsystem extends SubsystemBase {
     rightClimbPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
     leftClimbEncoder.setPosition(0);
     rightClimbEncoder.setPosition(0);
-    
+
+    climbCylinder = new Solenoid(Constants.CLIMB_CYLINDER);
+
   }
+
+  public static void setIntakePosition(boolean out){
+    climbCylinder.set(out);
+  }
+
+  public static void climbExtend() {
+
+    setIntakePosition(Constants.CLIMB_EXTEND);
+  }
+
+  public static void climbRetract() {
+
+    setIntakePosition(Constants.CLIMB_RETRACT);
+  }
+
 
   // Set Speed For Both
   public static void setSpeed(double left, double right) {

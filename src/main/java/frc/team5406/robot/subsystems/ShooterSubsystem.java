@@ -20,6 +20,7 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 
 import frc.team5406.robot.Constants;
@@ -104,7 +105,6 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterEncoder.setPosition(0);
     boosterEncoder.setPosition(0);
     hoodEncoder.setPosition(getAbsHoodPosition()*Constants.HOOD_GEAR_RATIO);
-    hoodEncoder.setPosition(0);
   }
 
   public static void spinShooter(double RPM) {
@@ -200,7 +200,11 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public static double getAbsHoodPosition(){
-    return hoodAbsoluteEncoder.getAbsolutePosition();
+    double absPos = hoodAbsoluteEncoder.getAbsolutePosition();
+    if(absPos > 270){
+      absPos -=360;
+    }
+    return absPos/Constants.HOOD_ENC_GEAR_RATIO;
   }
 
   public static void updateLimelightTracking()
@@ -226,9 +230,9 @@ public class ShooterSubsystem extends SubsystemBase {
         hoodAngle = 0; 
         return;
       }
-      double d = (67.5 / Math.tan(Units.degreesToRadians(30+ty)))/12;
-       hoodAngle = (-0.0327 * (Math.pow(d, 2)) + 2.667*d + 26);
-       rpm = (96.972*d + 2580);
+      double d = (67.5 / Math.tan(Units.degreesToRadians(30+ty)));
+       hoodAngle = -0.0004*d*d + 0.197*d + 27.262;
+       rpm = 9.2541*d + 2749.9;
        
        if(hoodAngle > 65){
          hoodAngle = 65;
