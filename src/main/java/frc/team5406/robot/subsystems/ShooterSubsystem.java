@@ -36,8 +36,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private static CANSparkMax upperFeeder = new CANSparkMax(Constants.UPPER_FEEDER_MOTOR, MotorType.kBrushless);
 
   private static CANCoder turretEncoder, hoodAbsoluteEncoder;
-  private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder;
-  private static CANPIDController shooterPID, boosterPID, hoodPID;
+  private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder, feederEncoder;
+  private static CANPIDController shooterPID, boosterPID, hoodPID, feederPID; 
 
   public static boolean llHasValidTarget = false;
   public static double llSteer = 0.0;
@@ -56,12 +56,14 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterEncoder = shooterMaster.getEncoder();
     boosterEncoder = booster.getEncoder();
     hoodEncoder = hood.getEncoder();
+    feederEncoder = upperFeeder.getEncoder();
     turretEncoder = new CANCoder(Constants.TURRET_ENCODER);
     hoodAbsoluteEncoder = new CANCoder(Constants.HOOD_ENCODER);
 
     shooterPID = shooterMaster.getPIDController();
     boosterPID = booster.getPIDController();
     hoodPID = hood.getPIDController();
+    feederPID = upperFeeder.getPIDController();
 
     shooterSlave.follow(shooterMaster, true);
 
@@ -85,6 +87,13 @@ public class ShooterSubsystem extends SubsystemBase {
     hoodPID.setIZone(0, 0);
     hoodPID.setFF(Constants.HOOD_PID0_F, 0);
     hoodPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
+
+    feederPID.setP(Constants.FEEDER_PID0_P);
+    feederPID.setI(Constants.FEEDER_PID0_I, 0);
+    feederPID.setD(Constants.FEEDER_PID0_D, 0);
+    feederPID.setIZone(0, 0);
+    feederPID.setFF(Constants.FEEDER_PID0_F, 0);
+    feederPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
 
     shooterMaster.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
     booster.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
@@ -174,10 +183,18 @@ public class ShooterSubsystem extends SubsystemBase {
     booster.set(0);
   }
 
-  public static void spinFeeder() {
-   
-    upperFeeder.set(Constants.UPPER_FEEDER_OUTPUT);
+  public static void spinFeeder(double RPM) {
+      if (RPM == 0) {
+        stopShooter();
 
+    } else {
+      feederPID.setReference(RPM *  Constants.FEEDER_GEAR_RATIO, ControlType.kVelocity);
+    }
+
+  }
+
+  public static double getFeederSpeed(){
+    return feederEncoder.getVelocity() * 1 / Constants.FEEDER_GEAR_RATIO;
   }
   public static void reverseFeeder() {
    
@@ -212,6 +229,8 @@ public class ShooterSubsystem extends SubsystemBase {
       double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
       double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
       double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+      SmartDashboard.putNumber("TY", ty);
+      
 
     // ts: close to 0 - left, close to 90 - right
     // tx: negative - left, positive - right
