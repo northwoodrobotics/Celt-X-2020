@@ -52,6 +52,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Feeder Target RPM", 300);
     SmartDashboard.putNumber("Hood Target Angle", 0);
     
+    SmartDashboard.putNumber("FEEDER_PID_P", Constants.FEEDER_PID0_P);
+    SmartDashboard.putNumber("FEEDER_PID_I", Constants.FEEDER_PID0_I);
+    SmartDashboard.putNumber("FEEDER_PID_D", Constants.FEEDER_PID0_D);
+    SmartDashboard.putNumber("FEEDER_PID_F", Constants.FEEDER_PID0_F);
   }
 
   /**
@@ -82,6 +86,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
   }
 
   /**
@@ -152,9 +157,11 @@ public class Robot extends TimedRobot {
       ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 6500));
       ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+      ShooterSubsystem.compressorDisabled();
       //ShooterSubsystem.spinShooterAuto();
      // ShooterSubsystem.setHoodAngleAuto();
      } else {
+      ShooterSubsystem.compressorEnabled();
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();
       ShooterSubsystem.releaseHood();
@@ -193,17 +200,19 @@ public class Robot extends TimedRobot {
        ShooterSubsystem.reverseFeeder();
      }
 
-     ShooterSubsystem.updateLimelightTracking();
      if(Math.abs(driverGamepad.getX(Hand.kLeft)) > 0.1){
       ShooterSubsystem.turnTurret(0.5 * driverGamepad.getX(Hand.kLeft));
      }
      else if(driverGamepad.getAButton()){
+      ShooterSubsystem.updateLimelightTracking();
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
       if (ShooterSubsystem.llHasValidTarget){
         ShooterSubsystem.turnTurret(ShooterSubsystem.llSteer);
       }
      }
       else{
        ShooterSubsystem.turnTurret(0);
+       NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
      }
      
 

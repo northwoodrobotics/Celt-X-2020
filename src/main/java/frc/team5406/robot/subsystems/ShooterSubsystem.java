@@ -117,6 +117,19 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public static void spinShooter(double RPM) {
+double f = SmartDashboard.getNumber("FEEDER_PID_F", Constants.FEEDER_PID0_F);
+double p = SmartDashboard.getNumber("FEEDER_PID_P", Constants.FEEDER_PID0_P);
+double d = SmartDashboard.getNumber("FEEDER_PID_D", Constants.FEEDER_PID0_D);
+double i = SmartDashboard.getNumber("FEEDER_PID_I", Constants.FEEDER_PID0_I);
+
+shooterPID.setFF(f);
+shooterPID.setP(p);
+shooterPID.setD(d);
+shooterPID.setI(i);
+/*System.out.println(f);
+System.out.println(i);
+System.out.println(d);
+System.out.println(p);*/
 
       if (RPM == 0) {
         stopShooter();
@@ -124,6 +137,7 @@ public class ShooterSubsystem extends SubsystemBase {
     } else {
       shooterPID.setReference(RPM *  Constants.SHOOTER_GEAR_RATIO, ControlType.kVelocity);
     }
+
   }
   public static void spinShooterAuto(){
       spinShooter(rpm);
@@ -190,6 +204,7 @@ public class ShooterSubsystem extends SubsystemBase {
     } else {
       feederPID.setReference(RPM *  Constants.FEEDER_GEAR_RATIO, ControlType.kVelocity);
     }
+    //upperFeeder.set(1);
 
   }
 
