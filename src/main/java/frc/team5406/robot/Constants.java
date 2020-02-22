@@ -70,7 +70,7 @@ public final class Constants {
     //Fixed speeds
     public static final double INTAKE_ROLLER_OUTPUT = 1;
     public static final double HOPPER_BRUSH_OUTPUT = 0.8;
-    public static final double SERIALIZER_OUTPUT = 0.2;
+    public static final double SERIALIZER_OUTPUT = 0.4;
     public static final double UPPER_FEEDER_OUTPUT = 1;
     
     public static final boolean INTAKE_EXTEND = true;
@@ -79,11 +79,11 @@ public final class Constants {
     public static final boolean CLIMB_RETRACT = false;
 
     //Closed-loop Ramp Rates
-    public static final double SHOOTER_CLOSED_LOOP_RAMP_RATE = 0.02; //seconds
+    public static final double SHOOTER_CLOSED_LOOP_RAMP_RATE = 0.01; //seconds
     public static final double DRIVE_CLOSED_LOOP_RAMP_RATE = 0.05; //seconds
 
     //PIDs
-    public static final double SHOOTER_PID0_P = 8e-4;
+    public static final double SHOOTER_PID0_P = 9e-4;
     public static final double SHOOTER_PID0_I = 0;
     public static final double SHOOTER_PID0_D = 0;
     public static final double SHOOTER_PID0_F = 1.9e-4;
@@ -91,7 +91,7 @@ public final class Constants {
     public static final double FEEDER_PID0_P = 3e-5;
     public static final double FEEDER_PID0_I = 0;
     public static final double FEEDER_PID0_D = 0;
-    public static final double FEEDER_PID0_F = 1.9e-4;
+    public static final double FEEDER_PID0_F = 1.1e-4;
 
     public static final double BOOSTER_PID0_P = 3e-5;
     public static final double BOOSTER_PID0_I = 0;

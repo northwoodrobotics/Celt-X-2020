@@ -117,10 +117,10 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public static void spinShooter(double RPM) {
-double f = SmartDashboard.getNumber("FEEDER_PID_F", Constants.FEEDER_PID0_F);
-double p = SmartDashboard.getNumber("FEEDER_PID_P", Constants.FEEDER_PID0_P);
-double d = SmartDashboard.getNumber("FEEDER_PID_D", Constants.FEEDER_PID0_D);
-double i = SmartDashboard.getNumber("FEEDER_PID_I", Constants.FEEDER_PID0_I);
+double f = SmartDashboard.getNumber("SHOOTER_PID_F", Constants.SHOOTER_PID0_F);
+double p = SmartDashboard.getNumber("SHOOTER_PID_P", Constants.SHOOTER_PID0_P);
+double d = SmartDashboard.getNumber("SHOOTER_PID_D", Constants.SHOOTER_PID0_D);
+double i = SmartDashboard.getNumber("SHOOTER_PID_I", Constants.SHOOTER_PID0_I);
 
 shooterPID.setFF(f);
 shooterPID.setP(p);
@@ -265,8 +265,8 @@ System.out.println(p);*/
         return;
       }
       double d = (67.5 / Math.tan(Units.degreesToRadians(30+ty)));
-       hoodAngle = -0.0004*d*d + 0.197*d + 27.262;
-       rpm = 9.2541*d + 2749.9;
+       hoodAngle = -0.0003*d*d + 0.185*d + 27.203;
+       rpm = -0.0271*d*d + 16.63*d + 2385.8;
        
        if(hoodAngle > 65){
          hoodAngle = 65;

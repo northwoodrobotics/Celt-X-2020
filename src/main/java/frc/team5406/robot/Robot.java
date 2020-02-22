@@ -49,13 +49,13 @@ public class Robot extends TimedRobot {
     ClimbSubsystem.setupMotors();
     SmartDashboard.putNumber("Shooter Target RPM", 5000);
     SmartDashboard.putNumber("Booster Target RPM", 6500);
-    SmartDashboard.putNumber("Feeder Target RPM", 300);
+    SmartDashboard.putNumber("Feeder Target RPM", 500);
     SmartDashboard.putNumber("Hood Target Angle", 0);
     
-    SmartDashboard.putNumber("FEEDER_PID_P", Constants.FEEDER_PID0_P);
-    SmartDashboard.putNumber("FEEDER_PID_I", Constants.FEEDER_PID0_I);
-    SmartDashboard.putNumber("FEEDER_PID_D", Constants.FEEDER_PID0_D);
-    SmartDashboard.putNumber("FEEDER_PID_F", Constants.FEEDER_PID0_F);
+    SmartDashboard.putNumber("SHOOTER_PID_P", Constants.SHOOTER_PID0_P);
+    SmartDashboard.putNumber("SHOOTER_PID_I", Constants.SHOOTER_PID0_I);
+    SmartDashboard.putNumber("SHOOTER_PID_D", Constants.SHOOTER_PID0_D);
+    SmartDashboard.putNumber("SHOOTER_PID_F", Constants.SHOOTER_PID0_F);
   }
 
   /**
@@ -154,12 +154,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Abs Hood", ShooterSubsystem.getAbsHoodPosition());
 
    if (operatorGamepad.getAButton()) { 
-      ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
+      //ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 6500));
-      ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+      //ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
       ShooterSubsystem.compressorDisabled();
-      //ShooterSubsystem.spinShooterAuto();
-     // ShooterSubsystem.setHoodAngleAuto();
+      ShooterSubsystem.spinShooterAuto();
+     ShooterSubsystem.setHoodAngleAuto();
      } else {
       ShooterSubsystem.compressorEnabled();
       ShooterSubsystem.stopShooter();
