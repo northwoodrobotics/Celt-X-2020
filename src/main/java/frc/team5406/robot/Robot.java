@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
   XboxController driverGamepad = new XboxController(Constants.DRIVER_CONTROLLER);
   private DriveSubsystem robotDrive = new DriveSubsystem();
   int intakePulseCount = 0;
-  /**
+ /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
@@ -126,6 +126,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+  double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+  double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
+ 
+    SmartDashboard.putNumber("ts", ts); 
+    SmartDashboard.putNumber("tx", tx);
     robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
     if(driverGamepad.getXButton()){
       ClimbSubsystem.climbExtend();
@@ -154,12 +159,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Abs Hood", ShooterSubsystem.getAbsHoodPosition());
 
    if (operatorGamepad.getAButton()) { 
-      //ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
+      ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 6500));
-      //ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+      ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
       ShooterSubsystem.compressorDisabled();
-      ShooterSubsystem.spinShooterAuto();
-     ShooterSubsystem.setHoodAngleAuto();
+      //ShooterSubsystem.spinShooterAuto();
+      //ShooterSubsystem.setHoodAngleAuto();
      } else {
       ShooterSubsystem.compressorEnabled();
       ShooterSubsystem.stopShooter();
@@ -205,14 +210,14 @@ public class Robot extends TimedRobot {
      }
      else if(driverGamepad.getAButton()){
       ShooterSubsystem.updateLimelightTracking();
-      NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+     // NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
       if (ShooterSubsystem.llHasValidTarget){
         ShooterSubsystem.turnTurret(ShooterSubsystem.llSteer);
       }
      }
       else{
        ShooterSubsystem.turnTurret(0);
-       NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+       //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
      }
      
 

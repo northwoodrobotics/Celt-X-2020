@@ -244,6 +244,7 @@ System.out.println(p);*/
       double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
       double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
       double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+      double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
       SmartDashboard.putNumber("TY", ty);
       
 
@@ -280,23 +281,28 @@ System.out.println(p);*/
        if(rpm < 0){
          rpm = 0;
        }
+       if(ts< -45){
+         ts+= 90;
+       }
+       double txOff = ts/8;
        /*System.out.println("hood " + hoodAngle);
        System.out.println("rpm " + rpm);
        System.out.println("ty " + ty);
        System.out.println("d " + d);*/
       llHasValidTarget = true;
-      llTotalError += tx;
+      llTotalError += tx-txOff;
 
       // Start with proportional steering
-      llSteer = tx * STEER_KP; //+ STEER_KD * (tx - llLastError) / 0.02 + STEER_KI * llTotalError * 0.02;
+      llSteer = (tx-txOff)* STEER_KP; //+ STEER_KD * (tx - llLastError) / 0.02 + STEER_KI * llTotalError * 0.02;
       
 
       // try to drive forward until the target area reaches our desired area
-      llLastError = tx;
+      llLastError = tx-txOff;
       if (Math.abs(llSteer) > MAX_DRIVE)
       {
         llSteer = Math.signum(llSteer) * MAX_DRIVE;
       }
+      SmartDashboard.putNumber("tx+txOff", tx-txOff);
 }
 
   public double maxllArea(double angle){
