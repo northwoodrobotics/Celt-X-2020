@@ -153,14 +153,17 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getFeederSpeed());
     SmartDashboard.putNumber("Abs Hood", ShooterSubsystem.getAbsHoodPosition());
 
-   if (operatorGamepad.getAButton()) { 
-      //ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
-      ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 6500));
-      //ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+   if (operatorGamepad.getAButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
+    ShooterSubsystem.spinBooster(6500);
+    ShooterSubsystem.compressorDisabled();
+      ShooterSubsystem.spinShooter(500);
+     ShooterSubsystem.setHoodAngle(40);
+    }else if (operatorGamepad.getAButton() && operatorGamepad.getBumper(Hand.kRight)) { 
+      ShooterSubsystem.spinBooster(6500);
       ShooterSubsystem.compressorDisabled();
       ShooterSubsystem.spinShooterAuto();
      ShooterSubsystem.setHoodAngleAuto();
-     } else {
+    } else {
       ShooterSubsystem.compressorEnabled();
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();
