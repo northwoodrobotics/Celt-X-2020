@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    //CAN IDs
+    //CAN Motor IDs
     public static final int LEFT_DRIVE_MOTOR_ONE = 1; //SparkMax, NEO
     public static final int LEFT_DRIVE_MOTOR_TWO = 2; //SparkMax, NEO
     public static final int RIGHT_DRIVE_MOTOR_ONE = 3; //SparkMax, NEO
