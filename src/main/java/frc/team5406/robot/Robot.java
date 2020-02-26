@@ -131,14 +131,14 @@ public class Robot extends TimedRobot {
  
     SmartDashboard.putNumber("ts", ts); 
     SmartDashboard.putNumber("tx", tx);
-    robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
-    if(operatorGamepad.getBumperPressed(Hand.kRight) && operatorGamepad.getStartButtonPressed()){
+    robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft), driverGamepad.getX(Hand.kRight));
+    if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()){
       ClimbSubsystem.climbExtend();
     }
-    if(operatorGamepad.getBumperPressed(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
+    if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
       ClimbSubsystem.climbRetract();
     }
-    if (operatorGamepad.getBumperPressed(Hand.kRight) && (operatorGamepad.getY(Hand.kLeft) > 0.05)) { 
+    if (operatorGamepad.getBumper(Hand.kRight) && (operatorGamepad.getY(Hand.kLeft) > 0.05)) { 
       double leftSpeed = operatorGamepad.getY(Hand.kLeft);
       double speedMultiplier = driverGamepad.getX(Hand.kLeft);
      /* System.out.println(leftSpeed);
@@ -158,7 +158,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getFeederSpeed());
     SmartDashboard.putNumber("Abs Hood", ShooterSubsystem.getAbsHoodPosition());
 
-   if (operatorGamepad.getBButton() && !operatorGamepad.getBumperPressed(Hand.kRight)) { 
+   if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
      // ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 6500));
      // ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
@@ -166,7 +166,7 @@ public class Robot extends TimedRobot {
       ShooterSubsystem.spinShooterAuto();
       ShooterSubsystem.setHoodAngleAuto();
 
-    } else if (operatorGamepad.getBButton() && operatorGamepad.getBumperPressed(Hand.kRight)) { 
+    } else if (operatorGamepad.getBButton() && operatorGamepad.getBumper(Hand.kRight)) { 
       ShooterSubsystem.spinShooter(1200);
       ShooterSubsystem.spinBooster(6500);
       ShooterSubsystem.setHoodAngle(40);
@@ -176,7 +176,8 @@ public class Robot extends TimedRobot {
       ShooterSubsystem.compressorEnabled();
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();
-      ShooterSubsystem.releaseHood();
+      ShooterSubsystem.setHoodAngle(0);
+    //  ShooterSubsystem.releaseHood();
      }
 
      if (driverGamepad.getTriggerAxis(Hand.kRight) > .1){
@@ -211,9 +212,10 @@ public class Robot extends TimedRobot {
        IntakeSubsystem.reverseSerialize();
        ShooterSubsystem.reverseFeeder();
      }
-
-     if((Math.abs(operatorGamepad.getX(Hand.kRight)) > 0.1) && (operatorGamepad.getBumperPressed(Hand.kRight))){
+     
+     if((Math.abs(operatorGamepad.getX(Hand.kRight)) > 0.1) && (operatorGamepad.getBumper(Hand.kRight))){
       ShooterSubsystem.turnTurret(0.5 * operatorGamepad.getX(Hand.kRight));
+
      }
      else if(operatorGamepad.getAButton()){
       ShooterSubsystem.updateLimelightTracking();
