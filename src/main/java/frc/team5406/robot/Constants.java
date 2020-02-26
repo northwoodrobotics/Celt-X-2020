@@ -7,6 +7,9 @@
 
 package frc.team5406.robot;
 
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -123,4 +126,17 @@ public final class Constants {
     public static final int BOOSTER_CURRENT_LIMIT = 50;
     public static final int HOOD_CURRENT_LIMIT = 30;
 
+    public static final double S_VOLTS = 0.133;
+    public static final double V_VOLTS = 0.0725;
+    public static final double A_VOLTS = 0.00875;
+    
+    public static final double RAMSETE_B = 2;
+    public static final double RAMSETE_ZETA = 0.7;
+
+    public static final double TRACK_WIDTH_INCHES = 25.6;
+    public static final DifferentialDriveKinematics DRIVE_KINEMATICS =
+        new DifferentialDriveKinematics(Units.inchesToMeters(TRACK_WIDTH_INCHES));
+
+    public static final double MAX_SPEED_METERS_PER_SECOND = 1;
+    public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 1;
 }
