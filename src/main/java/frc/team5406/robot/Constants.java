@@ -70,7 +70,7 @@ public final class Constants {
     //Fixed speeds
     public static final double INTAKE_ROLLER_OUTPUT = 1;
     public static final double HOPPER_BRUSH_OUTPUT = 0.8;
-    public static final double SERIALIZER_OUTPUT = 0.4;
+    public static final double SERIALIZER_OUTPUT = 1;
     public static final double UPPER_FEEDER_OUTPUT = 1;
     
     public static final boolean INTAKE_EXTEND = true;
