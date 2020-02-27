@@ -161,6 +161,15 @@ System.out.println(p);*/
     }
 
   }
+  public static boolean checkRPM(){
+    double realRPM = getShooterSpeed();
+    if(realRPM * 0.95 < rpm && realRPM * 1.05 > rpm){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 
   public static double getBoosterSpeed() {
 
@@ -267,7 +276,7 @@ System.out.println(p);*/
       }
       double d = (67.5 / Math.tan(Units.degreesToRadians(30+ty)));
        hoodAngle = -0.0003*d*d + 0.185*d + 27.203;
-       rpm = -0.0271*d*d + 16.63*d + 2385.8;
+       rpm = (-0.0271*d*d + 16.63*d + 2385.8) * 1.1;
        
        if(hoodAngle > 65){
          hoodAngle = 65;
@@ -284,20 +293,22 @@ System.out.println(p);*/
        if(ts< -45){
          ts+= 90;
        }
-       double txOff = ts/8;
+       double txOff = ts/12;
        /*System.out.println("hood " + hoodAngle);
        System.out.println("rpm " + rpm);
        System.out.println("ty " + ty);
        System.out.println("d " + d);*/
       llHasValidTarget = true;
       llTotalError += tx-txOff;
-
+      // llTotalError += tx; 
       // Start with proportional steering
       llSteer = (tx-txOff)* STEER_KP; //+ STEER_KD * (tx - llLastError) / 0.02 + STEER_KI * llTotalError * 0.02;
-      
+      //llSteer = tx * STEER_KP;
 
       // try to drive forward until the target area reaches our desired area
+      
       llLastError = tx-txOff;
+      //  llLastError = tx;
       if (Math.abs(llSteer) > MAX_DRIVE)
       {
         llSteer = Math.signum(llSteer) * MAX_DRIVE;
