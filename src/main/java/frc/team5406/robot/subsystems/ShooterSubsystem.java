@@ -47,6 +47,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private static double hoodAngle = 0;
   private static double rpm = 0; 
+  public static double shooterMultiplier = 1;
  
   static Compressor compressor = new Compressor();
   
@@ -151,6 +152,10 @@ System.out.println(p);*/
     return shooterEncoder.getVelocity() * 1 / Constants.SHOOTER_GEAR_RATIO;
   }
 
+  public static void changeShooterMultiplier(boolean increase) {
+    shooterMultiplier*= 1+ (increase?1:-1) * Constants.SHOOTER_ADJUSTMENT;
+  }
+
   public static void spinBooster(double RPM) {
 
     if (RPM == 0) {
@@ -160,6 +165,15 @@ System.out.println(p);*/
     boosterPID.setReference(RPM *  Constants.BOOSTER_GEAR_RATIO, ControlType.kVelocity);
     }
 
+  }
+  public static boolean checkRPM(){
+    double realRPM = getShooterSpeed();
+    if(realRPM * 0.95 < rpm && realRPM * 1.05 > rpm){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   public static double getBoosterSpeed() {
@@ -244,6 +258,7 @@ System.out.println(p);*/
       double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
       double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
       double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+      double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
       SmartDashboard.putNumber("TY", ty);
       
 
@@ -266,7 +281,7 @@ System.out.println(p);*/
       }
       double d = (67.5 / Math.tan(Units.degreesToRadians(30+ty)));
        hoodAngle = -0.0003*d*d + 0.185*d + 27.203;
-       rpm = -0.0271*d*d + 16.63*d + 2385.8;
+       rpm = (-0.0271*d*d + 16.63*d + 2385.8) * shooterMultiplier;
        
        if(hoodAngle > 65){
          hoodAngle = 65;
@@ -280,19 +295,25 @@ System.out.println(p);*/
        if(rpm < 0){
          rpm = 0;
        }
+       if(ts< -45){
+         ts+= 90;
+       }
+       double txOff = ts/12;
        /*System.out.println("hood " + hoodAngle);
        System.out.println("rpm " + rpm);
        System.out.println("ty " + ty);
        System.out.println("d " + d);*/
       llHasValidTarget = true;
-      llTotalError += tx;
-
+      llTotalError += tx-txOff;
+      // llTotalError += tx; 
       // Start with proportional steering
-      llSteer = tx * STEER_KP; //+ STEER_KD * (tx - llLastError) / 0.02 + STEER_KI * llTotalError * 0.02;
-      
+      llSteer = (tx-txOff)* STEER_KP; //+ STEER_KD * (tx - llLastError) / 0.02 + STEER_KI * llTotalError * 0.02;
+      //llSteer = tx * STEER_KP;
 
       // try to drive forward until the target area reaches our desired area
-      llLastError = tx;
+      
+      llLastError = tx-txOff;
+      //  llLastError = tx;
       if (Math.abs(llSteer) > MAX_DRIVE)
       {
         llSteer = Math.signum(llSteer) * MAX_DRIVE;

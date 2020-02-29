@@ -66,6 +66,7 @@ public final class Constants {
     public final static int CAN_TIMEOUT = 15; //ms
     public static final double OUTPUT_RANGE_MIN = -1;
     public static final double OUTPUT_RANGE_MAX = 1;
+    public static final double SHOOTER_ADJUSTMENT = 0.05;
 
     //Fixed speeds
     public static final double INTAKE_ROLLER_OUTPUT = 1;

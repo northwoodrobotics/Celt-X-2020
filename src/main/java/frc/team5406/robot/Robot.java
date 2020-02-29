@@ -17,6 +17,7 @@ import frc.team5406.robot.subsystems.ShooterSubsystem;
 import frc.team5406.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -135,6 +136,14 @@ public class Robot extends TimedRobot {
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()){
       ClimbSubsystem.climbExtend();
     }
+
+    if(operatorGamepad.getPOV() == 0){
+      ShooterSubsystem.changeShooterMultiplier(true);
+    }
+    else if(operatorGamepad.getPOV() == 180){
+      ShooterSubsystem.changeShooterMultiplier(false);
+    }
+
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
       ClimbSubsystem.climbRetract();
     }
@@ -165,6 +174,14 @@ public class Robot extends TimedRobot {
       ShooterSubsystem.compressorDisabled();
       ShooterSubsystem.spinShooterAuto();
       ShooterSubsystem.setHoodAngleAuto();
+      if(ShooterSubsystem.checkRPM()){
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, 1);
+        
+      }
+      else{
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
+      }
+     
 
     } else if (operatorGamepad.getBButton() && operatorGamepad.getBumper(Hand.kRight)) { 
       ShooterSubsystem.spinShooter(1200);
@@ -177,6 +194,7 @@ public class Robot extends TimedRobot {
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();
       ShooterSubsystem.setHoodAngle(0);
+      operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
     //  ShooterSubsystem.releaseHood();
      }
 
@@ -191,7 +209,7 @@ public class Robot extends TimedRobot {
     
      if (operatorGamepad.getTriggerAxis(Hand.kRight) > .1) { 
        IntakeSubsystem.pulseRollers();
-      ShooterSubsystem.spinFeeder(SmartDashboard.getNumber("Feeder Target RPM", 1000));
+      ShooterSubsystem.spinFeeder(1000);
       //ShooterSubsystem.compressorDisabled(); 
       if(!(driverGamepad.getTriggerAxis(Hand.kRight) > .1)){
       IntakeSubsystem.serialize();
@@ -219,14 +237,14 @@ public class Robot extends TimedRobot {
      }
      else if(operatorGamepad.getAButton()){
       ShooterSubsystem.updateLimelightTracking();
-     // NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
       if (ShooterSubsystem.llHasValidTarget){
         ShooterSubsystem.turnTurret(ShooterSubsystem.llSteer);
       }
      }
       else{
        ShooterSubsystem.turnTurret(0);
-       //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+       NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
      }
      
 
