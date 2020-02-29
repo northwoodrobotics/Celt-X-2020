@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
   XboxController driverGamepad = new XboxController(Constants.DRIVER_CONTROLLER);
   private DriveSubsystem robotDrive = new DriveSubsystem();
   int intakePulseCount = 0;
-  /**
+ /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
@@ -126,16 +126,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
-    if(driverGamepad.getXButton()){
+  double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+  double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
+ 
+    SmartDashboard.putNumber("ts", ts); 
+    SmartDashboard.putNumber("tx", tx);
+    robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft), driverGamepad.getX(Hand.kRight));
+    if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()){
       ClimbSubsystem.climbExtend();
     }
-    if(driverGamepad.getYButton()){
+    if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
       ClimbSubsystem.climbRetract();
     }
-    if (driverGamepad.getBButton()) { 
-      double leftSpeed = driverGamepad.getY(Hand.kRight);
-      double speedMultiplier = driverGamepad.getX(Hand.kRight)+1;
+    if (operatorGamepad.getBumper(Hand.kRight) && (operatorGamepad.getY(Hand.kLeft) > 0.05)) { 
+      double leftSpeed = operatorGamepad.getY(Hand.kLeft);
+      double speedMultiplier = driverGamepad.getX(Hand.kLeft);
      /* System.out.println(leftSpeed);
       System.out.println(speedMultiplier);*/
       ClimbSubsystem.setSpeed(leftSpeed,leftSpeed*speedMultiplier);
@@ -153,69 +158,75 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getFeederSpeed());
     SmartDashboard.putNumber("Abs Hood", ShooterSubsystem.getAbsHoodPosition());
 
-   if (operatorGamepad.getAButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
-    ShooterSubsystem.spinBooster(6500);
-    ShooterSubsystem.compressorDisabled();
-      ShooterSubsystem.spinShooter(500);
-     ShooterSubsystem.setHoodAngle(40);
-    }else if (operatorGamepad.getAButton() && operatorGamepad.getBumper(Hand.kRight)) { 
-      ShooterSubsystem.spinBooster(6500);
+   if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
+     // ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
+      ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 6500));
+     // ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
       ShooterSubsystem.compressorDisabled();
       ShooterSubsystem.spinShooterAuto();
-     ShooterSubsystem.setHoodAngleAuto();
-    } else {
+      ShooterSubsystem.setHoodAngleAuto();
+
+    } else if (operatorGamepad.getBButton() && operatorGamepad.getBumper(Hand.kRight)) { 
+      ShooterSubsystem.spinShooter(1200);
+      ShooterSubsystem.spinBooster(6500);
+      ShooterSubsystem.setHoodAngle(40);
+      ShooterSubsystem.compressorDisabled();
+    
+     } else {
       ShooterSubsystem.compressorEnabled();
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();
-      ShooterSubsystem.releaseHood();
+      ShooterSubsystem.setHoodAngle(0);
+    //  ShooterSubsystem.releaseHood();
      }
 
-     if (operatorGamepad.getYButton()){
+     if (driverGamepad.getTriggerAxis(Hand.kRight) > .1){
       IntakeSubsystem.intakeExtend();
       IntakeSubsystem.spinRollers(); 
       //IntakeSubsystem.setSerializerCircle();
-     }else if(!operatorGamepad.getXButton()){
+     }else if(!(operatorGamepad.getTriggerAxis(Hand.kRight) > .1)){
       IntakeSubsystem.intakeRetract();
       IntakeSubsystem.stopRollers();
      }
     
-     if (operatorGamepad.getXButton()) { 
+     if (operatorGamepad.getTriggerAxis(Hand.kRight) > .1) { 
        IntakeSubsystem.pulseRollers();
-      ShooterSubsystem.spinFeeder(SmartDashboard.getNumber("Feeder Target RPM", 300));
+      ShooterSubsystem.spinFeeder(SmartDashboard.getNumber("Feeder Target RPM", 1000));
       //ShooterSubsystem.compressorDisabled(); 
-      if(!operatorGamepad.getYButton()){
+      if(!(driverGamepad.getTriggerAxis(Hand.kRight) > .1)){
       IntakeSubsystem.serialize();
       }
 
-     } else if (!operatorGamepad.getBumper(Hand.kRight)) {
+     } else if (!(driverGamepad.getTriggerAxis(Hand.kLeft) > .1 )) {
       ShooterSubsystem.stopFeeder();
       //ShooterSubsystem.compressorEnabled();
-      if(!operatorGamepad.getYButton()){
+      if(! (driverGamepad.getTriggerAxis(Hand.kRight) > .1)){
         IntakeSubsystem.stopSerialize();
       }
       
      }
 
 
-     if(operatorGamepad.getBumper(Hand.kRight)){
+     if(driverGamepad.getTriggerAxis(Hand.kLeft) > .1){
        IntakeSubsystem.reverseIntake();
        IntakeSubsystem.reverseSerialize();
        ShooterSubsystem.reverseFeeder();
      }
+     
+     if((Math.abs(operatorGamepad.getX(Hand.kRight)) > 0.1) && (operatorGamepad.getBumper(Hand.kRight))){
+      ShooterSubsystem.turnTurret(0.5 * operatorGamepad.getX(Hand.kRight));
 
-     if(Math.abs(driverGamepad.getX(Hand.kLeft)) > 0.1){
-      ShooterSubsystem.turnTurret(0.5 * driverGamepad.getX(Hand.kLeft));
      }
-     else if(driverGamepad.getAButton()){
+     else if(operatorGamepad.getAButton()){
       ShooterSubsystem.updateLimelightTracking();
-      NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+     // NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
       if (ShooterSubsystem.llHasValidTarget){
         ShooterSubsystem.turnTurret(ShooterSubsystem.llSteer);
       }
      }
       else{
        ShooterSubsystem.turnTurret(0);
-       NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+       //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
      }
      
 
