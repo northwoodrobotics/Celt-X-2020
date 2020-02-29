@@ -47,6 +47,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private static double hoodAngle = 0;
   private static double rpm = 0; 
+  public static double shooterMultiplier = 1;
  
   static Compressor compressor = new Compressor();
   
@@ -149,6 +150,10 @@ System.out.println(p);*/
   public static double getShooterSpeed() {
 
     return shooterEncoder.getVelocity() * 1 / Constants.SHOOTER_GEAR_RATIO;
+  }
+
+  public static void changeShooterMultiplier(boolean increase) {
+    shooterMultiplier*= 1+ (increase?1:-1) * Constants.SHOOTER_ADJUSTMENT;
   }
 
   public static void spinBooster(double RPM) {
@@ -276,7 +281,7 @@ System.out.println(p);*/
       }
       double d = (67.5 / Math.tan(Units.degreesToRadians(30+ty)));
        hoodAngle = -0.0003*d*d + 0.185*d + 27.203;
-       rpm = (-0.0271*d*d + 16.63*d + 2385.8) * 1.1;
+       rpm = (-0.0271*d*d + 16.63*d + 2385.8) * shooterMultiplier;
        
        if(hoodAngle > 65){
          hoodAngle = 65;

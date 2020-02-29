@@ -136,6 +136,14 @@ public class Robot extends TimedRobot {
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()){
       ClimbSubsystem.climbExtend();
     }
+
+    if(operatorGamepad.getPOV() == 0){
+      ShooterSubsystem.changeShooterMultiplier(true);
+    }
+    else if(operatorGamepad.getPOV() == 180){
+      ShooterSubsystem.changeShooterMultiplier(false);
+    }
+
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
       ClimbSubsystem.climbRetract();
     }
