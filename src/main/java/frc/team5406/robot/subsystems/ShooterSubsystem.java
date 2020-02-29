@@ -118,19 +118,6 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public static void spinShooter(double RPM) {
-double f = SmartDashboard.getNumber("SHOOTER_PID_F", Constants.SHOOTER_PID0_F);
-double p = SmartDashboard.getNumber("SHOOTER_PID_P", Constants.SHOOTER_PID0_P);
-double d = SmartDashboard.getNumber("SHOOTER_PID_D", Constants.SHOOTER_PID0_D);
-double i = SmartDashboard.getNumber("SHOOTER_PID_I", Constants.SHOOTER_PID0_I);
-
-shooterPID.setFF(f);
-shooterPID.setP(p);
-shooterPID.setD(d);
-shooterPID.setI(i);
-/*System.out.println(f);
-System.out.println(i);
-System.out.println(d);
-System.out.println(p);*/
 
       if (RPM == 0) {
         stopShooter();
@@ -275,7 +262,7 @@ System.out.println(p);*/
       {
         llHasValidTarget = false;
         llSteer = 0.0;
-        rpm = 1500;
+        rpm = 1950;
         hoodAngle = 0; 
         return;
       }
