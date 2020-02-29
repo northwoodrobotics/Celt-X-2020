@@ -155,7 +155,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
   public static boolean checkRPM(){
     double realRPM = getShooterSpeed();
-    if(realRPM * 0.95 < rpm && realRPM * 1.05 > rpm){
+    if(realRPM * Constants.MATCH_RPM_LOWER_THRESHOLD < rpm && realRPM * Constants.MATCH_RPM_UPPER_THRESHOLD > rpm){
       return true;
     }
     else{
@@ -253,31 +253,31 @@ public class ShooterSubsystem extends SubsystemBase {
     // tx: negative - left, positive - right
 
     // These numbers must be tuned for your Robot!  Be careful!
-    final double STEER_KP = 0.025;                    // how hard to turn toward the target
-    final double STEER_KD = 0.005;
-    final double STEER_KI = 0.1;
-    final double MAX_DRIVE = 0.3;                   // Simple speed limit so we don't drive too fast
+    final double STEER_KP = Constants.LIMELIGHT_STEER_KP;                    // how hard to turn toward the target
+    final double STEER_KD = Constants.LIMELIGHT_STEER_KD;
+    final double STEER_KI = Constants.LIMELIGHT_STEER_KI;
+    final double MAX_DRIVE = Constants.LIMELIGHT_MAX_DRIVE;                   // Simple speed limit so we don't drive too fast
 
       if (tv < 1.0)
       {
         llHasValidTarget = false;
         llSteer = 0.0;
-        rpm = 1950;
-        hoodAngle = 0; 
+        rpm = Constants.SHOOTER_RPM;
+        hoodAngle = Constants.HOOD_ANGLE; 
         return;
       }
-      double d = (67.5 / Math.tan(Units.degreesToRadians(30+ty)));
+      double d = (Constants.LL_TARGET_HEIGHT / Math.tan(Units.degreesToRadians(Constants.LL_MOUNT_ANGLE+ty)));
        hoodAngle = -0.0003*d*d + 0.185*d + 27.203;
        rpm = (-0.0271*d*d + 16.63*d + 2385.8) * shooterMultiplier;
        
-       if(hoodAngle > 65){
-         hoodAngle = 65;
+       if(hoodAngle > Constants.MAX_HOOD_ANGLE){
+         hoodAngle = Constants.MAX_HOOD_ANGLE;
        }
        if(hoodAngle < 0){
          hoodAngle = 0;
        }
-       if(rpm > 6500){
-        rpm = 6500;
+       if(rpm > Constants.MAX_SHOOTER_RPM){
+        rpm = Constants.MAX_SHOOTER_RPM;
        }
        if(rpm < 0){
          rpm = 0;
@@ -285,7 +285,7 @@ public class ShooterSubsystem extends SubsystemBase {
        if(ts< -45){
          ts+= 90;
        }
-       double txOff = ts/12;
+       double txOff = ts/Constants.TX_OFFSET_DIVISOR;
        /*System.out.println("hood " + hoodAngle);
        System.out.println("rpm " + rpm);
        System.out.println("ty " + ty);
@@ -305,10 +305,6 @@ public class ShooterSubsystem extends SubsystemBase {
       {
         llSteer = Math.signum(llSteer) * MAX_DRIVE;
       }
-}
-
-  public double maxllArea(double angle){
-return -0.0054*angle*angle + 0.6546*angle - 12.084;
 }
 
 public static void compressorEnabled() {
