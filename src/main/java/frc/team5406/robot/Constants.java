@@ -56,7 +56,7 @@ public final class Constants {
     public static final double BOOSTER_GEAR_RATIO = 1.0/2.0; //overdriven
     public static final double SHOOTER_GEAR_RATIO = 3.0/4.0; //overdriven
     public static final double HOOD_ENC_GEAR_RATIO = 3.0/.9;
-    public static final double FEEDER_GEAR_RATIO = 5.0;
+    public static final double FEEDER_GEAR_RATIO = 15.0;
 
     //Wheel Diameters
     public static final double DRIVE_WHEEL_DIAMETER = 6.0; //inches

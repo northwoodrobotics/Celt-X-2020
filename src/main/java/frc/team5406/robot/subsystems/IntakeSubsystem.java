@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -33,7 +34,8 @@ public class IntakeSubsystem extends SubsystemBase {
   public static void setupMotors() {
 
     intakeRollers.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
-
+    intakeRollers.setIdleMode(IdleMode.kBrake);
+    
     throatSerializerOne.enableCurrentLimit(true);
     throatSerializerOne.configContinuousCurrentLimit(Constants.BAG_CURRENT_LIMIT);
     throatSerializerOne.configPeakCurrentLimit(Constants.BAG_CURRENT_LIMIT);
