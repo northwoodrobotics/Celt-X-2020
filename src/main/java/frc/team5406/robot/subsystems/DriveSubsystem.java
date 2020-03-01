@@ -49,10 +49,15 @@ public class DriveSubsystem extends SubsystemBase {
     rightDriveMotor.setInverted(true);
     // leftDriveSlave1.setInverted(true);
     // leftDriveMotor.setInverted(true);
-    leftDriveMotor.setSmartCurrentLimit(80);
-    leftDriveSlave.setSmartCurrentLimit(80);
-    rightDriveMotor.setSmartCurrentLimit(80);
-    rightDriveSlave.setSmartCurrentLimit(80);
+    leftDriveMotor.setSmartCurrentLimit(60);
+    leftDriveSlave.setSmartCurrentLimit(60);
+    rightDriveMotor.setSmartCurrentLimit(60);
+    rightDriveSlave.setSmartCurrentLimit(60);
+    leftDriveMotor.setOpenLoopRampRate(0.1);
+    leftDriveSlave.setOpenLoopRampRate(0.1);
+    rightDriveMotor.setOpenLoopRampRate(0.1);
+    rightDriveSlave.setOpenLoopRampRate(0.1);
+    
     m_button = new XboxController(0);
   }
 

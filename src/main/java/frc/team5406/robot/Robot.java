@@ -210,13 +210,17 @@ public class Robot extends TimedRobot {
      }
      
      if (driverGamepad.getTriggerAxis(Hand.kRight) > .1){
-      IntakeSubsystem.intakeExtend();
       IntakeSubsystem.spinRollers(); 
-      //IntakeSubsystem.setSerializerCircle();
      }else if(!(operatorGamepad.getTriggerAxis(Hand.kRight) > .1)){
-      IntakeSubsystem.intakeRetract();
       IntakeSubsystem.stopRollers();
      }
+
+     if (driverGamepad.getBumper(Hand.kRight)){
+      IntakeSubsystem.intakeExtend();
+     }else {
+      IntakeSubsystem.intakeRetract();
+     }
+
     
      if (operatorGamepad.getTriggerAxis(Hand.kRight) > .1) { 
        IntakeSubsystem.pulseRollers();
