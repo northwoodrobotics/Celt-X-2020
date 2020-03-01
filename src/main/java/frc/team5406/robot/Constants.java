@@ -59,7 +59,7 @@ public final class Constants {
     public static final double BOOSTER_GEAR_RATIO = 1.0/2.0; //overdriven
     public static final double SHOOTER_GEAR_RATIO = 3.0/4.0; //overdriven
     public static final double HOOD_ENC_GEAR_RATIO = 3.0/.9;
-    public static final double FEEDER_GEAR_RATIO = 5.0;
+    public static final double FEEDER_GEAR_RATIO = 15.0;
 
     //Wheel Diameters
     public static final double DRIVE_WHEEL_DIAMETER = 6.0; //inches
@@ -116,6 +116,15 @@ public final class Constants {
     public static final double RIGHT_CLIMBER_PID0_D = 0;
     public static final double RIGHT_CLIMBER_PID0_F = 1.9e-3;
 
+    public static final double LEFT_DRIVE_PID0_P = 6e-5;
+    public static final double LEFT_DRIVE_PID0_I = 0;
+    public static final double LEFT_DRIVE_PID0_D = 0;
+    public static final double LEFT_DRIVE_PID0_F = 1.9e-3;
+
+    public static final double RIGHT_DRIVE_PID0_P = 6e-5;
+    public static final double RIGHT_DRIVE_PID0_I = 0;
+    public static final double RIGHT_DRIVE_PID0_D = 0;
+    public static final double RIGHT_DRIVE_PID0_F = 1.9e-3;
 
     //Current Limits
     public static final int NEO550_CURRENT_LIMIT = 40;
@@ -139,4 +148,11 @@ public final class Constants {
 
     public static final double MAX_SPEED_METERS_PER_SECOND = 1;
     public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 1;
+
+    public static final boolean GYRO_REVERSED = true;
+
+    public static int GEAR_RATIO = 11;
+    public static double WHEEL_DIAMETER = 6.0;
+    public static double INCHES_PER_REV = Math.PI * WHEEL_DIAMETER / GEAR_RATIO;
+    public static int SECONDS_PER_MINUTE = 60;
 }

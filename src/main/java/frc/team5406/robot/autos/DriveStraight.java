@@ -2,13 +2,16 @@ package frc.team5406.robot.autos;
 
 import frc.team5406.robot.Constants;
 
+import java.util.List;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-// import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -17,15 +20,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
+import com.revrobotics.CANPIDController;
+
 import frc.team5406.robot.subsystems.DriveSubsystem;
 
-public class autoOne {
+public class DriveStraight {
 
-    private final DriveSubsystem drive = new Drive();
+    private final DriveSubsystem drive = new DriveSubsystem();
 
     XboxController driverGamepad = new XboxController(1);
 
-    public autoOne () {
+    public DriveStraight () {
         
         drive.setDefaultCommand(
         
@@ -55,21 +60,21 @@ public class autoOne {
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)),
         List.of(
-            //new Translation2d(1, 1),
+           // new Translation2d(0, 0)
             //new Translation2d(2, -1)
         ),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
+        new Pose2d(0, 2, new Rotation2d(0)),
         config
     );
     
         RamseteCommand ramseteCommand = new RamseteCommand(
-        exampleTrajectory,
-        drive::getPose,
-        new RamseteController(Constants.RAMSETE_B, Constants.RAMSETE_ZETA),
-        Constants.DRIVE_KINEMATICS,
-        drive::outputSpeeds,
-        drive
+            exampleTrajectory,
+            drive::getPose,
+            new RamseteController(Constants.RAMSETE_B, Constants.RAMSETE_ZETA),
+            Constants.DRIVE_KINEMATICS,
+            drive::outputSpeeds,
+            drive
     );
 
 
