@@ -63,9 +63,9 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public static void setSerializerCircle() {
-
+// danny changed to /2
     throatSerializerOne.set(ControlMode.PercentOutput, Constants.SERIALIZER_OUTPUT);
-    throatSerializerTwo.set(ControlMode.PercentOutput, -1*Constants.SERIALIZER_OUTPUT / 4);
+    throatSerializerTwo.set(ControlMode.PercentOutput, -1*Constants.SERIALIZER_OUTPUT / 2);
   }
 
   public static void stopRollers() {

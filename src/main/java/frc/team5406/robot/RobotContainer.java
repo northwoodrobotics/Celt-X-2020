@@ -9,12 +9,14 @@ package frc.team5406.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.team5406.robot.commands.Drive;
-//import frc.team5406.robot.commands.SpinIntake;
+import frc.team5406.robot.commands.GobbleBalls;
 import frc.team5406.robot.subsystems.DriveSubsystem;
 import frc.team5406.robot.subsystems.IntakeSubsystem;
 import frc.team5406.robot.Constants;
@@ -45,10 +47,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    // Spin brushes when B is held.
-  /*  new JoystickButton(driverGamepad, Button.kB.value)
-        .whenHeld(new SpinIntake(intake)); */
-  }
+   /* // Spin brushes when right trigger is held.
+    new JoystickButton(driverGamepad, Axis.kRightTrigger.value)
+        .whileActiveContinuous(new GobbleBalls(intake)); */
 
 
   /**
@@ -60,4 +61,5 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }*/
+  }
 }

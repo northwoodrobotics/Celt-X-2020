@@ -35,6 +35,8 @@ public class Robot extends TimedRobot {
   XboxController driverGamepad = new XboxController(Constants.DRIVER_CONTROLLER);
   private DriveSubsystem robotDrive = new DriveSubsystem();
   int intakePulseCount = 0;
+  boolean baselock;
+
  /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -132,7 +134,24 @@ public class Robot extends TimedRobot {
  
     SmartDashboard.putNumber("ts", ts); 
     SmartDashboard.putNumber("tx", tx);
-    robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft), driverGamepad.getX(Hand.kRight));
+
+    if((driverGamepad.getY(Hand.kLeft) > Constants.JOYSTICK_DEADBAND || (driverGamepad.getX(Hand.kRight) > Constants.JOYSTICK_DEADBAND))) {
+
+      robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft), driverGamepad.getX(Hand.kRight));
+      baselock = false;
+    
+    } else if(driverGamepad.getY(Hand.kLeft) <= Constants.JOYSTICK_DEADBAND 
+              && (driverGamepad.getX(Hand.kRight) <= Constants.JOYSTICK_DEADBAND) 
+              && (Math.abs(DriveSubsystem.getAverageSpeed()) >= Constants.STATIONARY_SPEED_THRESHOLD)) {
+
+      DriveSubsystem.stopMotors();
+
+    } else if(!baselock && (Math.abs(DriveSubsystem.getAverageSpeed()) < Constants.STATIONARY_SPEED_THRESHOLD)) {
+
+      DriveSubsystem.baselock();
+      baselock = true;
+    }
+
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()){
       ClimbSubsystem.climbExtend();
     }
@@ -146,6 +165,7 @@ public class Robot extends TimedRobot {
 
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
       ClimbSubsystem.climbRetract();
+
     }
     if (operatorGamepad.getBumper(Hand.kRight) && (operatorGamepad.getY(Hand.kLeft) > 0.05)) { 
       double leftSpeed = operatorGamepad.getY(Hand.kLeft);
