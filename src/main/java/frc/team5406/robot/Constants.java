@@ -29,10 +29,9 @@ public final class Constants {
     public static final int BOOSTER_ROLLER_MOTOR = 11; //SparkMax, NEO
     public static final int SHOOTER_WHEEL_MOTOR_ONE = 12; //SparkMax, NEO
     public static final int SHOOTER_WHEEL_MOTOR_TWO = 13; //SparkMax, NEO
-    public static final int LEFT_CLIMBER_MOTOR = 14; //SparkMax, NEO
-    public static final int RIGHT_CLIMBER_MOTOR = 15; //SparkMax, NEO
+    public static final int CLIMBER_MOTOR = 14; //SparkMax, NEO
     public static final int THROAT_SERIALIZER_MOTOR_TWO = 21; //TalonSRX, BAG
-    public static final int UPPER_FEEDER_MOTOR = 22; //SparkMax, NEO
+    public static final int FEEDER_MOTOR = 8; //SparkMax, NEO550
     public static final int DJ_SPINNER = 15;
     
 
@@ -92,7 +91,7 @@ public final class Constants {
     public static final double INTAKE_ROLLER_OUTPUT = 1;
     public static final double HOPPER_BRUSH_OUTPUT = 0.8;
     public static final double SERIALIZER_OUTPUT = 1;
-    public static final double UPPER_FEEDER_OUTPUT = 1;
+    public static final double FEEDER_OUTPUT = 1;
     public static final double LEFT_SERIALIZER_OUTPUT = 100;
     public static final double RIGHT_SERIALIZER_OUTPUT = 1000;
 
