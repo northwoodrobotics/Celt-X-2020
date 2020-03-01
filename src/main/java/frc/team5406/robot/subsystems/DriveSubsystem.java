@@ -53,7 +53,13 @@ public class DriveSubsystem extends SubsystemBase {
     leftDriveSlave.setSmartCurrentLimit(80);
     rightDriveMotor.setSmartCurrentLimit(80);
     rightDriveSlave.setSmartCurrentLimit(80);
-    
+
+    leftMotorPID = leftDriveMotor.getPIDController();
+    rightMotorPID = rightDriveMotor.getPIDController();
+
+    leftEncoder = leftDriveMotor.getEncoder();
+    rightEncoder = rightDriveMotor.getEncoder();
+
     leftMotorPID.setP(Constants.LEFT_DRIVE_PID0_P, 0);
     leftMotorPID.setI(Constants.LEFT_DRIVE_PID0_I, 0);
     leftMotorPID.setD(Constants.LEFT_DRIVE_PID0_D, 0);
