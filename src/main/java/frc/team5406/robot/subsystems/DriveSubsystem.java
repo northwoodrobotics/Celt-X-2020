@@ -33,12 +33,15 @@ public class DriveSubsystem extends SubsystemBase {
   private static CANSparkMax rightDriveMotor = new CANSparkMax(Constants.RIGHT_DRIVE_MOTOR_ONE, MotorType.kBrushless);
   private static CANSparkMax rightDriveSlave = new CANSparkMax(Constants.RIGHT_DRIVE_MOTOR_TWO, MotorType.kBrushless);
   AHRS gyro = new AHRS(SPI.Port.kMXP);
-  
+  private static CANPIDController leftDrivePID, rightDrivePID;
   private CANEncoder leftEncoder, rightEncoder;
   private CANPIDController leftMotorPID, rightMotorPID;
   DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
 
   public static void setupMotors() {
+
+    leftDrivePID = leftDriveMotor.getPIDController();
+    rightDrivePID = rightDriveMotor.getPIDController(); 
     leftDriveMotor.setIdleMode(IdleMode.kCoast);
     leftDriveSlave.setIdleMode(IdleMode.kCoast);
     rightDriveMotor.setIdleMode(IdleMode.kCoast);
@@ -54,6 +57,20 @@ public class DriveSubsystem extends SubsystemBase {
     rightDriveMotor.setSmartCurrentLimit(80);
     rightDriveSlave.setSmartCurrentLimit(80);
     m_button = new XboxController(0);
+    
+    leftDrivePID.setP(Constants.LEFT_DRIVE_PID0_P, 0);
+    leftDrivePID.setI(Constants.LEFT_DRIVE_PID0_I);
+    leftDrivePID.setD(Constants.LEFT_DRIVE_PID0_D, 0);
+    leftDrivePID.setIZone(0, 0);
+    leftDrivePID.setFF(Constants.LEFT_DRIVE_PID0_F, 0);
+    leftDrivePID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
+
+    rightDrivePID.setP(Constants.RIGHT_DRIVE_PID0_P, 0);
+    rightDrivePID.setI(Constants.RIGHT_DRIVE_PID0_I);
+    rightDrivePID.setD(Constants.RIGHT_DRIVE_PID0_D, 0);
+    rightDrivePID.setIZone(0, 0);
+    rightDrivePID.setFF(Constants.RIGHT_DRIVE_PID0_F, 0);
+    rightDrivePID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
   }
 
   public void arcadeDrive(double speed, double turn){
@@ -117,7 +134,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 //Get Distance
-public double getLeftDistnace() {
+public double getLeftDistance() {
     return (leftEncoder.getPosition()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER;
 }
 public double getRightDistance(){
