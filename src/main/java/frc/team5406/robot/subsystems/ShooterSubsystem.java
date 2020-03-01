@@ -46,7 +46,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public static double llTotalError = 0;
 
   private static double hoodAngle = 0;
-  private static double rpm = 0; 
+  private static double rpm = Constants.DIAMOND_PLATE_SHOOTER_RPM; 
   public static double shooterMultiplier = 1;
  
   static Compressor compressor = new Compressor();
@@ -262,8 +262,8 @@ public class ShooterSubsystem extends SubsystemBase {
       {
         llHasValidTarget = false;
         llSteer = 0.0;
-        rpm = Constants.SHOOTER_RPM;
-        hoodAngle = Constants.HOOD_ANGLE; 
+        rpm = Constants.DIAMOND_PLATE_SHOOTER_RPM;
+        hoodAngle = Constants.DIAMOND_PLATE_HOOD_ANGLE; 
         return;
       }
       double d = (Constants.LL_TARGET_HEIGHT / Math.tan(Units.degreesToRadians(Constants.LL_MOUNT_ANGLE+ty)));

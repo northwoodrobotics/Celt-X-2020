@@ -153,18 +153,11 @@ public class Robot extends TimedRobot {
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
       ClimbSubsystem.climbRetract();
     }
-    if (operatorGamepad.getBumper(Hand.kRight) && (operatorGamepad.getY(Hand.kLeft) > 0.05)) { 
+    if (operatorGamepad.getBumper(Hand.kRight) && (Math.abs(operatorGamepad.getY(Hand.kLeft)) > 0.1)) { 
       double leftSpeed = operatorGamepad.getY(Hand.kLeft);
-      double speedMultiplier = driverGamepad.getX(Hand.kLeft);
-     /* System.out.println(leftSpeed);
-      System.out.println(speedMultiplier);*/
-      ClimbSubsystem.setSpeed(leftSpeed,leftSpeed*speedMultiplier);
-
-      
-    //ClimbSubsystem.setLeftPosition(leftSpeed);
-    //ClimbSubsystem.setRightPosition(leftSpeed*speedMultiplier);
+      ClimbSubsystem.setSpeed(leftSpeed);
     }else{
-      ClimbSubsystem.setSpeed(0,0);
+      ClimbSubsystem.setSpeed(0);
     }
 
     SmartDashboard.putNumber("Shooter RPM", ShooterSubsystem.getShooterSpeed());

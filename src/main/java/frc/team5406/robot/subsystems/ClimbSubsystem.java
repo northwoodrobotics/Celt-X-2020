@@ -71,7 +71,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
 
   // Set Speed For Both
-  public static void setSpeed(double left, double right) {
+  public static void setSpeed(double left) {
     climbMotor.set(left);
   }
 
