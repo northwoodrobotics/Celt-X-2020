@@ -33,7 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private static CANSparkMax hood = new CANSparkMax(Constants.HOOD_MOTOR, MotorType.kBrushless);
   private static CANSparkMax turret = new CANSparkMax(Constants.TURRET_AZIMUTH_MOTOR, MotorType.kBrushless);
   
-  private static CANSparkMax upperFeeder = new CANSparkMax(Constants.UPPER_FEEDER_MOTOR, MotorType.kBrushless);
+  private static CANSparkMax feeder = new CANSparkMax(Constants.FEEDER_MOTOR, MotorType.kBrushless);
 
   private static CANCoder turretEncoder, hoodAbsoluteEncoder;
   private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder, feederEncoder;
@@ -46,7 +46,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public static double llTotalError = 0;
 
   private static double hoodAngle = 0;
-  private static double rpm = 0; 
+  private static double rpm = Constants.DIAMOND_PLATE_SHOOTER_RPM; 
   public static double shooterMultiplier = 1;
  
   static Compressor compressor = new Compressor();
@@ -57,14 +57,14 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterEncoder = shooterMaster.getEncoder();
     boosterEncoder = booster.getEncoder();
     hoodEncoder = hood.getEncoder();
-    feederEncoder = upperFeeder.getEncoder();
+    feederEncoder = feeder.getEncoder();
     turretEncoder = new CANCoder(Constants.TURRET_ENCODER);
     hoodAbsoluteEncoder = new CANCoder(Constants.HOOD_ENCODER);
 
     shooterPID = shooterMaster.getPIDController();
     boosterPID = booster.getPIDController();
     hoodPID = hood.getPIDController();
-    feederPID = upperFeeder.getPIDController();
+    feederPID = feeder.getPIDController();
 
     shooterSlave.follow(shooterMaster, true);
 
@@ -105,7 +105,7 @@ public class ShooterSubsystem extends SubsystemBase {
     booster.setSmartCurrentLimit(Constants.BOOSTER_CURRENT_LIMIT);
     hood.setSmartCurrentLimit(Constants.HOOD_CURRENT_LIMIT);
 
-    upperFeeder.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
+    feeder.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
 
     resetEncoders();
   }
@@ -118,19 +118,6 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public static void spinShooter(double RPM) {
-double f = SmartDashboard.getNumber("SHOOTER_PID_F", Constants.SHOOTER_PID0_F);
-double p = SmartDashboard.getNumber("SHOOTER_PID_P", Constants.SHOOTER_PID0_P);
-double d = SmartDashboard.getNumber("SHOOTER_PID_D", Constants.SHOOTER_PID0_D);
-double i = SmartDashboard.getNumber("SHOOTER_PID_I", Constants.SHOOTER_PID0_I);
-
-shooterPID.setFF(f);
-shooterPID.setP(p);
-shooterPID.setD(d);
-shooterPID.setI(i);
-/*System.out.println(f);
-System.out.println(i);
-System.out.println(d);
-System.out.println(p);*/
 
       if (RPM == 0) {
         stopShooter();
@@ -168,7 +155,7 @@ System.out.println(p);*/
   }
   public static boolean checkRPM(){
     double realRPM = getShooterSpeed();
-    if(realRPM * 0.95 < rpm && realRPM * 1.05 > rpm){
+    if(realRPM * Constants.MATCH_RPM_LOWER_THRESHOLD < rpm && realRPM * Constants.MATCH_RPM_UPPER_THRESHOLD > rpm){
       return true;
     }
     else{
@@ -226,13 +213,13 @@ System.out.println(p);*/
   }
   public static void reverseFeeder() {
    
-    upperFeeder.set(-1 * Constants.UPPER_FEEDER_OUTPUT);
+    feeder.set(-1 * Constants.FEEDER_OUTPUT);
 
   }
 
   public static void stopFeeder() {
 
-    upperFeeder.set(0);
+    feeder.set(0);
   }
 
   public static void getRPM() {
@@ -265,31 +252,31 @@ System.out.println(p);*/
     // tx: negative - left, positive - right
 
     // These numbers must be tuned for your Robot!  Be careful!
-    final double STEER_KP = 0.025;                    // how hard to turn toward the target
-    final double STEER_KD = 0.005;
-    final double STEER_KI = 0.1;
-    final double MAX_DRIVE = 0.3;                   // Simple speed limit so we don't drive too fast
+    final double STEER_KP = Constants.LIMELIGHT_STEER_KP;                    // how hard to turn toward the target
+    final double STEER_KD = Constants.LIMELIGHT_STEER_KD;
+    final double STEER_KI = Constants.LIMELIGHT_STEER_KI;
+    final double MAX_DRIVE = Constants.LIMELIGHT_MAX_DRIVE;                   // Simple speed limit so we don't drive too fast
 
       if (tv < 1.0)
       {
         llHasValidTarget = false;
         llSteer = 0.0;
-        rpm = 1500;
-        hoodAngle = 0; 
+        rpm = Constants.DIAMOND_PLATE_SHOOTER_RPM;
+        hoodAngle = Constants.DIAMOND_PLATE_HOOD_ANGLE; 
         return;
       }
-      double d = (67.5 / Math.tan(Units.degreesToRadians(30+ty)));
+      double d = (Constants.LL_TARGET_HEIGHT / Math.tan(Units.degreesToRadians(Constants.LL_MOUNT_ANGLE+ty)));
        hoodAngle = -0.0003*d*d + 0.185*d + 27.203;
        rpm = (-0.0271*d*d + 16.63*d + 2385.8) * shooterMultiplier;
        
-       if(hoodAngle > 65){
-         hoodAngle = 65;
+       if(hoodAngle > Constants.MAX_HOOD_ANGLE){
+         hoodAngle = Constants.MAX_HOOD_ANGLE;
        }
        if(hoodAngle < 0){
          hoodAngle = 0;
        }
-       if(rpm > 6500){
-        rpm = 6500;
+       if(rpm > Constants.MAX_SHOOTER_RPM){
+        rpm = Constants.MAX_SHOOTER_RPM;
        }
        if(rpm < 0){
          rpm = 0;
@@ -297,7 +284,7 @@ System.out.println(p);*/
        if(ts< -45){
          ts+= 90;
        }
-       double txOff = ts/12;
+       double txOff = ts/Constants.TX_OFFSET_DIVISOR;
        /*System.out.println("hood " + hoodAngle);
        System.out.println("rpm " + rpm);
        System.out.println("ty " + ty);
@@ -317,11 +304,6 @@ System.out.println(p);*/
       {
         llSteer = Math.signum(llSteer) * MAX_DRIVE;
       }
-      SmartDashboard.putNumber("tx+txOff", tx-txOff);
-}
-
-  public double maxllArea(double angle){
-return -0.0054*angle*angle + 0.6546*angle - 12.084;
 }
 
 public static void compressorEnabled() {

@@ -29,10 +29,10 @@ public final class Constants {
     public static final int BOOSTER_ROLLER_MOTOR = 11; //SparkMax, NEO
     public static final int SHOOTER_WHEEL_MOTOR_ONE = 12; //SparkMax, NEO
     public static final int SHOOTER_WHEEL_MOTOR_TWO = 13; //SparkMax, NEO
-    public static final int LEFT_CLIMBER_MOTOR = 14; //SparkMax, NEO
-    public static final int RIGHT_CLIMBER_MOTOR = 15; //SparkMax, NEO
+    public static final int CLIMBER_MOTOR = 14; //SparkMax, NEO
     public static final int THROAT_SERIALIZER_MOTOR_TWO = 21; //TalonSRX, BAG
-    public static final int UPPER_FEEDER_MOTOR = 22; //SparkMax, NEO
+    public static final int FEEDER_MOTOR = 8; //SparkMax, NEO550
+    public static final int DJ_SPINNER = 15;
     
 
     //CANcoder PORTS
@@ -56,7 +56,10 @@ public final class Constants {
     public static final double BOOSTER_GEAR_RATIO = 1.0/2.0; //overdriven
     public static final double SHOOTER_GEAR_RATIO = 3.0/4.0; //overdriven
     public static final double HOOD_ENC_GEAR_RATIO = 3.0/.9;
-    public static final double FEEDER_GEAR_RATIO = 5.0;
+    public static final double FEEDER_GEAR_RATIO = 15.0;
+    public static final double LEFT_SERIALIZER_GEAR_RATIO = 10;
+    public static final double RIGHT_SERIALIZER_GEAR_RATIO = 4;
+
 
     //Wheel Diameters
     public static final double DRIVE_WHEEL_DIAMETER = 6.0; //inches
@@ -70,13 +73,31 @@ public final class Constants {
     public static final double JOYSTICK_DEADBAND = 0.2;
     public static final double SHOOTER_ADJUSTMENT = 0.05;
     public static final int SECONDS_PER_MINUTE = 60;
+    public static final double LIMELIGHT_STEER_KP = 0.025; 
+    public static final double LIMELIGHT_MAX_DRIVE = 0.3;
+    public static final double LIMELIGHT_STEER_KD = 0.005;
+    public static final double LIMELIGHT_STEER_KI = 0.1;
+
+    public static final double DIAMOND_PLATE_SHOOTER_RPM = 1950;
+    public static final double DIAMOND_PLATE_HOOD_ANGLE = 4.0;
+    public static final double MAX_HOOD_ANGLE = 65;
+    public static final double MAX_SHOOTER_RPM = 6500;
+
+    public static final double LL_TARGET_HEIGHT  = 67.5;
+    public static final double LL_MOUNT_ANGLE = 30.0;
+
+    public static final double TX_OFFSET_DIVISOR = 12;
+    public static final double MATCH_RPM_LOWER_THRESHOLD = 0.95;
+    public static final double MATCH_RPM_UPPER_THRESHOLD = 1.05;
 
     //Fixed speeds
     public static final double INTAKE_ROLLER_OUTPUT = 1;
     public static final double HOPPER_BRUSH_OUTPUT = 0.8;
     public static final double SERIALIZER_OUTPUT = 1;
-    public static final double UPPER_FEEDER_OUTPUT = 1;
-    
+    public static final double FEEDER_OUTPUT = 1;
+    public static final double LEFT_SERIALIZER_OUTPUT = 100;
+    public static final double RIGHT_SERIALIZER_OUTPUT = 1000;
+
     public static final boolean INTAKE_EXTEND = true;
     public static final boolean INTAKE_RETRACT = false;
     public static final boolean CLIMB_EXTEND = true;
@@ -126,6 +147,16 @@ public final class Constants {
     public static final double RIGHT_DRIVE_PID0_I = 0;
     public static final double RIGHT_DRIVE_PID0_D = 0;
     public static final double RIGHT_DRIVE_PID0_F = 0.000015;
+
+    public static final double LEFT_SERIALIZER_PID0_P = 3e-4;
+    public static final double LEFT_SERIALIZER_PID0_I = 0;
+    public static final double LEFT_SERIALIZER_PID0_D = 0;
+    public static final double LEFT_SERIALIZER_PID0_F = 1.9e-3;
+
+    public static final double RIGHT_SERIALIZER_PID0_P = 3e-4;
+    public static final double RIGHT_SERIALIZER_PID0_I = 0;
+    public static final double RIGHT_SERIALIZER_PID0_D = 0;
+    public static final double RIGHT_SERIALIZER_PID0_F = 1.9e-3;
 
     //Current Limits
     public static final int NEO550_CURRENT_LIMIT = 40;

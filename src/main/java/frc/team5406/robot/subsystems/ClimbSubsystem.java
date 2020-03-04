@@ -28,25 +28,19 @@ public class ClimbSubsystem extends SubsystemBase {
   /**
    * Creates a new ExampleSubsystem.
    */
-  private static CANSparkMax leftClimbMotor = new CANSparkMax(Constants.LEFT_CLIMBER_MOTOR, MotorType.kBrushless);
-  private static CANSparkMax rightClimbMotor = new CANSparkMax(Constants.RIGHT_CLIMBER_MOTOR, MotorType.kBrushless);
-  private static CANEncoder leftClimbEncoder, rightClimbEncoder;
+  private static CANSparkMax climbMotor = new CANSparkMax(Constants.CLIMBER_MOTOR, MotorType.kBrushless);
+  private static CANEncoder climbEncoder;
 
   private static CANPIDController leftClimbPID, rightClimbPID;
   private static Solenoid climbCylinder;
 
   public static void setupMotors() {
-    leftClimbMotor.setIdleMode(IdleMode.kCoast);
-    rightClimbMotor.setIdleMode(IdleMode.kCoast);
-    rightClimbMotor.setInverted(true);
-    leftClimbMotor.setSmartCurrentLimit(50);
-    rightClimbMotor.setSmartCurrentLimit(50);
+    climbMotor.setIdleMode(IdleMode.kCoast);
+    climbMotor.setSmartCurrentLimit(50);
 
-    leftClimbEncoder = leftClimbMotor.getEncoder();
-    rightClimbEncoder = rightClimbMotor.getEncoder();
+    climbEncoder = climbMotor.getEncoder();
 
-    leftClimbPID = leftClimbMotor.getPIDController();
-    rightClimbPID = rightClimbMotor.getPIDController();
+    leftClimbPID = climbMotor.getPIDController();
 
     leftClimbPID.setP(Constants.LEFT_CLIMBER_PID0_P, 0);
     leftClimbPID.setI(Constants.LEFT_CLIMBER_PID0_I, 0);
@@ -55,14 +49,7 @@ public class ClimbSubsystem extends SubsystemBase {
     leftClimbPID.setFF(Constants.LEFT_CLIMBER_PID0_F, 0);
     leftClimbPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
 
-    rightClimbPID.setP(Constants.RIGHT_CLIMBER_PID0_P, 0);
-    rightClimbPID.setI(Constants.RIGHT_CLIMBER_PID0_I, 0);
-    rightClimbPID.setD(Constants.RIGHT_CLIMBER_PID0_D, 0);
-    rightClimbPID.setIZone(0, 0);
-    rightClimbPID.setFF(Constants.RIGHT_CLIMBER_PID0_F, 0);
-    rightClimbPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
-    leftClimbEncoder.setPosition(0);
-    rightClimbEncoder.setPosition(0);
+    climbEncoder.setPosition(0);
 
     climbCylinder = new Solenoid(Constants.CLIMB_CYLINDER);
 
@@ -84,26 +71,19 @@ public class ClimbSubsystem extends SubsystemBase {
 
 
   // Set Speed For Both
-  public static void setSpeed(double left, double right) {
-    leftClimbMotor.set(left);
-    rightClimbMotor.set(right);
+  public static void setSpeed(double left) {
+    climbMotor.set(left);
   }
 
   // Set Left & Right Speed
-  public static void setLeftPosition(double speed) {
-    double leftPosition = leftClimbEncoder.getPosition();
-    leftPosition += 2*speed;
-    System.out.println("left " + leftPosition);
-    leftClimbPID.setReference(leftPosition, ControlType.kPosition);
+  public static void setPosition(double speed) {
+    double position = climbEncoder.getPosition();
+    position += 2*speed;
+    System.out.println("left " + position);
+    leftClimbPID.setReference(position, ControlType.kPosition);
   }
 
-  public static void setRightPosition(double speed) {
-    double rightPosition = rightClimbEncoder.getPosition();
-    rightPosition += 2*speed;
-    System.out.println("right " + rightPosition);
 
-    leftClimbPID.setReference(rightPosition, ControlType.kPosition);
-  }
 
 
 

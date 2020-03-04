@@ -35,10 +35,14 @@ public class DriveSubsystem extends SubsystemBase {
   
   private static CANEncoder leftEncoder, rightEncoder;
   private static CANPIDController leftMotorPID, rightMotorPID;
+  private static CANPIDController leftDrivePID, rightDrivePID;
+
   DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
 
   public static void setupMotors() {
 
+    leftDrivePID = leftDriveMotor.getPIDController();
+    rightDrivePID = rightDriveMotor.getPIDController(); 
     leftDriveMotor.setIdleMode(IdleMode.kCoast);
     leftDriveSlave.setIdleMode(IdleMode.kCoast);
     rightDriveMotor.setIdleMode(IdleMode.kCoast);
@@ -138,7 +142,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 //Get Distance in inches
-  public static double getLeftDistance() {
+public double getLeftDistance() {
     return (leftEncoder.getPosition()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER;
   }
 

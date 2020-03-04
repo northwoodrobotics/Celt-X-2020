@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
   int intakePulseCount = 0;
   boolean baselock;
 
+  boolean dPadPressed = false;
  /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -131,7 +132,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
   double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
   double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
- 
+    SmartDashboard.putNumber("Shooter Multiplier", ShooterSubsystem.shooterMultiplier);
     SmartDashboard.putNumber("ts", ts); 
     SmartDashboard.putNumber("tx", tx);
 
@@ -156,29 +157,27 @@ public class Robot extends TimedRobot {
       ClimbSubsystem.climbExtend();
     }
 
-    if(operatorGamepad.getPOV() == 0){
+    if(operatorGamepad.getPOV() == 0 && !dPadPressed){
+      dPadPressed = true;
       ShooterSubsystem.changeShooterMultiplier(true);
     }
-    else if(operatorGamepad.getPOV() == 180){
+    else if(operatorGamepad.getPOV() == 180 && !dPadPressed){
+      dPadPressed = true;
       ShooterSubsystem.changeShooterMultiplier(false);
+    }
+    else{
+      dPadPressed = false;
     }
 
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
       ClimbSubsystem.climbRetract();
 
     }
-    if (operatorGamepad.getBumper(Hand.kRight) && (operatorGamepad.getY(Hand.kLeft) > 0.05)) { 
+    if (operatorGamepad.getBumper(Hand.kRight) && (Math.abs(operatorGamepad.getY(Hand.kLeft)) > 0.1)) { 
       double leftSpeed = operatorGamepad.getY(Hand.kLeft);
-      double speedMultiplier = driverGamepad.getX(Hand.kLeft);
-     /* System.out.println(leftSpeed);
-      System.out.println(speedMultiplier);*/
-      ClimbSubsystem.setSpeed(leftSpeed,leftSpeed*speedMultiplier);
-
-      
-    //ClimbSubsystem.setLeftPosition(leftSpeed);
-    //ClimbSubsystem.setRightPosition(leftSpeed*speedMultiplier);
+      ClimbSubsystem.setSpeed(leftSpeed);
     }else{
-      ClimbSubsystem.setSpeed(0,0);
+      ClimbSubsystem.setSpeed(0);
     }
 
     SmartDashboard.putNumber("Shooter RPM", ShooterSubsystem.getShooterSpeed());
@@ -196,20 +195,25 @@ public class Robot extends TimedRobot {
       ShooterSubsystem.setHoodAngleAuto();
       if(ShooterSubsystem.checkRPM()){
         operatorGamepad.setRumble(RumbleType.kLeftRumble, 1);
-        
+
       }
       else{
         operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
       }
      
-
+//This is Test Mode for Pit
     } else if (operatorGamepad.getBButton() && operatorGamepad.getBumper(Hand.kRight)) { 
       ShooterSubsystem.spinShooter(1200);
       ShooterSubsystem.spinBooster(6500);
       ShooterSubsystem.setHoodAngle(40);
       ShooterSubsystem.compressorDisabled();
-    
-     } else {
+
+     }
+     else if(operatorGamepad.getTriggerAxis(Hand.kLeft) > .1){
+      ShooterSubsystem.spinShooter(4800);
+      ShooterSubsystem.compressorDisabled();
+    }
+      else {
       ShooterSubsystem.compressorEnabled();
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();
@@ -217,7 +221,7 @@ public class Robot extends TimedRobot {
       operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
     //  ShooterSubsystem.releaseHood();
      }
-
+     
      if (driverGamepad.getTriggerAxis(Hand.kRight) > .1){
       IntakeSubsystem.intakeExtend();
       IntakeSubsystem.spinRollers(); 
