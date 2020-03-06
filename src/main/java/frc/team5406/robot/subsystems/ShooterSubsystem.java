@@ -35,8 +35,8 @@ public class ShooterSubsystem extends SubsystemBase {
   
   private static CANSparkMax upperFeeder = new CANSparkMax(Constants.UPPER_FEEDER_MOTOR, MotorType.kBrushless);
 
-  private static CANCoder turretEncoder, hoodAbsoluteEncoder;
-  private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder, feederEncoder;
+  private static CANCoder turretAbsoluteEncoder, hoodAbsoluteEncoder;
+  private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder, feederEncoder, turretEncoder;
   private static CANPIDController shooterPID, boosterPID, hoodPID, feederPID; 
 
   public static boolean llHasValidTarget = false;
@@ -58,7 +58,7 @@ public class ShooterSubsystem extends SubsystemBase {
     boosterEncoder = booster.getEncoder();
     hoodEncoder = hood.getEncoder();
     feederEncoder = upperFeeder.getEncoder();
-    turretEncoder = new CANCoder(Constants.TURRET_ENCODER);
+    turretAbsoluteEncoder = new CANCoder(Constants.TURRET_ENCODER);
     hoodAbsoluteEncoder = new CANCoder(Constants.HOOD_ENCODER);
 
     shooterPID = shooterMaster.getPIDController();
@@ -115,6 +115,7 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterEncoder.setPosition(0);
     boosterEncoder.setPosition(0);
     hoodEncoder.setPosition(getAbsHoodPosition()*Constants.HOOD_GEAR_RATIO);
+  //  turretEncoder.setPosition(getAbsTurretPosition()*Constants.TURRET_GEAR_RATIO);
   }
 
   public static void spinShooter(double RPM) {
@@ -239,6 +240,13 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     return absPos/Constants.HOOD_ENC_GEAR_RATIO;
   }
+  public static double getAbsTurretPosition(){
+    double turretAbsPos = turretAbsoluteEncoder.getAbsolutePosition();
+    if(turretAbsPos > 180){
+      turretAbsPos -= 360;
+    }
+    return turretAbsPos/Constants.TURRET_ENC_GEAR_RATIO;
+  }
 
   public static void updateLimelightTracking()
 {
@@ -305,6 +313,7 @@ public class ShooterSubsystem extends SubsystemBase {
       {
         llSteer = Math.signum(llSteer) * MAX_DRIVE;
       }
+      SmartDashboard.putNumber("Shooter Target RPM", rpm);
 }
 
 public static void compressorEnabled() {
