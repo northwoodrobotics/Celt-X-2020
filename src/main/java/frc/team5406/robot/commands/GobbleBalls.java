@@ -17,20 +17,20 @@ public class GobbleBalls extends CommandBase {
   @Override
   public void initialize() {
     
-   // IntakeSubsystem.setBrushSpeed(speed);
     IntakeSubsystem.intakeExtend();
   }
 
   @Override
   public void execute() {
       
-    //IntakeSubsystem.spinBrushes();
+    IntakeSubsystem.spinRollers();
+
   }
 
   @Override
   public boolean isFinished() {
     
-    return true;
+    return false;
   }
 
   @Override

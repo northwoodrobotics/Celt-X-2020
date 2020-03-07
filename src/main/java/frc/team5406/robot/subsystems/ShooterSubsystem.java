@@ -205,7 +205,6 @@ public class ShooterSubsystem extends SubsystemBase {
     } else {
       feederPID.setReference(RPM *  Constants.FEEDER_GEAR_RATIO, ControlType.kVelocity);
     }
-    //upperFeeder.set(1);
 
   }
 

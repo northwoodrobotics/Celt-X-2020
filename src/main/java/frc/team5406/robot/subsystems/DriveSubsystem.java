@@ -13,6 +13,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANError;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.kauailabs.navx.frc.AHRS;
@@ -24,18 +25,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class DriveSubsystem extends SubsystemBase {
-  /**
-   * Creates a new ExampleSubsystem.
-   */
+ 
   static XboxController m_button;
   private static CANSparkMax leftDriveMotor = new CANSparkMax(Constants.LEFT_DRIVE_MOTOR_ONE, MotorType.kBrushless);
   private static CANSparkMax leftDriveSlave = new CANSparkMax(Constants.LEFT_DRIVE_MOTOR_TWO, MotorType.kBrushless);
   private static CANSparkMax rightDriveMotor = new CANSparkMax(Constants.RIGHT_DRIVE_MOTOR_ONE, MotorType.kBrushless);
   private static CANSparkMax rightDriveSlave = new CANSparkMax(Constants.RIGHT_DRIVE_MOTOR_TWO, MotorType.kBrushless);
   AHRS gyro = new AHRS(SPI.Port.kMXP);
+  
+  private static CANEncoder leftEncoder, rightEncoder;
+  private static CANPIDController leftMotorPID, rightMotorPID;
   private static CANPIDController leftDrivePID, rightDrivePID;
-  private CANEncoder leftEncoder, rightEncoder;
-  private CANPIDController leftMotorPID, rightMotorPID;
+
   DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
 
   public static void setupMotors() {
@@ -46,31 +47,35 @@ public class DriveSubsystem extends SubsystemBase {
     leftDriveSlave.setIdleMode(IdleMode.kCoast);
     rightDriveMotor.setIdleMode(IdleMode.kCoast);
     rightDriveSlave.setIdleMode(IdleMode.kCoast);
+
     leftDriveSlave.follow(leftDriveMotor);
     rightDriveSlave.follow(rightDriveMotor);
     rightDriveSlave.setInverted(true);
     rightDriveMotor.setInverted(true);
-    // leftDriveSlave1.setInverted(true);
-    // leftDriveMotor.setInverted(true);
+
     leftDriveMotor.setSmartCurrentLimit(80);
     leftDriveSlave.setSmartCurrentLimit(80);
     rightDriveMotor.setSmartCurrentLimit(80);
     rightDriveSlave.setSmartCurrentLimit(80);
-    m_button = new XboxController(0);
-    
-    leftDrivePID.setP(Constants.LEFT_DRIVE_PID0_P, 0);
-    leftDrivePID.setI(Constants.LEFT_DRIVE_PID0_I);
-    leftDrivePID.setD(Constants.LEFT_DRIVE_PID0_D, 0);
-    leftDrivePID.setIZone(0, 0);
-    leftDrivePID.setFF(Constants.LEFT_DRIVE_PID0_F, 0);
-    leftDrivePID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
 
-    rightDrivePID.setP(Constants.RIGHT_DRIVE_PID0_P, 0);
-    rightDrivePID.setI(Constants.RIGHT_DRIVE_PID0_I);
-    rightDrivePID.setD(Constants.RIGHT_DRIVE_PID0_D, 0);
-    rightDrivePID.setIZone(0, 0);
-    rightDrivePID.setFF(Constants.RIGHT_DRIVE_PID0_F, 0);
-    rightDrivePID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
+    leftMotorPID = leftDriveMotor.getPIDController();
+    rightMotorPID = rightDriveMotor.getPIDController();
+
+    leftEncoder = leftDriveMotor.getEncoder();
+    rightEncoder = rightDriveMotor.getEncoder();
+
+    leftMotorPID.setP(Constants.LEFT_DRIVE_PID0_P, 0);
+    leftMotorPID.setI(Constants.LEFT_DRIVE_PID0_I, 0);
+    leftMotorPID.setD(Constants.LEFT_DRIVE_PID0_D, 0);
+    leftMotorPID.setIZone(0, 0);
+    leftMotorPID.setFF(Constants.LEFT_DRIVE_PID0_F, 0);
+    leftMotorPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
+
+    rightMotorPID.setP(Constants.RIGHT_DRIVE_PID0_P, 0);
+    rightMotorPID.setI(Constants.RIGHT_DRIVE_PID0_I, 0);
+    rightMotorPID.setD(Constants.RIGHT_DRIVE_PID0_D, 0);
+    rightMotorPID.setIZone(0, 0);
+    rightMotorPID.setFF(Constants.RIGHT_DRIVE_PID0_F, 0);
   }
 
   public void arcadeDrive(double speed, double turn){
@@ -126,34 +131,56 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Get Left & Right Speed
   public static double getLeftSpeed() {
-    return leftDriveMotor.get();
-  }
+    return ((leftEncoder.getVelocity()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER) / Constants.SECONDS_PER_MINUTE;  }
 
   public static double getRightSpeed() {
-    return rightDriveMotor.get();
+    return ((rightEncoder.getVelocity()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER) / Constants.SECONDS_PER_MINUTE;
   }
 
-//Get Distance
+  public static double getAverageSpeed() {
+    return (getLeftSpeed() + getRightSpeed()) / 2;
+  }
+
+//Get Distance in inches
 public double getLeftDistance() {
     return (leftEncoder.getPosition()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER;
-}
-public double getRightDistance(){
-  return (rightEncoder.getPosition()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER;
-}
+  }
+
+  public static double getRightDistance(){
+    return (rightEncoder.getPosition()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER;
+  }
+
+  public static double getLeftPosition() {
+    return leftEncoder.getPosition();
+  }
+
+  public static double getRightPosition() {
+    return rightEncoder.getPosition();
+  }
+
 
   // Reset Encoders
-  public void resetEnoders() {
+  public void resetEncoders() {
     leftEncoder.setPosition(0); 
     rightEncoder.setPosition(0);
-}
+  }
+    
+  public double getHeading(){
+    return gyro.getAngle();
+  }
 
-//
-public double getHeading(){
-  return gyro.getAngle();
-}
-public void setHeading(){
+  public void setHeading(){
    gyro.reset();
-}
+  }
+
+  public static void baselock() {
+
+    double baselockLeft = getLeftPosition();
+    double baselockRight = getRightPosition();
+
+    leftMotorPID.setReference(baselockLeft, ControlType.kPosition);
+    rightMotorPID.setReference(baselockRight, ControlType.kPosition);
+  }
 
     public DriveSubsystem() {
 

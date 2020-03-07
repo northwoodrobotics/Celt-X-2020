@@ -69,7 +69,10 @@ public final class Constants {
     public final static int CAN_TIMEOUT = 15; //ms
     public static final double OUTPUT_RANGE_MIN = -1;
     public static final double OUTPUT_RANGE_MAX = 1;
+    public static final double STATIONARY_SPEED_THRESHOLD = 1.5; //inches per second
+    public static final double JOYSTICK_DEADBAND = 0.2;
     public static final double SHOOTER_ADJUSTMENT = 0.05;
+    public static final int SECONDS_PER_MINUTE = 60;
     public static final double LIMELIGHT_STEER_KP = 0.025; 
     public static final double LIMELIGHT_MAX_DRIVE = 0.3;
     public static final double LIMELIGHT_STEER_KD = 0.005;
@@ -135,6 +138,16 @@ public final class Constants {
     public static final double RIGHT_CLIMBER_PID0_D = 0;
     public static final double RIGHT_CLIMBER_PID0_F = 1.9e-3;
 
+    public static final double LEFT_DRIVE_PID0_P = 6e-5;
+    public static final double LEFT_DRIVE_PID0_I = 0;
+    public static final double LEFT_DRIVE_PID0_D = 0;
+    public static final double LEFT_DRIVE_PID0_F = 0.000015;
+
+    public static final double RIGHT_DRIVE_PID0_P = 6e-5;
+    public static final double RIGHT_DRIVE_PID0_I = 0;
+    public static final double RIGHT_DRIVE_PID0_D = 0;
+    public static final double RIGHT_DRIVE_PID0_F = 0.000015;
+
     public static final double LEFT_SERIALIZER_PID0_P = 3e-4;
     public static final double LEFT_SERIALIZER_PID0_I = 0;
     public static final double LEFT_SERIALIZER_PID0_D = 0;
@@ -145,21 +158,6 @@ public final class Constants {
     public static final double RIGHT_SERIALIZER_PID0_D = 0;
     public static final double RIGHT_SERIALIZER_PID0_F = 1.9e-3;
 
-    public static final double HOPPER_BRUSH_PID0_P = 3e-4;
-    public static final double HOPPER_BRUSH_PID0_I = 0;
-    public static final double HOPPER_BRUSH_PID0_D = 0;
-    public static final double HOPPER_BRUSH_PID0_F = 1.9e-3;
-
-
-   public static final double LEFT_DRIVE_PID0_P = 6e-5; 
-   public static final double LEFT_DRIVE_PID0_I = 0;
-   public static final double LEFT_DRIVE_PID0_D = 0; 
-   public static final double LEFT_DRIVE_PID0_F = 0.000015; 
-   
-   public static final double RIGHT_DRIVE_PID0_P = 6e-5;
-   public static final double RIGHT_DRIVE_PID0_I = 0;
-   public static final double RIGHT_DRIVE_PID0_D = 0; 
-   public static final double RIGHT_DRIVE_PID0_F = 0.000015; 
     //Current Limits
     public static final int NEO550_CURRENT_LIMIT = 40;
     public static final int NEO_CURRENT_LIMIT = 60;
@@ -168,5 +166,8 @@ public final class Constants {
     public static final int SHOOTER_CURRENT_LIMIT = 50;
     public static final int BOOSTER_CURRENT_LIMIT = 50;
     public static final int HOOD_CURRENT_LIMIT = 30;
+
+    //public static final long DANNYS_CONSTANT = 121212111233234344545379421645;
+
 
 }
