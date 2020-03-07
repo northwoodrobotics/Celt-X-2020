@@ -78,7 +78,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     SmartDashboard.putNumber("Hood Abs Position", ShooterSubsystem.getAbsHoodPosition());
     SmartDashboard.putNumber("Hood Angle", ShooterSubsystem.getHoodAngle());
-
   }
 
   /**
