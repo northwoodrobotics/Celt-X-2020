@@ -211,6 +211,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public static double getFeederSpeed(){
     return feederEncoder.getVelocity() * 1 / Constants.FEEDER_GEAR_RATIO;
   }
+  
   public static void reverseFeeder() {
    
     feeder.set(-1 * Constants.FEEDER_OUTPUT);

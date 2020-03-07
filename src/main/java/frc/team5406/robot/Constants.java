@@ -32,7 +32,7 @@ public final class Constants {
     public static final int CLIMBER_MOTOR = 14; //SparkMax, NEO
     public static final int THROAT_SERIALIZER_MOTOR_TWO = 21; //TalonSRX, BAG
     public static final int FEEDER_MOTOR = 8; //SparkMax, NEO550
-    public static final int DJ_SPINNER = 15;
+    public static final int DJ_SPINNER = 15; //SparkMax, NEO550
     
 
     //CANcoder PORTS
@@ -59,6 +59,7 @@ public final class Constants {
     public static final double FEEDER_GEAR_RATIO = 15.0;
     public static final double LEFT_SERIALIZER_GEAR_RATIO = 10;
     public static final double RIGHT_SERIALIZER_GEAR_RATIO = 4;
+    public static final double DJ_SPINNER_GEAR_RATIO = 4;
 
 
     //Wheel Diameters
@@ -95,6 +96,7 @@ public final class Constants {
     public static final double HOPPER_BRUSH_OUTPUT = 0.8;
     public static final double SERIALIZER_OUTPUT = -1;
     public static final double FEEDER_OUTPUT = 1;
+    public static final double BOOSTER_OUTPUT = 4000; // RPM
     public static final double LEFT_SERIALIZER_OUTPUT = 100;
     public static final double RIGHT_SERIALIZER_OUTPUT = 1000;
 
