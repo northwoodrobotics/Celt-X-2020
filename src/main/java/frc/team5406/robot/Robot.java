@@ -184,7 +184,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hood Output", ShooterSubsystem.getHoodVoltage());
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getFeederSpeed());
     SmartDashboard.putNumber("Abs Hood", ShooterSubsystem.getAbsHoodPosition());
-
+    if (operatorGamepad.getXButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
+      IntakeSubsystem.djSpinnerUp();
+      IntakeSubsystem.spinDJSpinner();
+    }else if (operatorGamepad.getYButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
+      IntakeSubsystem.djSpinnerUp();
+    }else{
+      IntakeSubsystem.djSpinnerDown();
+      IntakeSubsystem.stopDJSpinner();
+    }
    if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
      // ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 4000));
@@ -257,18 +265,18 @@ public class Robot extends TimedRobot {
      }
      
      if((Math.abs(operatorGamepad.getX(Hand.kRight)) > 0.1) && (operatorGamepad.getBumper(Hand.kRight))){
-      ShooterSubsystem.turnTurret(0.5 * operatorGamepad.getX(Hand.kRight));
+      ShooterSubsystem.adjustTurret(0.5 * operatorGamepad.getX(Hand.kRight));
 
      }
      else if(operatorGamepad.getAButton()){
       ShooterSubsystem.updateLimelightTracking();
       NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
       if (ShooterSubsystem.llHasValidTarget){
-        ShooterSubsystem.turnTurret(ShooterSubsystem.llSteer);
+        ShooterSubsystem.adjustTurret(ShooterSubsystem.llSteer);
       }
      }
       else{
-       ShooterSubsystem.turnTurret(0);
+       ShooterSubsystem.adjustTurret(0);
        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
      }
      

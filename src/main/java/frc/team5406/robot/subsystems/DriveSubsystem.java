@@ -37,10 +37,10 @@ public class DriveSubsystem extends SubsystemBase {
   private static CANPIDController leftMotorPID, rightMotorPID;
   private static CANPIDController leftDrivePID, rightDrivePID;
 
-  DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
+  static DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
 
   public static void setupMotors() {
-
+    drive.setSafetyEnabled(false);
     leftDrivePID = leftDriveMotor.getPIDController();
     rightDrivePID = rightDriveMotor.getPIDController(); 
     leftDriveMotor.setIdleMode(IdleMode.kCoast);

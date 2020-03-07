@@ -37,7 +37,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private static CANCoder turretEncoder, hoodAbsoluteEncoder;
   private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder, feederEncoder;
-  private static CANPIDController shooterPID, boosterPID, hoodPID, feederPID; 
+  private static CANPIDController shooterPID, boosterPID, hoodPID, feederPID, turretPID; 
 
   public static boolean llHasValidTarget = false;
   public static double llSteer = 0.0;
@@ -65,6 +65,7 @@ public class ShooterSubsystem extends SubsystemBase {
     boosterPID = booster.getPIDController();
     hoodPID = hood.getPIDController();
     feederPID = feeder.getPIDController();
+    turretPID = turret.getPIDController();
 
     shooterSlave.follow(shooterMaster, true);
 
@@ -88,6 +89,14 @@ public class ShooterSubsystem extends SubsystemBase {
     hoodPID.setIZone(0, 0);
     hoodPID.setFF(Constants.HOOD_PID0_F, 0);
     hoodPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
+
+    turretPID.setP(Constants.TURRET_PID0_P, 0);
+    turretPID.setI(Constants.TURRET_PID0_I);
+    turretPID.setD(Constants.TURRET_PID0_D, 0);
+    turretPID.setIZone(0, 0);
+    turretPID.setFF(Constants.TURRET_PID0_F, 0);
+    turretPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
+
 
     feederPID.setP(Constants.FEEDER_PID0_P);
     feederPID.setI(Constants.FEEDER_PID0_I, 0);
@@ -227,7 +236,12 @@ public class ShooterSubsystem extends SubsystemBase {
     //stuff goes in here to prep for more complex feeder
   }
 
-  public static void turnTurret(double turn){
+  public static void turnTurret(double angle){
+    turretPID.setReference(angle *  Constants.TURRET_GEAR_RATIO, ControlType.kPosition);
+
+  }
+
+  public static void adjustTurret(double turn){
     turret.set(turn);
   }
 
