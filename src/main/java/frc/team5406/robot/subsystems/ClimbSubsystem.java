@@ -35,7 +35,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private static Solenoid climbCylinder;
 
   public static void setupMotors() {
-    climbMotor.setIdleMode(IdleMode.kCoast);
+    climbMotor.setIdleMode(IdleMode.kBrake);
     climbMotor.setSmartCurrentLimit(50);
 
     climbEncoder = climbMotor.getEncoder();

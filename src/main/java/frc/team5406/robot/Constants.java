@@ -53,7 +53,7 @@ public final class Constants {
     public static final double HOPPER_GEAR_RATIO = 12;
     public static final double TURRET_GEAR_RATIO = 20.0*(210.0/22.0); //20:1 gearbox + 22 tooth pinion driving a 210 tooth ring
     public static final double HOOD_GEAR_RATIO = (23.1*10)/360;//(19.25*10)/360; //Doesn't match CAD?
-    public static final double BOOSTER_GEAR_RATIO = 1.0/2.0; //overdriven
+    public static final double BOOSTER_GEAR_RATIO =3.0/4.0; //overdriven
     public static final double SHOOTER_GEAR_RATIO = 3.0/4.0; //overdriven
     public static final double HOOD_ENC_GEAR_RATIO = 3.0/.9;
     public static final double FEEDER_GEAR_RATIO = 15.0;
@@ -90,7 +90,7 @@ public final class Constants {
     //Fixed speeds
     public static final double INTAKE_ROLLER_OUTPUT = 1;
     public static final double HOPPER_BRUSH_OUTPUT = 0.8;
-    public static final double SERIALIZER_OUTPUT = 1;
+    public static final double SERIALIZER_OUTPUT = -1;
     public static final double FEEDER_OUTPUT = 1;
     public static final double LEFT_SERIALIZER_OUTPUT = 100;
     public static final double RIGHT_SERIALIZER_OUTPUT = 1000;
@@ -144,6 +144,12 @@ public final class Constants {
     public static final double RIGHT_SERIALIZER_PID0_I = 0;
     public static final double RIGHT_SERIALIZER_PID0_D = 0;
     public static final double RIGHT_SERIALIZER_PID0_F = 1.9e-3;
+
+    public static final double HOPPER_BRUSH_PID0_P = 3e-4;
+    public static final double HOPPER_BRUSH_PID0_I = 0;
+    public static final double HOPPER_BRUSH_PID0_D = 0;
+    public static final double HOPPER_BRUSH_PID0_F = 1.9e-3;
+
 
    public static final double LEFT_DRIVE_PID0_P = 6e-5; 
    public static final double LEFT_DRIVE_PID0_I = 0;

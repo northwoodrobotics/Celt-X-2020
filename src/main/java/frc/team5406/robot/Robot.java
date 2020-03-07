@@ -153,7 +153,7 @@ public class Robot extends TimedRobot {
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
       ClimbSubsystem.climbRetract();
     }
-    if (operatorGamepad.getBumper(Hand.kRight) && (Math.abs(operatorGamepad.getY(Hand.kLeft)) > 0.1)) { 
+    if (operatorGamepad.getBumper(Hand.kRight) && (Math.abs(operatorGamepad.getY(Hand.kLeft)) > 0.15)) { 
       double leftSpeed = operatorGamepad.getY(Hand.kLeft);
       ClimbSubsystem.setSpeed(leftSpeed);
     }else{
@@ -168,7 +168,7 @@ public class Robot extends TimedRobot {
 
    if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
      // ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
-      ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 6500));
+      ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 4000));
      // ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
       ShooterSubsystem.compressorDisabled();
       ShooterSubsystem.spinShooterAuto();
@@ -189,8 +189,11 @@ public class Robot extends TimedRobot {
       ShooterSubsystem.compressorDisabled();
 
      }
+//pre-spin the shooter wheels
      else if(operatorGamepad.getTriggerAxis(Hand.kLeft) > .1){
       ShooterSubsystem.spinShooter(4800);
+      ShooterSubsystem.spinBooster(4000);
+
       ShooterSubsystem.compressorDisabled();
     }
       else {
@@ -227,7 +230,6 @@ public class Robot extends TimedRobot {
       }
       
      }
-
 
      if(driverGamepad.getTriggerAxis(Hand.kLeft) > .1){
        IntakeSubsystem.reverseIntake();

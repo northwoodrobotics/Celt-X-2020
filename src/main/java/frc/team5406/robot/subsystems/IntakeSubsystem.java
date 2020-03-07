@@ -27,7 +27,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private static CANSparkMax intakeRollers = new CANSparkMax(Constants.INTAKE_ROLLER_MOTOR, MotorType.kBrushless);
 
   private static CANSparkMax leftSerializer = new CANSparkMax(Constants.THROAT_SERIALIZER_MOTOR_ONE, MotorType.kBrushless);
-  private static CANSparkMax rightSerializer = new CANSparkMax(Constants.THROAT_SERIALIZER_MOTOR_TWO, MotorType.kBrushed);
+  private static CANSparkMax rightSerializer = new CANSparkMax(Constants.THROAT_SERIALIZER_MOTOR_TWO, MotorType.kBrushless);
 
   private static CANPIDController leftSerializerPID, rightSerializerPID;
   private static CANEncoder leftSerializerEncoder, rightSerializerEncoder; 
