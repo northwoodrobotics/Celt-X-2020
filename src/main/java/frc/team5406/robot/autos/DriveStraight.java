@@ -64,7 +64,7 @@ public class DriveStraight {
             //new Translation2d(2, -1)
         ),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(0, 2, new Rotation2d(0)),
+        new Pose2d(0, 1, new Rotation2d(0)),
         config
     );
     

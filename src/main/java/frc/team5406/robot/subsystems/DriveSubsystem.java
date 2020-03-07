@@ -41,15 +41,15 @@ public class DriveSubsystem extends SubsystemBase {
   private static CANSparkMax leftDriveSlave = new CANSparkMax(Constants.LEFT_DRIVE_MOTOR_TWO, MotorType.kBrushless);
   private static CANSparkMax rightDriveMotor = new CANSparkMax(Constants.RIGHT_DRIVE_MOTOR_ONE, MotorType.kBrushless);
   private static CANSparkMax rightDriveSlave = new CANSparkMax(Constants.RIGHT_DRIVE_MOTOR_TWO, MotorType.kBrushless);
-  AHRS gyro = new AHRS(SPI.Port.kMXP);
+ static AHRS gyro = new AHRS(SPI.Port.kMXP);
   
   private static CANEncoder leftEncoder, rightEncoder;
   private static CANPIDController leftMotorPID, rightMotorPID;
   DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
 
-  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading()); 
+static  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading()); 
 
-  Pose2d pose = new Pose2d();
+ static Pose2d pose = new Pose2d();
 
   public static void setupMotors() {
     leftDriveMotor.setIdleMode(IdleMode.kCoast);
@@ -58,8 +58,8 @@ public class DriveSubsystem extends SubsystemBase {
     rightDriveSlave.setIdleMode(IdleMode.kCoast);
     leftDriveSlave.follow(leftDriveMotor);
     rightDriveSlave.follow(rightDriveMotor);
-    rightDriveSlave.setInverted(true);
-    rightDriveMotor.setInverted(true);
+   // rightDriveSlave.setInverted(true);
+     rightDriveMotor.setInverted(true);
     // leftDriveSlave1.setInverted(true);
     // leftDriveMotor.setInverted(true);
     leftDriveMotor.setSmartCurrentLimit(80);
@@ -86,7 +86,9 @@ public class DriveSubsystem extends SubsystemBase {
    rightMotorPID.setIZone(0, 0);
    rightMotorPID.setFF(Constants.RIGHT_DRIVE_PID0_F, 0);
    rightMotorPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
-
+  setHeading();
+ resetOdemetry(pose);
+  System.out.println("Heading, "+ getHeading());
   }
 
   public void arcadeDrive(double speed, double turn){
@@ -152,23 +154,24 @@ public class DriveSubsystem extends SubsystemBase {
 
 //Get Distance
 public double getLeftDistance() {
-    return (leftEncoder.getPosition()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER;
+    return Units.inchesToMeters((leftEncoder.getPosition()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER);
 }
 public double getRightDistance(){
-  return (rightEncoder.getPosition()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER;
+  return Units.inchesToMeters((rightEncoder.getPosition()/Constants.DRIVE_GEAR_RATIO)*Math.PI*Constants.DRIVE_WHEEL_DIAMETER);
 }
 
   // Reset Encoders
-  public void resetEncoders() {
+  public static void resetEncoders() {
     leftEncoder.setPosition(0); 
     rightEncoder.setPosition(0);
 }
 
 //
-public Rotation2d getHeading() {
+public static Rotation2d getHeading() {
   return Rotation2d.fromDegrees(gyro.getAngle() * (Constants.GYRO_REVERSED ? -1.0 : 1.0));
 }
-public void setHeading(){
+
+public static void setHeading(){
    gyro.reset();
 }
 
@@ -177,12 +180,13 @@ public void setHeading(){
   }
 
   public void outputSpeeds(double leftSpeed, double rightSpeed) {
-    leftSpeed /= Units.inchesToMeters(Constants.INCHES_PER_REV / Constants.SECONDS_PER_MINUTE);
-    rightSpeed /= Units.inchesToMeters(Constants.INCHES_PER_REV / Constants.SECONDS_PER_MINUTE);
+   leftSpeed /= Units.inchesToMeters(Constants.INCHES_PER_REV / Constants.SECONDS_PER_MINUTE);
+  rightSpeed /= Units.inchesToMeters(Constants.INCHES_PER_REV / Constants.SECONDS_PER_MINUTE);
     System.out.println("Left Speed, " + leftSpeed);
     System.out.println("Right Speed, "+ rightSpeed);
     leftMotorPID.setReference(leftSpeed, ControlType.kVelocity);
     rightMotorPID.setReference(rightSpeed, ControlType.kVelocity); 
+    System.out.println("Heading, " + getHeading());
     drive.feed();
   }
   
@@ -207,7 +211,7 @@ public void setHeading(){
     odometry.resetPosition(new Pose2d(), getHeading());
   }
 
-  public void resetOdemetry(Pose2d pose) {
+  public static void resetOdemetry(Pose2d pose) {
     resetEncoders();
     odometry.resetPosition(pose, getHeading());
   }
@@ -215,7 +219,8 @@ public void setHeading(){
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //System.out.println("Angle: " + getHeading());
+    System.out.println("Left Distance " + getLeftDistance());
+    System.out.println("Right Distance " + getRightDistance());
 
   pose = odometry.update(getHeading(), getLeftDistance(), getRightDistance());
 
