@@ -267,8 +267,9 @@ public class ShooterSubsystem extends SubsystemBase {
         return;
       }
       double d = (Constants.LL_TARGET_HEIGHT / Math.tan(Units.degreesToRadians(Constants.LL_MOUNT_ANGLE+ty)));
-       hoodAngle = -0.0003*d*d + 0.185*d + 27.203;
-       rpm = (-0.0271*d*d + 16.63*d + 2385.8) * shooterMultiplier;
+      
+       hoodAngle = 0.0022*ty*ty*ty + 0.0392*ty*ty - 0.8528*ty + 41.301;
+       rpm = 0.3936*ty*ty*ty + 6.6869*ty*ty - 69.138*ty + 4184.5;
        
        if(hoodAngle > Constants.MAX_HOOD_ANGLE){
          hoodAngle = Constants.MAX_HOOD_ANGLE;
