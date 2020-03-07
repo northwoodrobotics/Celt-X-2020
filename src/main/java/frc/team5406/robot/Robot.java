@@ -174,12 +174,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Abs Hood", ShooterSubsystem.getAbsHoodPosition());
 
    if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
-     // ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
+      ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 6500));
-     // ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+      ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
       ShooterSubsystem.compressorDisabled();
-      ShooterSubsystem.spinShooterAuto();
-      ShooterSubsystem.setHoodAngleAuto();
+      //ShooterSubsystem.spinShooterAuto();
+      //ShooterSubsystem.setHoodAngleAuto();
       if(ShooterSubsystem.checkRPM()){
         operatorGamepad.setRumble(RumbleType.kLeftRumble, 1);
 
@@ -222,7 +222,7 @@ public class Robot extends TimedRobot {
      }
 
     
-     if (operatorGamepad.getTriggerAxis(Hand.kRight) > .1) { 
+     if (operatorGamepad.getTriggerAxis(Hand.kRight) > .1 && ShooterSubsystem.feederThreshold()) { 
        IntakeSubsystem.pulseRollers();
       ShooterSubsystem.spinFeeder(1000);
       //ShooterSubsystem.compressorDisabled(); 

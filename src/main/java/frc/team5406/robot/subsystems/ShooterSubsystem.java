@@ -164,6 +164,16 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
+  public static boolean feederThreshold(){
+    double realRPM = getShooterSpeed();
+    if(Math.abs(realRPM) > Constants.FEEDER_THRESHOLD){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   public static double getBoosterSpeed() {
 
     return boosterEncoder.getVelocity() * 1 / Constants.BOOSTER_GEAR_RATIO;
