@@ -45,7 +45,7 @@ public class DriveSubsystem extends SubsystemBase {
   
   private static CANEncoder leftEncoder, rightEncoder;
   private static CANPIDController leftMotorPID, rightMotorPID;
-  DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
+  private static DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
 
 static  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading()); 
 
@@ -59,7 +59,10 @@ static  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHe
     leftDriveSlave.follow(leftDriveMotor);
     rightDriveSlave.follow(rightDriveMotor);
    // rightDriveSlave.setInverted(true);
-     rightDriveMotor.setInverted(true);
+   rightDriveMotor.setInverted(false);
+   leftDriveMotor.setInverted(true);
+   drive.setSafetyEnabled(false);
+
     // leftDriveSlave1.setInverted(true);
     // leftDriveMotor.setInverted(true);
     leftDriveMotor.setSmartCurrentLimit(80);
@@ -172,11 +175,12 @@ public static Rotation2d getHeading() {
 }
 
 public static void setHeading(){
-   gyro.reset();
+   gyro.zeroYaw();
 }
 
     public DriveSubsystem() {
-
+      odometry = new DifferentialDriveOdometry(getHeading()); 
+      setupMotors();
   }
 
   public void outputSpeeds(double leftSpeed, double rightSpeed) {
@@ -208,6 +212,7 @@ public static void setHeading(){
   }
 
   public void reset() {
+    resetEncoders();
     odometry.resetPosition(new Pose2d(), getHeading());
   }
 

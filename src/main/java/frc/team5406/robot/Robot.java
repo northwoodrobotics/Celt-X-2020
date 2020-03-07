@@ -46,10 +46,11 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_driveStraight = new DriveStraight();
     m_robotContainer = new RobotContainer();
-    DriveSubsystem.setupMotors();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
     ClimbSubsystem.setupMotors();
+    robotDrive.setHeading();
+    robotDrive.reset();
     SmartDashboard.putNumber("Shooter Target RPM", 5000);
     SmartDashboard.putNumber("Booster Target RPM", 6500);
     SmartDashboard.putNumber("Feeder Target RPM", 500);

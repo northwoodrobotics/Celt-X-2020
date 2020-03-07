@@ -149,7 +149,7 @@ public final class Constants {
     public static final double MAX_SPEED_METERS_PER_SECOND = 1;
     public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 1;
 
-    public static final boolean GYRO_REVERSED = false;
+    public static final boolean GYRO_REVERSED = true;
 
     public static int GEAR_RATIO = 11;
     public static double WHEEL_DIAMETER = 6.0;
