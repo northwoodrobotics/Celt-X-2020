@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
@@ -35,8 +36,8 @@ public class ShooterSubsystem extends SubsystemBase {
   
   private static CANSparkMax feeder = new CANSparkMax(Constants.FEEDER_MOTOR, MotorType.kBrushless);
 
-  private static CANCoder turretEncoder, hoodAbsoluteEncoder;
-  private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder, feederEncoder;
+  private static CANCoder turretAbsoluteEncoder, hoodAbsoluteEncoder;
+  private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder, feederEncoder, turretEncoder;
   private static CANPIDController shooterPID, boosterPID, hoodPID, feederPID; 
 
   public static boolean llHasValidTarget = false;
@@ -58,7 +59,8 @@ public class ShooterSubsystem extends SubsystemBase {
     boosterEncoder = booster.getEncoder();
     hoodEncoder = hood.getEncoder();
     feederEncoder = feeder.getEncoder();
-    turretEncoder = new CANCoder(Constants.TURRET_ENCODER);
+    turretEncoder = turret.getEncoder();
+    turretAbsoluteEncoder = new CANCoder(Constants.TURRET_ENCODER);
     hoodAbsoluteEncoder = new CANCoder(Constants.HOOD_ENCODER);
 
     shooterPID = shooterMaster.getPIDController();
@@ -99,13 +101,19 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMaster.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
     booster.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
     hood.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
+    turret.setClosedLoopRampRate(Constants.SHOOTER_CLOSED_LOOP_RAMP_RATE);
     
     shooterMaster.setSmartCurrentLimit(Constants.SHOOTER_CURRENT_LIMIT);
     shooterSlave.setSmartCurrentLimit(Constants.SHOOTER_CURRENT_LIMIT);
     booster.setSmartCurrentLimit(Constants.BOOSTER_CURRENT_LIMIT);
     hood.setSmartCurrentLimit(Constants.HOOD_CURRENT_LIMIT);
+    turret.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
 
     feeder.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
+
+   // turret.setSoftLimit(SoftLimitDirection.kForward, Constants.CC_ABS_TURRET_LIMIT);
+    // turret.setSoftLimit(SoftLimitDirection.kReverse, Constants.CCW_ABS_TURRET_LIMIT);
+
 
     resetEncoders();
   }
@@ -115,6 +123,7 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterEncoder.setPosition(0);
     boosterEncoder.setPosition(0);
     hoodEncoder.setPosition(getAbsHoodPosition()*Constants.HOOD_GEAR_RATIO);
+   // turretEncoder.setPosition(getAbsTurretPosition()*Constants.TURRET_ENC_GEAR_RATIO);
   }
 
   public static void spinShooter(double RPM) {
@@ -237,6 +246,14 @@ public class ShooterSubsystem extends SubsystemBase {
       absPos -=360;
     }
     return absPos/Constants.HOOD_ENC_GEAR_RATIO;
+  }
+
+  public static double getAbsTurretPosition(){
+    double turretAbsPos = turretAbsoluteEncoder.getAbsolutePosition();
+    if(turretAbsPos > 180){
+      turretAbsPos -= 360;
+    }
+    return turretAbsPos/Constants.TURRET_ENC_GEAR_RATIO;
   }
 
   public static void updateLimelightTracking()

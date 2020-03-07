@@ -56,6 +56,7 @@ public final class Constants {
     public static final double BOOSTER_GEAR_RATIO =3.0/4.0; //overdriven
     public static final double SHOOTER_GEAR_RATIO = 3.0/4.0; //overdriven
     public static final double HOOD_ENC_GEAR_RATIO = 3.0/.9;
+    public static final double TURRET_ENC_GEAR_RATIO = .5; 
     public static final double FEEDER_GEAR_RATIO = 15.0;
     public static final double LEFT_SERIALIZER_GEAR_RATIO = 10;
     public static final double RIGHT_SERIALIZER_GEAR_RATIO = 4;
@@ -89,6 +90,9 @@ public final class Constants {
     public static final double TX_OFFSET_DIVISOR = 12;
     public static final double MATCH_RPM_LOWER_THRESHOLD = 0.95;
     public static final double MATCH_RPM_UPPER_THRESHOLD = 1.05;
+    public static final float CC_ABS_TURRET_LIMIT = 247;
+    public static final float CCW_ABS_TURRET_LIMIT = (float) 28.8;
+
 
     //Fixed speeds
     public static final double INTAKE_ROLLER_OUTPUT = 1;
