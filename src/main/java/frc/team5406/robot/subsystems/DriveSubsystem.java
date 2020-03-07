@@ -173,14 +173,14 @@ public double getLeftDistance() {
    gyro.reset();
   }
 
-  public static void baselock() {
+ /* public static void baselock() {
 
     double baselockLeft = getLeftPosition();
     double baselockRight = getRightPosition();
 
     leftMotorPID.setReference(baselockLeft, ControlType.kPosition);
     rightMotorPID.setReference(baselockRight, ControlType.kPosition);
-  }
+  }*/
 
     public DriveSubsystem() {
 

@@ -136,10 +136,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("ts", ts); 
     SmartDashboard.putNumber("tx", tx);
 
-    if((driverGamepad.getY(Hand.kLeft) > Constants.JOYSTICK_DEADBAND || (driverGamepad.getX(Hand.kRight) > Constants.JOYSTICK_DEADBAND))) {
+   // if((driverGamepad.getY(Hand.kLeft) > Constants.JOYSTICK_DEADBAND || (driverGamepad.getX(Hand.kRight) > Constants.JOYSTICK_DEADBAND))) {
 
       robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft), driverGamepad.getX(Hand.kRight));
-      baselock = false;
+   /*   baselock = false;
     
     } else if(driverGamepad.getY(Hand.kLeft) <= Constants.JOYSTICK_DEADBAND 
               && (driverGamepad.getX(Hand.kRight) <= Constants.JOYSTICK_DEADBAND) 
@@ -151,8 +151,7 @@ public class Robot extends TimedRobot {
 
       DriveSubsystem.baselock();
       baselock = true;
-    }
-
+    }*/
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()){
       ClimbSubsystem.climbExtend();
     }
