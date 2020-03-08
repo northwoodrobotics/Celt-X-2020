@@ -72,8 +72,8 @@ public final class Constants {
     public static final double LIMELIGHT_STEER_KD = 0.005;
     public static final double LIMELIGHT_STEER_KI = 0.1;
 
-    public static final double SHOOTER_RPM = 1950;
-    public static final double HOOD_ANGLE = 4.0;
+    public static final double SHOOTER_RPM = 4500;
+    public static final double HOOD_ANGLE = 7.0;
     public static final double MAX_HOOD_ANGLE = 65;
     public static final double MAX_SHOOTER_RPM = 6500;
 
