@@ -157,11 +157,11 @@ public class Robot extends TimedRobot {
 
     if(operatorGamepad.getPOV() == 0 && !dPadPressed){
       dPadPressed = true;
-      ShooterSubsystem.changeShooterMultiplier(true);
+      ShooterSubsystem.turnTurret(0);
     }
     else if(operatorGamepad.getPOV() == 180 && !dPadPressed){
       dPadPressed = true;
-      ShooterSubsystem.changeShooterMultiplier(false);
+      ShooterSubsystem.turnTurret(-30);
     }
     else{
       dPadPressed = false;

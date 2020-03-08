@@ -249,7 +249,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public static void turnTurret(double angle){
-    turretPID.setReference(angle *  Constants.TURRET_GEAR_RATIO, ControlType.kPosition);
+    turretPID.setReference(angle/360 *  Constants.TURRET_GEAR_RATIO, ControlType.kPosition);
 
   }
 
