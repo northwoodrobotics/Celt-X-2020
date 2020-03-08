@@ -30,7 +30,7 @@ public class GobbleBalls extends CommandBase {
   @Override
   public boolean isFinished() {
     
-    return false;
+    return true;
   }
 
   @Override

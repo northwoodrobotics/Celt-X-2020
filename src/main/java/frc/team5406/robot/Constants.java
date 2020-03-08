@@ -90,6 +90,9 @@ public final class Constants {
     public static final double MATCH_RPM_LOWER_THRESHOLD = 0.95;
     public static final double MATCH_RPM_UPPER_THRESHOLD = 1.05;
 
+    public static  final double CLIMBER_DOWN_POSITION = 0;
+    public static  final double CLIMBER_UP_POSITION = 10;
+
     //Fixed speeds
     public static final double INTAKE_ROLLER_OUTPUT = 1;
     public static final double HOPPER_BRUSH_OUTPUT = 0.8;
@@ -100,8 +103,8 @@ public final class Constants {
 
     public static final boolean INTAKE_EXTEND = true;
     public static final boolean INTAKE_RETRACT = false;
-    public static final boolean CLIMB_EXTEND = true;
-    public static final boolean CLIMB_RETRACT = false;
+    public static final boolean SET_BREAK = true;
+    public static final boolean RELEASE_BREAK = false;
 
     //Closed-loop Ramp Rates
     public static final double SHOOTER_CLOSED_LOOP_RAMP_RATE = 0.01; //seconds
