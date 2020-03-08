@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj.util.Units;
 import frc.team5406.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-
   private static CANSparkMax shooterMaster = new CANSparkMax(Constants.SHOOTER_WHEEL_MOTOR_ONE, MotorType.kBrushless);
   private static CANSparkMax shooterSlave = new CANSparkMax(Constants.SHOOTER_WHEEL_MOTOR_TWO, MotorType.kBrushless);
   private static CANSparkMax booster = new CANSparkMax(Constants.BOOSTER_ROLLER_MOTOR, MotorType.kBrushless);
@@ -119,12 +118,8 @@ public class ShooterSubsystem extends SubsystemBase {
     turret.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
 
     feeder.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
-
-   // turret.setSoftLimit(SoftLimitDirection.kForward, Constants.CC_ABS_TURRET_LIMIT);
-    // turret.setSoftLimit(SoftLimitDirection.kReverse, Constants.CCW_ABS_TURRET_LIMIT);
-
-
     resetEncoders();
+
   }
 
   public static void resetEncoders() {
@@ -132,7 +127,14 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterEncoder.setPosition(0);
     boosterEncoder.setPosition(0);
     hoodEncoder.setPosition(getAbsHoodPosition()*Constants.HOOD_GEAR_RATIO);
-   // turretEncoder.setPosition(getAbsTurretPosition()*Constants.TURRET_ENC_GEAR_RATIO);
+    turretEncoder.setPosition((getAbsTurretPosition()*Constants.TURRET_GEAR_RATIO)/360);
+    System.out.println("Turr: "+turretEncoder.getPosition());
+    turret.setSoftLimit(SoftLimitDirection.kForward, (float)(getTurretAngleFromAbs( Constants.CC_ABS_TURRET_LIMIT)*Constants.TURRET_GEAR_RATIO/360));
+    turret.setSoftLimit(SoftLimitDirection.kReverse, (float)(getTurretAngleFromAbs( Constants.CCW_ABS_TURRET_LIMIT)*Constants.TURRET_GEAR_RATIO/360));
+    turret.enableSoftLimit(SoftLimitDirection.kForward, true);
+    turret.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    System.out.println("Fwd Lim: " +turret.getSoftLimit(SoftLimitDirection.kForward));
+    System.out.println("Rev Lim: " +turret.getSoftLimit(SoftLimitDirection.kReverse));
   }
 
   public static void spinShooter(double RPM) {
@@ -255,6 +257,10 @@ public class ShooterSubsystem extends SubsystemBase {
     turret.set(turn);
   }
 
+  public static double getTurretPosition(){
+    return turretEncoder.getPosition();
+  }
+
   public static double getAbsHoodPosition(){
     double absPos = hoodAbsoluteEncoder.getAbsolutePosition();
     if(absPos > 270){
@@ -264,11 +270,14 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public static double getAbsTurretPosition(){
-    double turretAbsPos = turretAbsoluteEncoder.getAbsolutePosition();
-    if(turretAbsPos > 180){
-      turretAbsPos -= 360;
+    return getTurretAngleFromAbs(turretAbsoluteEncoder.getAbsolutePosition());
+  }
+
+  public static double getTurretAngleFromAbs(double absPos){
+    if(absPos > 180){
+      absPos -= 360;
     }
-    return turretAbsPos/Constants.TURRET_ENC_GEAR_RATIO;
+    return -1*absPos/Constants.TURRET_ENC_GEAR_RATIO;
   }
 
   public static void updateLimelightTracking()
@@ -351,6 +360,7 @@ public static void compressorDisabled() {
 
   @Override
   public void periodic() {
+   // System.out.println(turretEncoder.getPosition());
 
   }
 }
