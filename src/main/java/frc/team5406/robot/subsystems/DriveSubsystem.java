@@ -37,10 +37,10 @@ public class DriveSubsystem extends SubsystemBase {
   private static CANPIDController leftMotorPID, rightMotorPID;
   private static CANPIDController leftDrivePID, rightDrivePID;
 
-  DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
+  static DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
 
   public static void setupMotors() {
-
+    drive.setSafetyEnabled(false);
     leftDrivePID = leftDriveMotor.getPIDController();
     rightDrivePID = rightDriveMotor.getPIDController(); 
     leftDriveMotor.setIdleMode(IdleMode.kCoast);
@@ -173,14 +173,14 @@ public double getLeftDistance() {
    gyro.reset();
   }
 
-  public static void baselock() {
+ /* public static void baselock() {
 
     double baselockLeft = getLeftPosition();
     double baselockRight = getRightPosition();
 
     leftMotorPID.setReference(baselockLeft, ControlType.kPosition);
     rightMotorPID.setReference(baselockRight, ControlType.kPosition);
-  }
+  }*/
 
     public DriveSubsystem() {
 

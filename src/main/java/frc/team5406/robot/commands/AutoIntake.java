@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team5406.robot.subsystems.IntakeSubsystem;
 
 
-public class GobbleBalls extends CommandBase {
+public class AutoIntake extends CommandBase {
   // The subsystem the command runs on
   private final IntakeSubsystem intake;
 
-  public GobbleBalls(IntakeSubsystem subsystem) {
+  public AutoIntake(IntakeSubsystem subsystem) {
     intake = subsystem;
     addRequirements(intake);
   }
@@ -29,6 +29,8 @@ public class GobbleBalls extends CommandBase {
 
   @Override
   public boolean isFinished() {
+
+    // SOMETHING GOES IN HERE
     
     return true;
   }

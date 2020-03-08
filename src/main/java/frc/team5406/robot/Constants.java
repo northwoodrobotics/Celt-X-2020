@@ -22,7 +22,6 @@ public final class Constants {
     public static final int RIGHT_DRIVE_MOTOR_ONE = 3; //SparkMax, NEO
     public static final int RIGHT_DRIVE_MOTOR_TWO = 4; //SparkMax, NEO
     public static final int INTAKE_ROLLER_MOTOR = 5; //SparkMax, NEO550
-    public static final int HOPPER_BRUSH_MOTOR = 6; //SparkMax, NEO550
     public static final int THROAT_SERIALIZER_MOTOR_ONE = 7; //TalonSRX, BAG
     public static final int TURRET_AZIMUTH_MOTOR = 9; //SparkMax, NEO550
     public static final int HOOD_MOTOR = 10; //SparkMax, NEO550
@@ -32,7 +31,7 @@ public final class Constants {
     public static final int CLIMBER_MOTOR = 14; //SparkMax, NEO
     public static final int THROAT_SERIALIZER_MOTOR_TWO = 21; //TalonSRX, BAG
     public static final int FEEDER_MOTOR = 8; //SparkMax, NEO550
-    public static final int DJ_SPINNER = 15;
+    public static final int DJ_SPINNER = 15; //SparkMax, NEO550
     
 
     //CANcoder PORTS
@@ -42,6 +41,7 @@ public final class Constants {
     //PCM PORTS
     public static final int INTAKE_CYLINDER = 0;
     public static final int CLIMB_CYLINDER = 1;
+    public static final int DJ_SPINNER_CYLINDER = 2;
 
     //XBoxController Ports
     public static final int OPERATOR_CONTROLLER = 0;
@@ -56,14 +56,17 @@ public final class Constants {
     public static final double BOOSTER_GEAR_RATIO =3.0/4.0; //overdriven
     public static final double SHOOTER_GEAR_RATIO = 3.0/4.0; //overdriven
     public static final double HOOD_ENC_GEAR_RATIO = 3.0/.9;
+    public static final double TURRET_ENC_GEAR_RATIO = .5; 
     public static final double FEEDER_GEAR_RATIO = 15.0;
     public static final double LEFT_SERIALIZER_GEAR_RATIO = 10;
     public static final double RIGHT_SERIALIZER_GEAR_RATIO = 4;
+    public static final double DJ_SPINNER_GEAR_RATIO = 4;
 
 
     //Wheel Diameters
     public static final double DRIVE_WHEEL_DIAMETER = 6.0; //inches
-    public static final double COLOUR_WHEEL_DIAMETER = 2.25; //inches
+    public static final double DJ_SPINNER_DIAMETER = 2.25; //inches
+    public static final double COLOUR_WHEEL_DIAMETER = 32; //inches
     
     //Other Constants
     public final static int CAN_TIMEOUT = 15; //ms
@@ -89,6 +92,10 @@ public final class Constants {
     public static final double TX_OFFSET_DIVISOR = 12;
     public static final double MATCH_RPM_LOWER_THRESHOLD = 0.95;
     public static final double MATCH_RPM_UPPER_THRESHOLD = 1.05;
+    public static final double DJ_SPINNER_SPEED = 60.0;
+    public static final float CC_ABS_TURRET_LIMIT = 247;
+    public static final float CCW_ABS_TURRET_LIMIT = (float) 28.8;
+
 
     public static  final double CLIMBER_DOWN_POSITION = 0;
     public static  final double CLIMBER_UP_POSITION = 10;
@@ -98,13 +105,21 @@ public final class Constants {
     public static final double HOPPER_BRUSH_OUTPUT = 0.8;
     public static final double SERIALIZER_OUTPUT = -1;
     public static final double FEEDER_OUTPUT = 1;
+    public static final double BOOSTER_OUTPUT = 4000; // RPM
     public static final double LEFT_SERIALIZER_OUTPUT = 100;
     public static final double RIGHT_SERIALIZER_OUTPUT = 1000;
 
     public static final boolean INTAKE_EXTEND = true;
     public static final boolean INTAKE_RETRACT = false;
+<<<<<<< HEAD
     public static final boolean SET_BREAK = true;
     public static final boolean RELEASE_BREAK = false;
+=======
+    public static final boolean CLIMB_EXTEND = true;
+    public static final boolean CLIMB_RETRACT = false;
+    public static final boolean DJ_SPINNER_UP = false;
+    public static final boolean DJ_SPINNER_DOWN = true;
+>>>>>>> b4235553a0724d7df94fef15089264e78c585f25
 
     //Closed-loop Ramp Rates
     public static final double SHOOTER_CLOSED_LOOP_RAMP_RATE = 0.01; //seconds
@@ -130,6 +145,11 @@ public final class Constants {
     public static final double HOOD_PID0_I = 0;
     public static final double HOOD_PID0_D = 0;
     public static final double HOOD_PID0_F = 0.04;
+
+    public static final double TURRET_PID0_P = 3e-4;
+    public static final double TURRET_PID0_I = 0;
+    public static final double TURRET_PID0_D = 0;
+    public static final double TURRET_PID0_F = 1.1e-3;
 
     public static final double LEFT_CLIMBER_PID0_P = 3e-4;
     public static final double LEFT_CLIMBER_PID0_I = 0;
@@ -160,6 +180,11 @@ public final class Constants {
     public static final double RIGHT_SERIALIZER_PID0_I = 0;
     public static final double RIGHT_SERIALIZER_PID0_D = 0;
     public static final double RIGHT_SERIALIZER_PID0_F = 1.9e-3;
+
+    public static final double DJ_SPINNER_PID0_P = 3e-4;
+    public static final double DJ_SPINNER_PID0_I = 0;
+    public static final double DJ_SPINNER_PID0_D = 0;
+    public static final double DJ_SPINNER_PID0_F = 1.9e-3;
 
     //Current Limits
     public static final int NEO550_CURRENT_LIMIT = 40;
