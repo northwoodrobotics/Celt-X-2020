@@ -92,12 +92,26 @@ public class ShooterSubsystem extends SubsystemBase {
     hoodPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
 
     turretPID.setP(Constants.TURRET_PID0_P, 0);
-    turretPID.setI(Constants.TURRET_PID0_I);
+    turretPID.setI(Constants.TURRET_PID0_I, 0);
     turretPID.setD(Constants.TURRET_PID0_D, 0);
     turretPID.setIZone(0, 0);
     turretPID.setFF(Constants.TURRET_PID0_F, 0);
+
+    turretPID.setP(Constants.TURRET_PID0_P, 1);
+    turretPID.setI(Constants.TURRET_PID0_I, 1);
+    turretPID.setD(Constants.TURRET_PID0_D, 1);
+    turretPID.setIZone(0, 0);
+    turretPID.setFF(Constants.TURRET_PID0_F, 1);
+
     turretPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
 
+    turretPID.setSmartMotionMaxVelocity(12000, 0);
+    turretPID.setSmartMotionMaxAccel(40000, 0);
+    turretPID.setSmartMotionAllowedClosedLoopError(0.2, 0);
+
+    turretPID.setSmartMotionMaxVelocity(5000, 1);
+    turretPID.setSmartMotionMaxAccel(5000, 1);
+    turretPID.setSmartMotionAllowedClosedLoopError(0.1, 1);
 
     feederPID.setP(Constants.FEEDER_PID0_P);
     feederPID.setI(Constants.FEEDER_PID0_I, 0);
@@ -249,12 +263,15 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public static void turnTurret(double angle){
-    turretPID.setReference(angle/360 *  Constants.TURRET_GEAR_RATIO, ControlType.kPosition);
-
+    System.out.println(angle/360 *  Constants.TURRET_GEAR_RATIO);
+    turretPID.setReference(angle/360 *  Constants.TURRET_GEAR_RATIO, ControlType.kSmartMotion);
+    System.out.println(turretEncoder.getPosition());
+    
   }
 
   public static void adjustTurret(double turn){
-    turret.set(turn);
+    turretPID.setReference(turretEncoder.getPosition() + turn, ControlType.kSmartMotion, 1);
+
   }
 
   public static double getTurretPosition(){

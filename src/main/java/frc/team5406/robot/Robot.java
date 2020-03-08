@@ -155,18 +155,7 @@ public class Robot extends TimedRobot {
       ClimbSubsystem.setBrake();
     }
 
-    if(operatorGamepad.getPOV() == 0 && !dPadPressed){
-      dPadPressed = true;
-      ShooterSubsystem.turnTurret(0);
-    }
-    else if(operatorGamepad.getPOV() == 180 && !dPadPressed){
-      dPadPressed = true;
-      ShooterSubsystem.turnTurret(-30);
-    }
-    else{
-      dPadPressed = false;
-    }
-
+    
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
       ClimbSubsystem.releaseBreak();
 
@@ -264,7 +253,7 @@ public class Robot extends TimedRobot {
      }
      
      if((Math.abs(operatorGamepad.getX(Hand.kRight)) > 0.1) && (operatorGamepad.getBumper(Hand.kRight))){
-      ShooterSubsystem.adjustTurret(0.5 * operatorGamepad.getX(Hand.kRight));
+      ShooterSubsystem.adjustTurret( operatorGamepad.getX(Hand.kRight));
 
      }
      else if(operatorGamepad.getAButton()){
@@ -274,8 +263,24 @@ public class Robot extends TimedRobot {
         ShooterSubsystem.adjustTurret(ShooterSubsystem.llSteer);
       }
      }
+     else if(operatorGamepad.getPOV() == 0 && !dPadPressed){
+      dPadPressed = true;
+      ShooterSubsystem.turnTurret(0);
+    }
+    else if(operatorGamepad.getPOV() == 90 && !dPadPressed){
+      dPadPressed = true;
+      ShooterSubsystem.turnTurret(90);
+    }
+    else if(operatorGamepad.getPOV() == 180 && !dPadPressed){
+      dPadPressed = true;
+      ShooterSubsystem.turnTurret(180);
+    }
+     
+    
+
       else{
-       ShooterSubsystem.adjustTurret(0);
+       //ShooterSubsystem.adjustTurret(0);
+       dPadPressed = false;
        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
      }
      
