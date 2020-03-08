@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -47,29 +48,25 @@ public class DriveSubsystem extends SubsystemBase {
   private static CANPIDController leftMotorPID, rightMotorPID;
   private static DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
 
-static  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading()); 
+static  DifferentialDriveOdometry odometry;
 
  static Pose2d pose = new Pose2d();
 
   public static void setupMotors() {
-    leftDriveMotor.setIdleMode(IdleMode.kCoast);
-    leftDriveSlave.setIdleMode(IdleMode.kCoast);
-    rightDriveMotor.setIdleMode(IdleMode.kCoast);
-    rightDriveSlave.setIdleMode(IdleMode.kCoast);
+    leftDriveMotor.setIdleMode(IdleMode.kBrake);
+    leftDriveSlave.setIdleMode(IdleMode.kBrake);
+    rightDriveMotor.setIdleMode(IdleMode.kBrake);
+    rightDriveSlave.setIdleMode(IdleMode.kBrake);
     leftDriveSlave.follow(leftDriveMotor);
     rightDriveSlave.follow(rightDriveMotor);
-   // rightDriveSlave.setInverted(true);
    rightDriveMotor.setInverted(false);
    leftDriveMotor.setInverted(true);
    drive.setSafetyEnabled(false);
 
-    // leftDriveSlave1.setInverted(true);
-    // leftDriveMotor.setInverted(true);
     leftDriveMotor.setSmartCurrentLimit(80);
     leftDriveSlave.setSmartCurrentLimit(80);
     rightDriveMotor.setSmartCurrentLimit(80);
     rightDriveSlave.setSmartCurrentLimit(80);
-    m_button = new XboxController(0);
     leftMotorPID = leftDriveMotor.getPIDController();
     rightMotorPID = rightDriveMotor.getPIDController();
 
@@ -90,14 +87,14 @@ static  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHe
    rightMotorPID.setFF(Constants.RIGHT_DRIVE_PID0_F, 0);
    rightMotorPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
   setHeading();
- resetOdemetry(pose);
+ //resetOdometry(pose);
   System.out.println("Heading, "+ getHeading());
   }
 
   public void arcadeDrive(double speed, double turn){
     drive.arcadeDrive(-1*turn, speed);
   }
-
+/*
   // Set Speed For Both
   public void setSpeed(double left, double right) {
     leftDriveMotor.set(left);
@@ -126,7 +123,7 @@ static  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHe
 
   public void setRightOutput(double output) {
     rightDriveMotor.setVoltage(output);
-  }
+  }*/
 
   // Stop Motors
   public static void stopMotors() {
@@ -134,7 +131,7 @@ static  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHe
     rightDriveMotor.stopMotor();
     leftDriveSlave.stopMotor();
     rightDriveSlave.stopMotor();
-  }
+  }/*
 
   // Get Left & Right Output
   public static double getLeftOutput() {
@@ -153,7 +150,7 @@ static  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHe
   public static double getRightSpeed() {
     return rightDriveMotor.get();
   }
-
+*/
 
 //Get Distance
 public double getLeftDistance() {
@@ -186,11 +183,17 @@ public static void setHeading(){
   public void outputSpeeds(double leftSpeed, double rightSpeed) {
    leftSpeed /= Units.inchesToMeters(Constants.INCHES_PER_REV / Constants.SECONDS_PER_MINUTE);
   rightSpeed /= Units.inchesToMeters(Constants.INCHES_PER_REV / Constants.SECONDS_PER_MINUTE);
-    System.out.println("Left Speed, " + leftSpeed);
-    System.out.println("Right Speed, "+ rightSpeed);
-    leftMotorPID.setReference(leftSpeed, ControlType.kVelocity);
-    rightMotorPID.setReference(rightSpeed, ControlType.kVelocity); 
-    System.out.println("Heading, " + getHeading());
+    //System.out.println("Left Speed, " + leftSpeed);
+    //System.out.println("Right Speed, "+ rightSpeed);
+    SmartDashboard.putNumber("Left Speed" , leftSpeed);
+    SmartDashboard.putNumber("Right Speed" , rightSpeed);
+    SmartDashboard.putNumber("X Translation" , pose.getTranslation().getX());
+    SmartDashboard.putNumber("Left Speed (A)" , leftEncoder.getVelocity());
+    SmartDashboard.putNumber("Right Speed (A)" , rightEncoder.getVelocity());
+
+    leftMotorPID.setReference(leftSpeed/1.45, ControlType.kVelocity);
+    rightMotorPID.setReference(rightSpeed/1.45, ControlType.kVelocity); 
+    //System.out.println("Pose: " + getPose());
     drive.feed();
   }
   
@@ -216,7 +219,7 @@ public static void setHeading(){
     odometry.resetPosition(new Pose2d(), getHeading());
   }
 
-  public static void resetOdemetry(Pose2d pose) {
+  public static void resetOdometry(Pose2d pose) {
     resetEncoders();
     odometry.resetPosition(pose, getHeading());
   }
@@ -224,8 +227,8 @@ public static void setHeading(){
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    System.out.println("Left Distance " + getLeftDistance());
-    System.out.println("Right Distance " + getRightDistance());
+    //System.out.println("Left Distance " + getLeftDistance());
+    //System.out.println("Right Distance " + getRightDistance());
 
   pose = odometry.update(getHeading(), getLeftDistance(), getRightDistance());
 

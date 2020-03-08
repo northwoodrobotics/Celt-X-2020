@@ -146,8 +146,8 @@ public final class Constants {
     public static final DifferentialDriveKinematics DRIVE_KINEMATICS =
         new DifferentialDriveKinematics(Units.inchesToMeters(TRACK_WIDTH_INCHES));
 
-    public static final double MAX_SPEED_METERS_PER_SECOND = 1;
-    public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 1;
+    public static final double MAX_SPEED_METERS_PER_SECOND = 2;
+    public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 1.2;
 
     public static final boolean GYRO_REVERSED = true;
 

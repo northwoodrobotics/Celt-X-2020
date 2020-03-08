@@ -22,12 +22,12 @@ import frc.team5406.robot.Constants;
 
 public class RobotContainer {
 
-  private final DriveSubsystem drive = new DriveSubsystem();
-  private final IntakeSubsystem intake = new IntakeSubsystem();
+ // private final DriveSubsystem drive = new DriveSubsystem();
+ // private final IntakeSubsystem intake = new IntakeSubsystem();
 
   //private final Drive m_autoCommand = new Drive(drive);
 
-  XboxController driverGamepad = new XboxController(Constants.DRIVER_CONTROLLER);
+ // XboxController driverGamepad = new XboxController(Constants.DRIVER_CONTROLLER);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+ // private RobotContainer m_robotContainer;
   private DriveStraight m_driveStraight;
 
   XboxController operatorGamepad = new XboxController(Constants.OPERATOR_CONTROLLER);
@@ -45,11 +45,11 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_driveStraight = new DriveStraight();
-    m_robotContainer = new RobotContainer();
+    //m_robotContainer = new RobotContainer();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
     ClimbSubsystem.setupMotors();
-    robotDrive.setHeading();
+    /*robotDrive.setHeading();
     robotDrive.reset();
     SmartDashboard.putNumber("Shooter Target RPM", 5000);
     SmartDashboard.putNumber("Booster Target RPM", 6500);
@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("SHOOTER_PID_I", Constants.SHOOTER_PID0_I);
     SmartDashboard.putNumber("SHOOTER_PID_D", Constants.SHOOTER_PID0_D);
     SmartDashboard.putNumber("SHOOTER_PID_F", Constants.SHOOTER_PID0_F);
-  }
+  */ }
 
   /**
    * This function is called every robot packet, no matter the mode. Use this for items like
@@ -136,7 +136,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("ts", ts); 
     SmartDashboard.putNumber("tx", tx);
     robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
-    if(driverGamepad.getXButton()){
+    /*if(driverGamepad.getXButton()){
       ClimbSubsystem.climbExtend();
     }
     if(driverGamepad.getYButton()){
@@ -145,8 +145,8 @@ public class Robot extends TimedRobot {
     if (driverGamepad.getBButton()) { 
       double leftSpeed = driverGamepad.getY(Hand.kRight);
       double speedMultiplier = driverGamepad.getX(Hand.kRight)+1;
-     /* System.out.println(leftSpeed);
-      System.out.println(speedMultiplier);*/
+     //System.out.println(leftSpeed);
+      //System.out.println(speedMultiplier);
       ClimbSubsystem.setSpeed(leftSpeed,leftSpeed*speedMultiplier);
 
       
@@ -223,7 +223,7 @@ public class Robot extends TimedRobot {
        ShooterSubsystem.turnTurret(0);
        //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
      }
-     
+     */
 
   }
 

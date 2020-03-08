@@ -32,12 +32,12 @@ public class DriveStraight {
 
     public DriveStraight () {
         
-        drive.setDefaultCommand(
+      /*  drive.setDefaultCommand(
         
         new RunCommand(() -> drive
             .arcadeDrive(driverGamepad.getY(GenericHID.Hand.kLeft),
                          driverGamepad.getX(GenericHID.Hand.kRight)), drive));
-    }
+    */  }
 
     public Command getAutonomousCommand() {
         drive.reset();
