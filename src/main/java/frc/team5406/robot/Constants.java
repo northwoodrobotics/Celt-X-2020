@@ -97,6 +97,9 @@ public final class Constants {
     public static final float CCW_ABS_TURRET_LIMIT = (float) 20;
 
 
+    public static  final double CLIMBER_DOWN_POSITION = 0;
+    public static  final double CLIMBER_UP_POSITION = 10;
+
     //Fixed speeds
     public static final double INTAKE_ROLLER_OUTPUT = 1;
     public static final double HOPPER_BRUSH_OUTPUT = 0.8;
@@ -108,10 +111,15 @@ public final class Constants {
 
     public static final boolean INTAKE_EXTEND = true;
     public static final boolean INTAKE_RETRACT = false;
+<<<<<<< HEAD
+    public static final boolean SET_BREAK = true;
+    public static final boolean RELEASE_BREAK = false;
+=======
     public static final boolean CLIMB_EXTEND = true;
     public static final boolean CLIMB_RETRACT = false;
     public static final boolean DJ_SPINNER_UP = false;
     public static final boolean DJ_SPINNER_DOWN = true;
+>>>>>>> b4235553a0724d7df94fef15089264e78c585f25
 
     //Closed-loop Ramp Rates
     public static final double SHOOTER_CLOSED_LOOP_RAMP_RATE = 0.01; //seconds

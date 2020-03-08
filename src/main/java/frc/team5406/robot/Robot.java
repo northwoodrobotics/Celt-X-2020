@@ -152,7 +152,7 @@ public class Robot extends TimedRobot {
       baselock = true;
     }*/
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()){
-      ClimbSubsystem.climbExtend();
+      ClimbSubsystem.setBrake();
     }
 
     if(operatorGamepad.getPOV() == 0 && !dPadPressed){
@@ -168,7 +168,7 @@ public class Robot extends TimedRobot {
     }
 
     if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
-      ClimbSubsystem.climbRetract();
+      ClimbSubsystem.releaseBreak();
 
     }
     if (operatorGamepad.getBumper(Hand.kRight) && (Math.abs(operatorGamepad.getY(Hand.kLeft)) > 0.15)) { 

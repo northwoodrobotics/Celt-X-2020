@@ -59,14 +59,14 @@ public class ClimbSubsystem extends SubsystemBase {
     climbCylinder.set(out);
   }
 
-  public static void climbExtend() {
+  public static void setBrake() {
 
-    setIntakePosition(Constants.CLIMB_EXTEND);
+    setIntakePosition(Constants.SET_BREAK);
   }
 
-  public static void climbRetract() {
+  public static void releaseBreak() {
 
-    setIntakePosition(Constants.CLIMB_RETRACT);
+    setIntakePosition(Constants.RELEASE_BREAK);
   }
 
 
