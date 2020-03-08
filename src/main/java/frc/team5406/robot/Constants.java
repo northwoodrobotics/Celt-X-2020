@@ -111,15 +111,10 @@ public final class Constants {
 
     public static final boolean INTAKE_EXTEND = true;
     public static final boolean INTAKE_RETRACT = false;
-<<<<<<< HEAD
     public static final boolean SET_BREAK = true;
     public static final boolean RELEASE_BREAK = false;
-=======
-    public static final boolean CLIMB_EXTEND = true;
-    public static final boolean CLIMB_RETRACT = false;
     public static final boolean DJ_SPINNER_UP = false;
     public static final boolean DJ_SPINNER_DOWN = true;
->>>>>>> b4235553a0724d7df94fef15089264e78c585f25
 
     //Closed-loop Ramp Rates
     public static final double SHOOTER_CLOSED_LOOP_RAMP_RATE = 0.01; //seconds
