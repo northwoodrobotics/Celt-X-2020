@@ -19,6 +19,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -49,7 +50,10 @@ public class DriveSubsystem extends SubsystemBase {
   private static DifferentialDrive drive = new DifferentialDrive(leftDriveMotor, rightDriveMotor);
 
 static  DifferentialDriveOdometry odometry;
-
+static SimpleMotorFeedforward driveTrain = 
+  new SimpleMotorFeedforward(Constants.S_VOLTS,
+                             Constants.V_VOLTS,
+                             Constants.A_VOLTS);
  static Pose2d pose = new Pose2d();
 
   public static void setupMotors() {
@@ -181,18 +185,29 @@ public static void setHeading(){
   }
 
   public void outputSpeeds(double leftSpeed, double rightSpeed) {
+    double origLeftSpeed = leftSpeed;
+    double origRightSpeed = rightSpeed;
    leftSpeed /= Units.inchesToMeters(Constants.INCHES_PER_REV / Constants.SECONDS_PER_MINUTE);
   rightSpeed /= Units.inchesToMeters(Constants.INCHES_PER_REV / Constants.SECONDS_PER_MINUTE);
     //System.out.println("Left Speed, " + leftSpeed);
     //System.out.println("Right Speed, "+ rightSpeed);
+    SmartDashboard.putNumber("Orig Left Speed" , origLeftSpeed);
+    SmartDashboard.putNumber("Orig Right Speed" , origRightSpeed);
     SmartDashboard.putNumber("Left Speed" , leftSpeed);
     SmartDashboard.putNumber("Right Speed" , rightSpeed);
+
     SmartDashboard.putNumber("X Translation" , pose.getTranslation().getX());
     SmartDashboard.putNumber("Left Speed (A)" , leftEncoder.getVelocity());
     SmartDashboard.putNumber("Right Speed (A)" , rightEncoder.getVelocity());
+    
+    double arbFFLeft = driveTrain.calculate(origLeftSpeed);
+    double arbFFRight = driveTrain.calculate(origRightSpeed);
+    SmartDashboard.putNumber("Arb FF L" ,arbFFLeft);
+    SmartDashboard.putNumber("Arb FF R" , arbFFRight);
 
-    leftMotorPID.setReference(leftSpeed/1.45, ControlType.kVelocity);
-    rightMotorPID.setReference(rightSpeed/1.45, ControlType.kVelocity); 
+
+    leftMotorPID.setReference(leftSpeed, ControlType.kVelocity, 0, arbFFLeft, CANPIDController.ArbFFUnits.kVoltage);
+    rightMotorPID.setReference(rightSpeed, ControlType.kVelocity, 0, arbFFRight, CANPIDController.ArbFFUnits.kVoltage); 
     //System.out.println("Pose: " + getPose());
     drive.feed();
   }

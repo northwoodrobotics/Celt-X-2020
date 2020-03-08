@@ -119,12 +119,12 @@ public final class Constants {
     public static final double LEFT_DRIVE_PID0_P = 6e-5;
     public static final double LEFT_DRIVE_PID0_I = 0;
     public static final double LEFT_DRIVE_PID0_D = 0;
-    public static final double LEFT_DRIVE_PID0_F = 1.9e-3;
+    public static final double LEFT_DRIVE_PID0_F = 0;
 
     public static final double RIGHT_DRIVE_PID0_P = 6e-5;
     public static final double RIGHT_DRIVE_PID0_I = 0;
     public static final double RIGHT_DRIVE_PID0_D = 0;
-    public static final double RIGHT_DRIVE_PID0_F = 1.9e-3;
+    public static final double RIGHT_DRIVE_PID0_F = 0;
 
     //Current Limits
     public static final int NEO550_CURRENT_LIMIT = 40;
