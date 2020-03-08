@@ -9,6 +9,7 @@ import frc.team5406.robot.subsystems.ShooterSubsystem;
 public class AutoShoot extends CommandBase {
   // The subsystem the command runs on
   private final ShooterSubsystem shooter;
+  private boolean readyToShoot = false;
 
   public AutoShoot(ShooterSubsystem subsystem) {
     shooter = subsystem;
@@ -28,13 +29,14 @@ public class AutoShoot extends CommandBase {
   @Override
   public void execute() {
       
-    if(ShooterSubsystem.checkRPM()) {
+    if(ShooterSubsystem.checkRPM() && !readyToShoot) {
       
+      readyToShoot = true;
+    }
+    if(readyToShoot) {
+
       ShooterSubsystem.spinFeeder(1000);
 
-    } else {
-
-      ShooterSubsystem.stopFeeder();
     }
 
   }

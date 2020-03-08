@@ -56,7 +56,7 @@ public final class Constants {
     public static final double BOOSTER_GEAR_RATIO =3.0/4.0; //overdriven
     public static final double SHOOTER_GEAR_RATIO = 3.0/4.0; //overdriven
     public static final double HOOD_ENC_GEAR_RATIO = 3.0/.9;
-    public static final double TURRET_ENC_GEAR_RATIO = .5; 
+    public static final double TURRET_ENC_GEAR_RATIO = .53; 
     public static final double FEEDER_GEAR_RATIO = 15.0;
     public static final double LEFT_SERIALIZER_GEAR_RATIO = 10;
     public static final double RIGHT_SERIALIZER_GEAR_RATIO = 4;
@@ -65,7 +65,7 @@ public final class Constants {
 
     //Wheel Diameters
     public static final double DRIVE_WHEEL_DIAMETER = 6.0; //inches
-    public static final double DJ_SPINNER_DIAMETER = 2.25; //inches
+    public static final double DJ_SPINNER_DIAMETER =4 ; //inches
     public static final double COLOUR_WHEEL_DIAMETER = 32; //inches
     
     //Other Constants
@@ -93,8 +93,8 @@ public final class Constants {
     public static final double MATCH_RPM_LOWER_THRESHOLD = 0.95;
     public static final double MATCH_RPM_UPPER_THRESHOLD = 1.05;
     public static final double DJ_SPINNER_SPEED = 60.0;
-    public static final float CC_ABS_TURRET_LIMIT = 247;
-    public static final float CCW_ABS_TURRET_LIMIT = (float) 28.8;
+    public static final float CC_ABS_TURRET_LIMIT = 265;
+    public static final float CCW_ABS_TURRET_LIMIT = (float) 20;
 
 
     public static  final double CLIMBER_DOWN_POSITION = 0;
