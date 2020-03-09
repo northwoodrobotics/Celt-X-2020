@@ -16,6 +16,7 @@ import frc.team5406.robot.subsystems.IntakeSubsystem;
 import frc.team5406.robot.subsystems.ShooterSubsystem;
 import frc.team5406.robot.autos.DriveStraight;
 import frc.team5406.robot.autos.FiveBallRight;
+import frc.team5406.robot.autos.ThreeBallCenter;
 import frc.team5406.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -23,24 +24,25 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
-
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the TimedRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the build.gradle file in the
  * project.
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
- // private RobotContainer m_robotContainer;
- private DriveStraight driveStraight;
- private FiveBallRight fiveBallRight;
- private static final String driveStraightString = "DriveStraight";
+  // private RobotContainer m_robotContainer;
+  private DriveStraight driveStraight;
+  private FiveBallRight fiveBallRight;
+  private ThreeBallCenter threeBallCenter;
+  private static final String driveStraightString = "DriveStraight";
   private static final String fiveBallRightString = "FiveBallRight";
+  public static final String threeBallCenterString = "ThreeBallCenter";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
 
   XboxController operatorGamepad = new XboxController(Constants.OPERATOR_CONTROLLER);
   XboxController driverGamepad = new XboxController(Constants.DRIVER_CONTROLLER);
@@ -49,38 +51,46 @@ public class Robot extends TimedRobot {
   boolean baselock;
 
   boolean dPadPressed = false;
- /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
+
+  /**
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our
     // autonomous chooser on the dashboard.
     driveStraight = new DriveStraight();
     fiveBallRight = new FiveBallRight();
-    //m_robotContainer = new RobotContainer();
+    // m_robotContainer = new RobotContainer();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
     ClimbSubsystem.setupMotors();
 
     m_chooser.setDefaultOption("Drive Straight Backwards", driveStraightString);
     m_chooser.addOption("Five Ball, Right", fiveBallRightString);
+    m_chooser.addOption("Three Ball, Center", threeBallCenterString);
     SmartDashboard.putData("Auto choices", m_chooser);
-}
+  }
 
   /**
-   * This function is called every robot packet, no matter the mode. Use this for items like
-   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
+   * This function is called every robot packet, no matter the mode. Use this for
+   * items like diagnostics that you want ran during disabled, autonomous,
+   * teleoperated and test.
    *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
+   * <p>
+   * This runs after the mode specific periodic functions, but before LiveWindow
+   * and SmartDashboard integrated updating.
    */
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // Runs the Scheduler. This is responsible for polling buttons, adding
+    // newly-scheduled
+    // commands, running already-scheduled commands, removing finished or
+    // interrupted commands,
+    // and running subsystem periodic() methods. This must be called from the
+    // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     SmartDashboard.putNumber("Hood Abs Position", ShooterSubsystem.getAbsHoodPosition());
@@ -100,7 +110,8 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
+   * This autonomous runs the autonomous command selected by your
+   * {@link RobotContainer} class.
    */
   @Override
   public void autonomousInit() {
@@ -108,19 +119,23 @@ public class Robot extends TimedRobot {
     IntakeSubsystem.djSpinnerDown();
 
     switch (m_autoSelected) {
-    case driveStraightString:
-      m_autonomousCommand = driveStraight.getAutonomousCommand();
-      break;
-    case fiveBallRightString:
-    default:
-      m_autonomousCommand = fiveBallRight.getAutonomousCommand();
-      break;
+
+      case fiveBallRightString:
+        m_autonomousCommand = fiveBallRight.getAutonomousCommand();
+        break;
+      case threeBallCenterString:
+        m_autonomousCommand = threeBallCenter.getAutonomousCommand();
+        break;
+      case driveStraightString:
+      default:
+        m_autonomousCommand = driveStraight.getAutonomousCommand();
+        break;
     }
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    
+
   }
 
   /**
@@ -147,41 +162,43 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-  double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-  double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
+    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+    double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
     SmartDashboard.putNumber("Shooter Multiplier", ShooterSubsystem.shooterMultiplier);
-    SmartDashboard.putNumber("ts", ts); 
+    SmartDashboard.putNumber("ts", ts);
     SmartDashboard.putNumber("tx", tx);
 
-   // if((driverGamepad.getY(Hand.kLeft) > Constants.JOYSTICK_DEADBAND || (driverGamepad.getX(Hand.kRight) > Constants.JOYSTICK_DEADBAND))) {
+    // if((driverGamepad.getY(Hand.kLeft) > Constants.JOYSTICK_DEADBAND ||
+    // (driverGamepad.getX(Hand.kRight) > Constants.JOYSTICK_DEADBAND))) {
 
-      robotDrive.arcadeDrive(driverGamepad.getX(Hand.kRight), driverGamepad.getY(Hand.kLeft));
-   /*   baselock = false;
-    
-    } else if(driverGamepad.getY(Hand.kLeft) <= Constants.JOYSTICK_DEADBAND 
-              && (driverGamepad.getX(Hand.kRight) <= Constants.JOYSTICK_DEADBAND) 
-              && (Math.abs(DriveSubsystem.getAverageSpeed()) >= Constants.STATIONARY_SPEED_THRESHOLD)) {
-
-      DriveSubsystem.stopMotors();
-
-    } else if(!baselock && (Math.abs(DriveSubsystem.getAverageSpeed()) < Constants.STATIONARY_SPEED_THRESHOLD)) {
-
-      DriveSubsystem.baselock();
-      baselock = true;
-    }*/
-    if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()){
+    robotDrive.arcadeDrive(driverGamepad.getX(Hand.kRight), driverGamepad.getY(Hand.kLeft));
+    /*
+     * baselock = false;
+     * 
+     * } else if(driverGamepad.getY(Hand.kLeft) <= Constants.JOYSTICK_DEADBAND &&
+     * (driverGamepad.getX(Hand.kRight) <= Constants.JOYSTICK_DEADBAND) &&
+     * (Math.abs(DriveSubsystem.getAverageSpeed()) >=
+     * Constants.STATIONARY_SPEED_THRESHOLD)) {
+     * 
+     * DriveSubsystem.stopMotors();
+     * 
+     * } else if(!baselock && (Math.abs(DriveSubsystem.getAverageSpeed()) <
+     * Constants.STATIONARY_SPEED_THRESHOLD)) {
+     * 
+     * DriveSubsystem.baselock(); baselock = true; }
+     */
+    if (operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()) {
       ClimbSubsystem.setBrake();
     }
 
-    
-    if(operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()){
+    if (operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()) {
       ClimbSubsystem.releaseBreak();
 
     }
-    if (operatorGamepad.getBumper(Hand.kRight) && (Math.abs(operatorGamepad.getY(Hand.kLeft)) > 0.15)) { 
+    if (operatorGamepad.getBumper(Hand.kRight) && (Math.abs(operatorGamepad.getY(Hand.kLeft)) > 0.15)) {
       double leftSpeed = operatorGamepad.getY(Hand.kLeft);
       ClimbSubsystem.setSpeed(leftSpeed);
-    }else{
+    } else {
       ClimbSubsystem.setSpeed(0);
     }
 
@@ -190,125 +207,115 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hood Output", ShooterSubsystem.getHoodVoltage());
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getFeederSpeed());
     SmartDashboard.putNumber("Abs Hood", ShooterSubsystem.getAbsHoodPosition());
-    if (operatorGamepad.getXButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
+    if (operatorGamepad.getXButton() && !operatorGamepad.getBumper(Hand.kRight)) {
       IntakeSubsystem.djSpinnerUp();
       IntakeSubsystem.spinDJSpinner();
-    }else if (operatorGamepad.getYButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
+    } else if (operatorGamepad.getYButton() && !operatorGamepad.getBumper(Hand.kRight)) {
       IntakeSubsystem.djSpinnerUp();
-    }else{
+    } else {
       IntakeSubsystem.djSpinnerDown();
       IntakeSubsystem.stopDJSpinner();
     }
-   if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
+    if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) {
       ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 4000));
       ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
       ShooterSubsystem.compressorDisabled();
-     // ShooterSubsystem.spinShooterAuto();
-     // ShooterSubsystem.setHoodAngleAuto();
-      if(ShooterSubsystem.checkRPM()){
+      // ShooterSubsystem.spinShooterAuto();
+      // ShooterSubsystem.setHoodAngleAuto();
+      if (ShooterSubsystem.checkRPM()) {
         operatorGamepad.setRumble(RumbleType.kLeftRumble, 1);
 
-      }
-      else{
+      } else {
         operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
       }
-     
-//This is Test Mode for Pit
-    } else if (operatorGamepad.getBButton() && operatorGamepad.getBumper(Hand.kRight)) { 
+
+      // This is Test Mode for Pit
+    } else if (operatorGamepad.getBButton() && operatorGamepad.getBumper(Hand.kRight)) {
       ShooterSubsystem.spinShooter(1200);
       ShooterSubsystem.spinBooster(6500);
       ShooterSubsystem.setHoodAngle(40);
       ShooterSubsystem.compressorDisabled();
 
-     }
-//pre-spin the shooter wheels
-     else if(operatorGamepad.getTriggerAxis(Hand.kLeft) > .1){
+    }
+    // pre-spin the shooter wheels
+    else if (operatorGamepad.getTriggerAxis(Hand.kLeft) > .1) {
       ShooterSubsystem.spinShooter(4800);
       ShooterSubsystem.spinBooster(4000);
 
       ShooterSubsystem.compressorDisabled();
-    }
-      else {
+    } else {
       ShooterSubsystem.compressorEnabled();
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();
       ShooterSubsystem.setHoodAngle(0);
       operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
-    //  ShooterSubsystem.releaseHood();
-     }
-     
-     if (driverGamepad.getTriggerAxis(Hand.kRight) > .1){
-      IntakeSubsystem.spinRollers(); 
-     }else if(!(operatorGamepad.getTriggerAxis(Hand.kRight) > .1)){
-      IntakeSubsystem.stopRollers();
-     }
+      // ShooterSubsystem.releaseHood();
+    }
 
-     if (driverGamepad.getBumper(Hand.kRight)){
+    if (driverGamepad.getTriggerAxis(Hand.kRight) > .1) {
+      IntakeSubsystem.spinRollers();
+    } else if (!(operatorGamepad.getTriggerAxis(Hand.kRight) > .1)) {
+      IntakeSubsystem.stopRollers();
+    }
+
+    if (driverGamepad.getBumper(Hand.kRight)) {
       IntakeSubsystem.intakeExtend();
-     }else {
+    } else {
       IntakeSubsystem.intakeRetract();
-     }
-    
-     if (operatorGamepad.getTriggerAxis(Hand.kRight) > .1) { 
-       IntakeSubsystem.pulseRollers();
+    }
+
+    if (operatorGamepad.getTriggerAxis(Hand.kRight) > .1) {
+      IntakeSubsystem.pulseRollers();
       ShooterSubsystem.spinFeeder(1000);
-      //ShooterSubsystem.compressorDisabled(); 
-      if(!(driverGamepad.getTriggerAxis(Hand.kRight) > .1)){
-      IntakeSubsystem.serialize();
+      // ShooterSubsystem.compressorDisabled();
+      if (!(driverGamepad.getTriggerAxis(Hand.kRight) > .1)) {
+        IntakeSubsystem.serialize();
       }
 
-     } else if (!(driverGamepad.getTriggerAxis(Hand.kLeft) > .1 )) {
+    } else if (!(driverGamepad.getTriggerAxis(Hand.kLeft) > .1)) {
       ShooterSubsystem.stopFeeder();
-      //ShooterSubsystem.compressorEnabled();
-      if(! (driverGamepad.getTriggerAxis(Hand.kRight) > .1)){
+      // ShooterSubsystem.compressorEnabled();
+      if (!(driverGamepad.getTriggerAxis(Hand.kRight) > .1)) {
         IntakeSubsystem.stopSerialize();
       }
-      
-     }
 
-     if(driverGamepad.getTriggerAxis(Hand.kLeft) > .1){
-       IntakeSubsystem.reverseIntake();
-       IntakeSubsystem.reverseSerialize();
-       ShooterSubsystem.reverseFeeder();
-     }
-     
-     if((Math.abs(operatorGamepad.getX(Hand.kRight)) > 0.1) && (operatorGamepad.getBumper(Hand.kRight))){
-      ShooterSubsystem.adjustTurret( operatorGamepad.getX(Hand.kRight));
+    }
 
-     }
-     else if(operatorGamepad.getAButton()){
+    if (driverGamepad.getTriggerAxis(Hand.kLeft) > .1) {
+      IntakeSubsystem.reverseIntake();
+      IntakeSubsystem.reverseSerialize();
+      ShooterSubsystem.reverseFeeder();
+    }
+
+    if ((Math.abs(operatorGamepad.getX(Hand.kRight)) > 0.1) && (operatorGamepad.getBumper(Hand.kRight))) {
+      ShooterSubsystem.adjustTurret(operatorGamepad.getX(Hand.kRight));
+
+    } else if (operatorGamepad.getAButton()) {
       ShooterSubsystem.updateLimelightTracking();
       NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-      if (ShooterSubsystem.llHasValidTarget){
+      if (ShooterSubsystem.llHasValidTarget) {
         ShooterSubsystem.adjustTurret(ShooterSubsystem.llSteer);
       }
-     }
-     else if(operatorGamepad.getPOV() == 0 && !dPadPressed){
+    } else if (operatorGamepad.getPOV() == 0 && !dPadPressed) {
       dPadPressed = true;
       ShooterSubsystem.turnTurret(0);
-    }
-    else if(operatorGamepad.getPOV() == 90 && !dPadPressed){
+    } else if (operatorGamepad.getPOV() == 90 && !dPadPressed) {
       dPadPressed = true;
       ShooterSubsystem.turnTurret(90);
-    }
-    else if(operatorGamepad.getPOV() == 180 && !dPadPressed){
+    } else if (operatorGamepad.getPOV() == 180 && !dPadPressed) {
       dPadPressed = true;
       ShooterSubsystem.turnTurret(180);
-    }
-    else if(operatorGamepad.getPOV() == 270 && !dPadPressed){
+    } else if (operatorGamepad.getPOV() == 270 && !dPadPressed) {
       dPadPressed = true;
       ShooterSubsystem.turnTurret(-35);
     }
 
-    
-
-      else{
-       //ShooterSubsystem.adjustTurret(0);
-       dPadPressed = false;
-       NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
-     }
-     
+    else {
+      // ShooterSubsystem.adjustTurret(0);
+      dPadPressed = false;
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+    }
 
   }
 
