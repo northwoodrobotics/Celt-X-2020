@@ -96,7 +96,7 @@ public final class Constants {
     public static final double MATCH_RPM_LOWER_THRESHOLD = 0.95;
     public static final double MATCH_RPM_UPPER_THRESHOLD = 1.05;
     public static final double DJ_SPINNER_SPEED = 60.0;
-    public static final float CC_ABS_TURRET_LIMIT = 260;
+    public static final float CW_ABS_TURRET_LIMIT = 242;
     public static final float CCW_ABS_TURRET_LIMIT = (float) 20;
 
 

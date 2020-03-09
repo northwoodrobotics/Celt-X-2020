@@ -143,7 +143,7 @@ public class ShooterSubsystem extends SubsystemBase {
     hoodEncoder.setPosition(getAbsHoodPosition()*Constants.HOOD_GEAR_RATIO);
     turretEncoder.setPosition((getAbsTurretPosition()*Constants.TURRET_GEAR_RATIO)/360);
     System.out.println("Turr: "+turretEncoder.getPosition());
-    turret.setSoftLimit(SoftLimitDirection.kForward, (float)(getTurretAngleFromAbs( Constants.CC_ABS_TURRET_LIMIT)*Constants.TURRET_GEAR_RATIO/360));
+    turret.setSoftLimit(SoftLimitDirection.kForward, (float)(getTurretAngleFromAbs( Constants.CW_ABS_TURRET_LIMIT)*Constants.TURRET_GEAR_RATIO/360));
     turret.setSoftLimit(SoftLimitDirection.kReverse, (float)(getTurretAngleFromAbs( Constants.CCW_ABS_TURRET_LIMIT)*Constants.TURRET_GEAR_RATIO/360));
     turret.enableSoftLimit(SoftLimitDirection.kForward, true);
     turret.enableSoftLimit(SoftLimitDirection.kReverse, true);
