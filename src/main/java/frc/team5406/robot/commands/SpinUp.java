@@ -8,11 +8,11 @@ import frc.team5406.robot.subsystems.ShooterSubsystem;
 
 public class SpinUp extends CommandBase {
   // The subsystem the command runs on
-  private final ShooterSubsystem spinUp;
+  private final ShooterSubsystem shooter;
 
   public SpinUp(ShooterSubsystem subsystem) {
-    spinUp = subsystem;
-    addRequirements(spinUp);
+    shooter = subsystem;
+    addRequirements(shooter);
   }
 
   @Override
@@ -39,9 +39,9 @@ public class SpinUp extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    ShooterSubsystem.stopBooster();
+    /*ShooterSubsystem.stopBooster();
     ShooterSubsystem.stopShooter();
-    ShooterSubsystem.compressorEnabled();
+    ShooterSubsystem.compressorEnabled();*/
 
   }
 }

@@ -14,11 +14,15 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.team5406.robot.subsystems.DriveSubsystem;
 import frc.team5406.robot.subsystems.IntakeSubsystem;
 import frc.team5406.robot.subsystems.ShooterSubsystem;
+import frc.team5406.robot.autos.DriveStraight;
+import frc.team5406.robot.autos.FiveBallRight;
 import frc.team5406.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -29,7 +33,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+ // private RobotContainer m_robotContainer;
+ private DriveStraight driveStraightFwd;
+ private FiveBallRight fiveBallRight;
+ private static final String driveStraightFwdString = "DriveStraightFwd";
+  private static final String fiveBallRightString = "FiveBallRight";
+  private String m_autoSelected;
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
 
   XboxController operatorGamepad = new XboxController(Constants.OPERATOR_CONTROLLER);
   XboxController driverGamepad = new XboxController(Constants.DRIVER_CONTROLLER);
@@ -46,21 +57,17 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-    DriveSubsystem.setupMotors();
+    driveStraightFwd = new DriveStraight();
+    fiveBallRight = new FiveBallRight();
+    //m_robotContainer = new RobotContainer();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
     ClimbSubsystem.setupMotors();
-    SmartDashboard.putNumber("Shooter Target RPM", 5000);
-    SmartDashboard.putNumber("Booster Target RPM", 6500);
-    SmartDashboard.putNumber("Feeder Target RPM", 500);
-    SmartDashboard.putNumber("Hood Target Angle", 0);
-    
-    SmartDashboard.putNumber("SHOOTER_PID_P", Constants.SHOOTER_PID0_P);
-    SmartDashboard.putNumber("SHOOTER_PID_I", Constants.SHOOTER_PID0_I);
-    SmartDashboard.putNumber("SHOOTER_PID_D", Constants.SHOOTER_PID0_D);
-    SmartDashboard.putNumber("SHOOTER_PID_F", Constants.SHOOTER_PID0_F);
-  }
+
+    m_chooser.setDefaultOption("Drive Straight Forward", driveStraightFwdString);
+    m_chooser.addOption("Five Ball, Right", fiveBallRightString);
+    SmartDashboard.putData("Auto choices", m_chooser);
+}
 
   /**
    * This function is called every robot packet, no matter the mode. Use this for items like
@@ -97,12 +104,23 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-   /* m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autoSelected = m_chooser.getSelected();
+    IntakeSubsystem.djSpinnerDown();
 
-    // schedule the autonomous command (example)
+    switch (m_autoSelected) {
+    case driveStraightFwdString:
+      m_autonomousCommand = driveStraightFwd.getAutonomousCommand();
+      break;
+    case fiveBallRightString:
+    default:
+      m_autonomousCommand = fiveBallRight.getAutonomousCommand();
+      break;
+    }
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
-    }*/
+    }
+    
   }
 
   /**
@@ -182,12 +200,12 @@ public class Robot extends TimedRobot {
       IntakeSubsystem.stopDJSpinner();
     }
    if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) { 
-     // ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
+      ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 4000));
-     // ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+      ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
       ShooterSubsystem.compressorDisabled();
-      ShooterSubsystem.spinShooterAuto();
-      ShooterSubsystem.setHoodAngleAuto();
+     // ShooterSubsystem.spinShooterAuto();
+     // ShooterSubsystem.setHoodAngleAuto();
       if(ShooterSubsystem.checkRPM()){
         operatorGamepad.setRumble(RumbleType.kLeftRumble, 1);
 
@@ -221,12 +239,15 @@ public class Robot extends TimedRobot {
      }
      
      if (driverGamepad.getTriggerAxis(Hand.kRight) > .1){
-      IntakeSubsystem.intakeExtend();
       IntakeSubsystem.spinRollers(); 
-      //IntakeSubsystem.setSerializerCircle();
      }else if(!(operatorGamepad.getTriggerAxis(Hand.kRight) > .1)){
-      IntakeSubsystem.intakeRetract();
       IntakeSubsystem.stopRollers();
+     }
+
+     if (driverGamepad.getBumper(Hand.kRight)){
+      IntakeSubsystem.intakeExtend();
+     }else {
+      IntakeSubsystem.intakeRetract();
      }
     
      if (operatorGamepad.getTriggerAxis(Hand.kRight) > .1) { 
@@ -275,7 +296,11 @@ public class Robot extends TimedRobot {
       dPadPressed = true;
       ShooterSubsystem.turnTurret(180);
     }
-     
+    else if(operatorGamepad.getPOV() == 270 && !dPadPressed){
+      dPadPressed = true;
+      ShooterSubsystem.turnTurret(-35);
+    }
+
     
 
       else{

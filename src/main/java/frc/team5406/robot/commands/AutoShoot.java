@@ -4,16 +4,20 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.team5406.robot.Constants;
 import frc.team5406.robot.subsystems.ShooterSubsystem;
+import frc.team5406.robot.subsystems.IntakeSubsystem;
 
 
 public class AutoShoot extends CommandBase {
   // The subsystem the command runs on
   private final ShooterSubsystem shooter;
+  private final IntakeSubsystem intake;
   private boolean readyToShoot = false;
 
-  public AutoShoot(ShooterSubsystem subsystem) {
-    shooter = subsystem;
+  public AutoShoot(ShooterSubsystem _shooter, IntakeSubsystem _intake) {
+    shooter = _shooter;
+    intake = _intake;
     addRequirements(shooter);
+    addRequirements(intake);
   }
 
   @Override
@@ -36,6 +40,9 @@ public class AutoShoot extends CommandBase {
     if(readyToShoot) {
 
       ShooterSubsystem.spinFeeder(1000);
+      IntakeSubsystem.pulseRollers();
+      IntakeSubsystem.serialize();
+      
 
     }
 

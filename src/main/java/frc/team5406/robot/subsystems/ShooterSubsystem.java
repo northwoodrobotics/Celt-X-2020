@@ -109,8 +109,8 @@ public class ShooterSubsystem extends SubsystemBase {
     turretPID.setSmartMotionMaxAccel(40000, 0);
     turretPID.setSmartMotionAllowedClosedLoopError(0.2, 0);
 
-    turretPID.setSmartMotionMaxVelocity(5000, 1);
-    turretPID.setSmartMotionMaxAccel(5000, 1);
+    turretPID.setSmartMotionMaxVelocity(8000, 1);
+    turretPID.setSmartMotionMaxAccel(8000, 1);
     turretPID.setSmartMotionAllowedClosedLoopError(0.1, 1);
 
     feederPID.setP(Constants.FEEDER_PID0_P);
@@ -270,7 +270,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public static void adjustTurret(double turn){
-    turretPID.setReference(turretEncoder.getPosition() + turn, ControlType.kSmartMotion, 1);
+    turretPID.setReference(turretEncoder.getPosition() + turn*2, ControlType.kSmartMotion, 1);
 
   }
 
@@ -324,9 +324,9 @@ public class ShooterSubsystem extends SubsystemBase {
         return;
       }
       double d = (Constants.LL_TARGET_HEIGHT / Math.tan(Units.degreesToRadians(Constants.LL_MOUNT_ANGLE+ty)));
-       hoodAngle = -0.0003*d*d + 0.185*d + 27.203;
-       rpm = (-0.0271*d*d + 16.63*d + 2385.8) * shooterMultiplier;
-       
+      hoodAngle = 0.8*(0.0022*ty*ty*ty + 0.0392*ty*ty - 0.8528*ty + 41.301);
+      rpm =1.25*( 0.3936*ty*ty*ty + 6.6869*ty*ty - 69.138*ty + 4184.5);
+
        if(hoodAngle > Constants.MAX_HOOD_ANGLE){
          hoodAngle = Constants.MAX_HOOD_ANGLE;
        }
@@ -342,7 +342,7 @@ public class ShooterSubsystem extends SubsystemBase {
        if(ts< -45){
          ts+= 90;
        }
-       double txOff = ts/Constants.TX_OFFSET_DIVISOR;
+       double txOff = 0; //ts/Constants.TX_OFFSET_DIVISOR;
        /*System.out.println("hood " + hoodAngle);
        System.out.println("rpm " + rpm);
        System.out.println("ty " + ty);

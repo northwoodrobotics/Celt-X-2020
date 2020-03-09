@@ -7,6 +7,9 @@
 
 package frc.team5406.robot;
 
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -16,7 +19,7 @@ package frc.team5406.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    //CAN IDs
+    //CAN Motor IDs
     public static final int LEFT_DRIVE_MOTOR_ONE = 1; //SparkMax, NEO
     public static final int LEFT_DRIVE_MOTOR_TWO = 2; //SparkMax, NEO
     public static final int RIGHT_DRIVE_MOTOR_ONE = 3; //SparkMax, NEO
@@ -76,13 +79,13 @@ public final class Constants {
     public static final double JOYSTICK_DEADBAND = 0.2;
     public static final double SHOOTER_ADJUSTMENT = 0.05;
     public static final int SECONDS_PER_MINUTE = 60;
-    public static final double LIMELIGHT_STEER_KP = 0.025; 
+    public static final double LIMELIGHT_STEER_KP = 0.06; 
     public static final double LIMELIGHT_MAX_DRIVE = 0.3;
     public static final double LIMELIGHT_STEER_KD = 0.005;
     public static final double LIMELIGHT_STEER_KI = 0.1;
 
-    public static final double DIAMOND_PLATE_SHOOTER_RPM = 1950;
-    public static final double DIAMOND_PLATE_HOOD_ANGLE = 4.0;
+    public static final double DIAMOND_PLATE_SHOOTER_RPM = 2500;
+    public static final double DIAMOND_PLATE_HOOD_ANGLE = 0;
     public static final double MAX_HOOD_ANGLE = 65;
     public static final double MAX_SHOOTER_RPM = 6500;
 
@@ -156,16 +159,6 @@ public final class Constants {
     public static final double RIGHT_CLIMBER_PID0_D = 0;
     public static final double RIGHT_CLIMBER_PID0_F = 1.9e-3;
 
-    public static final double LEFT_DRIVE_PID0_P = 6e-5;
-    public static final double LEFT_DRIVE_PID0_I = 0;
-    public static final double LEFT_DRIVE_PID0_D = 0;
-    public static final double LEFT_DRIVE_PID0_F = 0.000015;
-
-    public static final double RIGHT_DRIVE_PID0_P = 6e-5;
-    public static final double RIGHT_DRIVE_PID0_I = 0;
-    public static final double RIGHT_DRIVE_PID0_D = 0;
-    public static final double RIGHT_DRIVE_PID0_F = 0.000015;
-
     public static final double LEFT_SERIALIZER_PID0_P = 3e-4;
     public static final double LEFT_SERIALIZER_PID0_I = 0;
     public static final double LEFT_SERIALIZER_PID0_D = 0;
@@ -181,6 +174,17 @@ public final class Constants {
     public static final double DJ_SPINNER_PID0_D = 0;
     public static final double DJ_SPINNER_PID0_F = 1.9e-3;
 
+    
+    public static final double LEFT_DRIVE_PID0_P = 9e-5;
+    public static final double LEFT_DRIVE_PID0_I = 0;
+    public static final double LEFT_DRIVE_PID0_D = 0;
+    public static final double LEFT_DRIVE_PID0_F = 0;
+
+    public static final double RIGHT_DRIVE_PID0_P = 9e-5;
+    public static final double RIGHT_DRIVE_PID0_I = 0;
+    public static final double RIGHT_DRIVE_PID0_D = 0;
+    public static final double RIGHT_DRIVE_PID0_F = 0;
+
     //Current Limits
     public static final int NEO550_CURRENT_LIMIT = 40;
     public static final int NEO_CURRENT_LIMIT = 60;
@@ -190,7 +194,20 @@ public final class Constants {
     public static final int BOOSTER_CURRENT_LIMIT = 50;
     public static final int HOOD_CURRENT_LIMIT = 30;
 
-    //public static final long DANNYS_CONSTANT = 121212111233234344545379421645;
+    public static final double S_VOLTS = 0.209;
+    public static final double V_VOLTS = 2.5;
+    public static final double A_VOLTS = 0.55;
+    
+    public static final double RAMSETE_B = 2;
+    public static final double RAMSETE_ZETA = 0.7;
 
+    public static final double TRACK_WIDTH_INCHES = 31.1; //experimentally determined
+    public static final DifferentialDriveKinematics DRIVE_KINEMATICS =
+        new DifferentialDriveKinematics(Units.inchesToMeters(TRACK_WIDTH_INCHES));
 
+    public static final double MAX_SPEED_METERS_PER_SECOND = 2;
+    public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 1.2;
+
+    public static final boolean GYRO_REVERSED = true;
+    public static double INCHES_PER_REV = Math.PI * DRIVE_WHEEL_DIAMETER / DRIVE_GEAR_RATIO;
 }

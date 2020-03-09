@@ -17,22 +17,23 @@ public class AutoIntake extends CommandBase {
   @Override
   public void initialize() {
     
-    IntakeSubsystem.intakeExtend();
+    IntakeSubsystem.intakeExtend();   
+    IntakeSubsystem.spinRollers();
+
   }
 
   @Override
   public void execute() {
       
-    IntakeSubsystem.spinRollers();
 
   }
 
   @Override
   public boolean isFinished() {
 
-    // SOMETHING GOES IN HERE
+    // NEEDS SOME EXTERNAL INPUT OR SEPARATE STOP OUT
     
-    return true;
+    return false;
   }
 
   @Override

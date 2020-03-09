@@ -25,29 +25,27 @@ public class AlignTurret extends CommandBase {
 
   @Override
   public void execute() {
-      
+    ShooterSubsystem.updateLimelightTracking();
+
     if (ShooterSubsystem.llHasValidTarget) {
 
-        ShooterSubsystem.turnTurret(ShooterSubsystem.llSteer);
+        ShooterSubsystem.adjustTurret(ShooterSubsystem.llSteer);
     }
 
   }
 
   @Override
   public boolean isFinished() {
+    return (ShooterSubsystem.llHasValidTarget && Math.abs(NetworkTableInstance.getDefault()
+    .getTable("limelight").getEntry("tx").getDouble(0)) < 1);
 
-    if(Math.abs(NetworkTableInstance.getDefault()
-    .getTable("limelight").getEntry("tx").getDouble(0)) < 0.1) {
+    
 
-    }  
-
-    return true;
   }
 
   @Override
   public void end(boolean interrupted) {
 
-    ShooterSubsystem.turnTurret(0);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
 
   }

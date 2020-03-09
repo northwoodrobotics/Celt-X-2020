@@ -152,6 +152,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public static void intakeRetract() {
 
     setIntakePosition(Constants.INTAKE_RETRACT);
+    
     intakeCylinder.set(Constants.INTAKE_RETRACT);
   }
 
