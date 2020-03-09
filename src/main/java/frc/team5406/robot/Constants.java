@@ -35,7 +35,7 @@ public final class Constants {
     public static final int LEFT_CLIMBER_MOTOR = 14; //SparkMax, NEO
     public static final int RIGHT_CLIMBER_MOTOR = 15; //SparkMax, NEO
     public static final int THROAT_SERIALIZER_MOTOR_TWO = 21; //TalonSRX, BAG
-    public static final int UPPER_FEEDER_MOTOR = 22; //SparkMax, NEO
+    public static final int FEEDER_MOTOR = 8; //SparkMax, NEO
     
 
     //CANcoder PORTS
@@ -116,12 +116,12 @@ public final class Constants {
     public static final double RIGHT_CLIMBER_PID0_D = 0;
     public static final double RIGHT_CLIMBER_PID0_F = 1.9e-3;
 
-    public static final double LEFT_DRIVE_PID0_P = 6e-5;
+    public static final double LEFT_DRIVE_PID0_P = 9e-5;
     public static final double LEFT_DRIVE_PID0_I = 0;
     public static final double LEFT_DRIVE_PID0_D = 0;
     public static final double LEFT_DRIVE_PID0_F = 0;
 
-    public static final double RIGHT_DRIVE_PID0_P = 6e-5;
+    public static final double RIGHT_DRIVE_PID0_P = 9e-5;
     public static final double RIGHT_DRIVE_PID0_I = 0;
     public static final double RIGHT_DRIVE_PID0_D = 0;
     public static final double RIGHT_DRIVE_PID0_F = 0;
@@ -136,13 +136,13 @@ public final class Constants {
     public static final int HOOD_CURRENT_LIMIT = 30;
 
     public static final double S_VOLTS = 0.209;
-    public static final double V_VOLTS = 2.85;
-    public static final double A_VOLTS = 0.556;
+    public static final double V_VOLTS = 2.5;
+    public static final double A_VOLTS = 0.55;
     
     public static final double RAMSETE_B = 2;
     public static final double RAMSETE_ZETA = 0.7;
 
-    public static final double TRACK_WIDTH_INCHES = 25.6;
+    public static final double TRACK_WIDTH_INCHES = 31.1;
     public static final DifferentialDriveKinematics DRIVE_KINEMATICS =
         new DifferentialDriveKinematics(Units.inchesToMeters(TRACK_WIDTH_INCHES));
 

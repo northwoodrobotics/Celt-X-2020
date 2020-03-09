@@ -96,7 +96,7 @@ static SimpleMotorFeedforward driveTrain =
   }
 
   public void arcadeDrive(double speed, double turn){
-    drive.arcadeDrive(-1*turn, speed);
+    drive.arcadeDrive(-1*turn, -1*speed);
   }
 /*
   // Set Speed For Both

@@ -15,10 +15,13 @@ import frc.team5406.robot.subsystems.DriveSubsystem;
 import frc.team5406.robot.subsystems.IntakeSubsystem;
 import frc.team5406.robot.subsystems.ShooterSubsystem;
 import frc.team5406.robot.autos.DriveStraight;
+import frc.team5406.robot.autos.AutoTwo;
 import frc.team5406.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -30,7 +33,13 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
  // private RobotContainer m_robotContainer;
-  private DriveStraight m_driveStraight;
+ private DriveStraight autoOneBack;
+ private AutoTwo autoTwoFwd;
+ private static final String oneMeterBack = "OneMeterBack";
+  private static final String twoMetersFwd = "TwoMetersFwd";
+  private String m_autoSelected;
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
 
   XboxController operatorGamepad = new XboxController(Constants.OPERATOR_CONTROLLER);
   XboxController driverGamepad = new XboxController(Constants.DRIVER_CONTROLLER);
@@ -44,11 +53,17 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_driveStraight = new DriveStraight();
+    autoOneBack = new DriveStraight();
+    autoTwoFwd = new AutoTwo();
     //m_robotContainer = new RobotContainer();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
     ClimbSubsystem.setupMotors();
+
+    m_chooser.setDefaultOption("One Meter Back", oneMeterBack);
+    m_chooser.addOption("Two Meters Forwards", twoMetersFwd);
+    SmartDashboard.putData("Auto choices", m_chooser);
+
     /*robotDrive.setHeading();
     robotDrive.reset();
     SmartDashboard.putNumber("Shooter Target RPM", 5000);
@@ -98,12 +113,26 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_driveStraight.getAutonomousCommand();
+    m_autoSelected = m_chooser.getSelected();
 
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+
+    switch (m_autoSelected) {
+      case oneMeterBack:
+      m_autonomousCommand = autoOneBack.getAutonomousCommand();
+
+
+        break;
+      case twoMetersFwd:
+      default:
+      m_autonomousCommand = autoTwoFwd.getAutonomousCommand();
+        break;
     }
+
+          // schedule the autonomous command (example)
+          if (m_autonomousCommand != null) {
+            m_autonomousCommand.schedule();
+          }
+    
   }
 
   /**
@@ -135,7 +164,7 @@ public class Robot extends TimedRobot {
  
     SmartDashboard.putNumber("ts", ts); 
     SmartDashboard.putNumber("tx", tx);
-    robotDrive.arcadeDrive(operatorGamepad.getY(Hand.kLeft), operatorGamepad.getX(Hand.kRight));
+    robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft), driverGamepad.getX(Hand.kRight));
     /*if(driverGamepad.getXButton()){
       ClimbSubsystem.climbExtend();
     }

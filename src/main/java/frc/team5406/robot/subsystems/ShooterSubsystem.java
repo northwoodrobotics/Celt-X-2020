@@ -33,7 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private static CANSparkMax hood = new CANSparkMax(Constants.HOOD_MOTOR, MotorType.kBrushless);
   private static CANSparkMax turret = new CANSparkMax(Constants.TURRET_AZIMUTH_MOTOR, MotorType.kBrushless);
   
-  private static CANSparkMax upperFeeder = new CANSparkMax(Constants.UPPER_FEEDER_MOTOR, MotorType.kBrushless);
+  private static CANSparkMax feeder = new CANSparkMax(Constants.FEEDER_MOTOR, MotorType.kBrushless);
 
   private static CANCoder turretEncoder, hoodAbsoluteEncoder;
   private static CANEncoder shooterEncoder, boosterEncoder, hoodEncoder, feederEncoder;
@@ -56,14 +56,14 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterEncoder = shooterMaster.getEncoder();
     boosterEncoder = booster.getEncoder();
     hoodEncoder = hood.getEncoder();
-    feederEncoder = upperFeeder.getEncoder();
+    feederEncoder = feeder.getEncoder();
     turretEncoder = new CANCoder(Constants.TURRET_ENCODER);
     hoodAbsoluteEncoder = new CANCoder(Constants.HOOD_ENCODER);
 
     shooterPID = shooterMaster.getPIDController();
     boosterPID = booster.getPIDController();
     hoodPID = hood.getPIDController();
-    feederPID = upperFeeder.getPIDController();
+    feederPID = feeder.getPIDController();
 
     shooterSlave.follow(shooterMaster, true);
 
@@ -104,7 +104,7 @@ public class ShooterSubsystem extends SubsystemBase {
     booster.setSmartCurrentLimit(Constants.BOOSTER_CURRENT_LIMIT);
     hood.setSmartCurrentLimit(Constants.HOOD_CURRENT_LIMIT);
 
-    upperFeeder.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
+    feeder.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
 
     resetEncoders();
   }
@@ -213,13 +213,13 @@ System.out.println(p);*/
   }
   public static void reverseFeeder() {
    
-    upperFeeder.set(-1 * Constants.UPPER_FEEDER_OUTPUT);
+    feeder.set(-1 * Constants.UPPER_FEEDER_OUTPUT);
 
   }
 
   public static void stopFeeder() {
 
-    upperFeeder.set(0);
+    feeder.set(0);
   }
 
   public static void getRPM() {

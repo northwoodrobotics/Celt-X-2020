@@ -20,24 +20,27 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
+import com.revrobotics.CANPIDController;
+
 import frc.team5406.robot.subsystems.DriveSubsystem;
 
-public class autoTwo {
+public class AutoTwo {
 
     private final DriveSubsystem drive = new DriveSubsystem();
 
     XboxController driverGamepad = new XboxController(1);
 
-    public autoTwo () {
+    public AutoTwo () {
         
-        drive.setDefaultCommand(
+      /*  drive.setDefaultCommand(
         
         new RunCommand(() -> drive
             .arcadeDrive(driverGamepad.getY(GenericHID.Hand.kLeft),
                          driverGamepad.getX(GenericHID.Hand.kRight)), drive));
-    }
+    */  }
 
     public Command getAutonomousCommand() {
+        drive.reset();
         var autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(
             new SimpleMotorFeedforward(Constants.S_VOLTS,
@@ -55,32 +58,32 @@ public class autoTwo {
         /* Rotation2d endpoint = new Rotation2d();
         endpoint = Rotation2d.fromDegrees(45); */
 
-    Trajectory pathOneTrajectory = TrajectoryGenerator.generateTrajectory(
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
         List.of(
-            //new Translation2d(1, 1),
-            //new Translation2d(2, -1)
+            /*new Translation2d(1, 1),
+            new Translation2d(2, -1)*/
         ),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
+        new Pose2d(2, 0, new Rotation2d(0)),
         config
     );
+
     
-        RamseteCommand ramseteCommandOne = new RamseteCommand(
-        pathOneTrajectory,
-        drive::getPose,
-        new RamseteController(Constants.RAMSETE_B, Constants.RAMSETE_ZETA),
-        Constants.DRIVE_KINEMATICS,
-        drive::outputSpeeds,
-        drive
+    
+        RamseteCommand ramseteCommand = new RamseteCommand(
+            exampleTrajectory,
+            drive::getPose,
+            new RamseteController(Constants.RAMSETE_B, Constants.RAMSETE_ZETA),
+            Constants.DRIVE_KINEMATICS,
+            drive::outputSpeeds,
+            drive
     );
 
 
-        return ramseteCommandOne.andThen(() -> drive.tankDriveVolts(0, 0));
+        return ramseteCommand.andThen(() -> drive.tankDriveVolts(0, 0));
       }
-
-      
-
     
 }
 
