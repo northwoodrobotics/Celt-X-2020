@@ -34,9 +34,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
  // private RobotContainer m_robotContainer;
- private DriveStraight driveStraightFwd;
+ private DriveStraight driveStraight;
  private FiveBallRight fiveBallRight;
- private static final String driveStraightFwdString = "DriveStraightFwd";
+ private static final String driveStraightString = "DriveStraight";
   private static final String fiveBallRightString = "FiveBallRight";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -57,14 +57,14 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    driveStraightFwd = new DriveStraight();
+    driveStraight = new DriveStraight();
     fiveBallRight = new FiveBallRight();
     //m_robotContainer = new RobotContainer();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
     ClimbSubsystem.setupMotors();
 
-    m_chooser.setDefaultOption("Drive Straight Forward", driveStraightFwdString);
+    m_chooser.setDefaultOption("Drive Straight Backwards", driveStraightString);
     m_chooser.addOption("Five Ball, Right", fiveBallRightString);
     SmartDashboard.putData("Auto choices", m_chooser);
 }
@@ -108,8 +108,8 @@ public class Robot extends TimedRobot {
     IntakeSubsystem.djSpinnerDown();
 
     switch (m_autoSelected) {
-    case driveStraightFwdString:
-      m_autonomousCommand = driveStraightFwd.getAutonomousCommand();
+    case driveStraightString:
+      m_autonomousCommand = driveStraight.getAutonomousCommand();
       break;
     case fiveBallRightString:
     default:
