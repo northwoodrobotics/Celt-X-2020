@@ -5,15 +5,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team5406.robot.Constants;
 import frc.team5406.robot.subsystems.ShooterSubsystem;
 import frc.team5406.robot.subsystems.IntakeSubsystem;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 
-public class AutoShoot extends CommandBase {
+
+public class AutoShootAndIntake extends CommandBase {
   // The subsystem the command runs on
   private final ShooterSubsystem shooter;
   private final IntakeSubsystem intake;
   private boolean readyToShoot = false;
 
-  public AutoShoot(ShooterSubsystem _shooter, IntakeSubsystem _intake) {
+  public AutoShootAndIntake(ShooterSubsystem _shooter, IntakeSubsystem _intake) {
     shooter = _shooter;
     intake = _intake;
     addRequirements(shooter);
@@ -27,11 +29,24 @@ public class AutoShoot extends CommandBase {
     ShooterSubsystem.setHoodAngleAuto();
     ShooterSubsystem.spinBooster(Constants.BOOSTER_OUTPUT);
     ShooterSubsystem.compressorDisabled();
+    IntakeSubsystem.intakeExtend();   
+    IntakeSubsystem.spinRollers();
+    ShooterSubsystem.updateLimelightTracking();
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+
+
 
   }
 
   @Override
   public void execute() {
+    ShooterSubsystem.updateLimelightTracking();
+
+    if (ShooterSubsystem.llHasValidTarget) {
+
+        ShooterSubsystem.adjustTurret(ShooterSubsystem.llSteer);
+    }
+
       
     if(ShooterSubsystem.checkRPM() && !readyToShoot) {
       
@@ -40,7 +55,6 @@ public class AutoShoot extends CommandBase {
     if(readyToShoot) {
 
       ShooterSubsystem.spinFeeder(1000);
-      IntakeSubsystem.pulseRollers();
       IntakeSubsystem.serialize();
       
 
@@ -63,6 +77,9 @@ public class AutoShoot extends CommandBase {
     ShooterSubsystem.setHoodAngle(0);
     ShooterSubsystem.stopFeeder();
     IntakeSubsystem.stopSerialize();
+    IntakeSubsystem.intakeRetract();
+    IntakeSubsystem.stopIntake();
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
 
   }
 }

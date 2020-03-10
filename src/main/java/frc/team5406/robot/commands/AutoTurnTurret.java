@@ -31,13 +31,15 @@ public class AutoTurnTurret extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    //FIX - should wait until turret reaches target
-    return true;
+    return (ShooterSubsystem.getTurretPosition() > turretAngle -1)
+    && (ShooterSubsystem.getTurretPosition() < turretAngle +1)
+    && (ShooterSubsystem.getTurretVelocity() < 1);
+    
   }
 
   @Override
   public void end(boolean interrupted) {
 
-
+    System.out.println("Turn Turret Done");
   }
 }

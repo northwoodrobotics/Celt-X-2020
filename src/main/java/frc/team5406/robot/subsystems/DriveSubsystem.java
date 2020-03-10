@@ -56,10 +56,7 @@ static SimpleMotorFeedforward driveTrain =
  static Pose2d pose = new Pose2d();
 
   public static void setupMotors() {
-    leftDriveMotor.setIdleMode(IdleMode.kBrake);
-    leftDriveSlave.setIdleMode(IdleMode.kBrake);
-    rightDriveMotor.setIdleMode(IdleMode.kBrake);
-    rightDriveSlave.setIdleMode(IdleMode.kBrake);
+    setBrakeMode(false);
     leftDriveSlave.follow(leftDriveMotor);
     rightDriveSlave.follow(rightDriveMotor);
    rightDriveMotor.setInverted(false);
@@ -94,6 +91,14 @@ static SimpleMotorFeedforward driveTrain =
 
   public void arcadeDrive(double speed, double turn){
     drive.arcadeDrive(turn, -1*speed);
+  }
+
+  public static void setBrakeMode(boolean brake){
+    IdleMode brakeMode = (brake? IdleMode.kBrake:IdleMode.kCoast);
+    leftDriveMotor.setIdleMode(brakeMode);
+    leftDriveSlave.setIdleMode(brakeMode);
+    rightDriveMotor.setIdleMode(brakeMode);
+    rightDriveSlave.setIdleMode(brakeMode);
   }
 /*
   // Set Speed For Both

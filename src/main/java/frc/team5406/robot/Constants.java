@@ -79,7 +79,7 @@ public final class Constants {
     public static final double JOYSTICK_DEADBAND = 0.2;
     public static final double SHOOTER_ADJUSTMENT = 0.05;
     public static final int SECONDS_PER_MINUTE = 60;
-    public static final double LIMELIGHT_STEER_KP = 0.06; 
+    public static final double LIMELIGHT_STEER_KP = 0.1; 
     public static final double LIMELIGHT_MAX_DRIVE = 0.3;
     public static final double LIMELIGHT_STEER_KD = 0.005;
     public static final double LIMELIGHT_STEER_KI = 0.1;
@@ -201,12 +201,12 @@ public final class Constants {
     public static final double RAMSETE_B = 2;
     public static final double RAMSETE_ZETA = 0.7;
 
-    public static final double TRACK_WIDTH_INCHES = 31.1; //experimentally determined
+    public static final double TRACK_WIDTH_INCHES = 25.6; //experimentally determined
     public static final DifferentialDriveKinematics DRIVE_KINEMATICS =
         new DifferentialDriveKinematics(Units.inchesToMeters(TRACK_WIDTH_INCHES));
 
-    public static final double MAX_SPEED_METERS_PER_SECOND = 1.5;
-    public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 1;
+    public static final double MAX_SPEED_METERS_PER_SECOND = 2.5;
+    public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 1.5;
 
     public static final boolean GYRO_REVERSED = true;
     public static double INCHES_PER_REV = Math.PI * DRIVE_WHEEL_DIAMETER / DRIVE_GEAR_RATIO;

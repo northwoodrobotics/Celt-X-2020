@@ -15,8 +15,10 @@ import frc.team5406.robot.subsystems.DriveSubsystem;
 import frc.team5406.robot.subsystems.IntakeSubsystem;
 import frc.team5406.robot.subsystems.ShooterSubsystem;
 import frc.team5406.robot.autos.DriveStraight;
-import frc.team5406.robot.autos.FiveBallRight;
-import frc.team5406.robot.autos.SevenBallRight;
+import frc.team5406.robot.autos.FiveBallLeft;
+import frc.team5406.robot.autos.SevenBallLeft;
+import frc.team5406.robot.autos.EightBallRight;
+import frc.team5406.robot.autos.SixBallRight;
 import frc.team5406.robot.autos.ThreeBallCenter;
 import frc.team5406.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
@@ -37,13 +39,17 @@ public class Robot extends TimedRobot {
 
   // private RobotContainer m_robotContainer;
   private DriveStraight driveStraight;
-  private FiveBallRight fiveBallRight;
+  private FiveBallLeft fiveBallLeft;
+  private SevenBallLeft sevenBallLeft;
   private ThreeBallCenter threeBallCenter;
-  private SevenBallRight sevenBallRight;
+  private EightBallRight eightBallRight;
+  private SixBallRight sixBallRight;
   private static final String driveStraightString = "DriveStraight";
-  private static final String fiveBallRightString = "FiveBallRight";
+  private static final String fiveBallLeftString = "FiveBallLeft";
+  private static final String sevenBallLeftString = "SevenBallLeft";
   public static final String threeBallCenterString = "ThreeBallCenter";
-  private static final String sevenBallRightString = "SevenBallRight";
+  private static final String eightBallRightString = "EightBallRight";
+  private static final String sixBallRightString = "SixBallRight";
 
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -66,18 +72,22 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     driveStraight = new DriveStraight();
-    fiveBallRight = new FiveBallRight();
+    fiveBallLeft = new FiveBallLeft();
+    sevenBallLeft = new SevenBallLeft();
     threeBallCenter = new ThreeBallCenter();
-    sevenBallRight = new SevenBallRight();
+    eightBallRight = new EightBallRight();
+    sixBallRight = new SixBallRight();
     // m_robotContainer = new RobotContainer();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
     ClimbSubsystem.setupMotors();
 
     m_chooser.setDefaultOption("Drive Straight Backwards", driveStraightString);
-    m_chooser.addOption("Five Ball, Right", fiveBallRightString);
+    m_chooser.addOption("Five Ball, Left", fiveBallLeftString);
+    m_chooser.addOption("Seven Ball, Left", sevenBallLeftString);
     m_chooser.addOption("Three Ball, Center", threeBallCenterString);
-    m_chooser.addOption("Seven Ball, Right", sevenBallRightString);
+    m_chooser.addOption("Eight Ball, Right", eightBallRightString);
+    m_chooser.addOption("Six Ball, Right", sixBallRightString);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
@@ -109,6 +119,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    DriveSubsystem.setBrakeMode(false);
   }
 
   @Override
@@ -124,17 +135,27 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
     IntakeSubsystem.djSpinnerDown();
+    DriveSubsystem.setBrakeMode(true);
+    if (m_autoSelected == null) {
+      m_autoSelected="none";
+    }
 
     switch (m_autoSelected) {
 
-      case fiveBallRightString:
-        m_autonomousCommand = fiveBallRight.getAutonomousCommand();
+      case fiveBallLeftString:
+        m_autonomousCommand = fiveBallLeft.getAutonomousCommand();
+        break;
+      case sevenBallLeftString:
+        m_autonomousCommand = sevenBallLeft.getAutonomousCommand();
+        break;
+     case sixBallRightString:
+        m_autonomousCommand = sixBallRight.getAutonomousCommand();
         break;
       case threeBallCenterString:
         m_autonomousCommand = threeBallCenter.getAutonomousCommand();
         break;
-      case sevenBallRightString:
-        m_autonomousCommand = sevenBallRight.getAutonomousCommand();
+      case eightBallRightString:
+        m_autonomousCommand = eightBallRight.getAutonomousCommand();
         break;
       case driveStraightString:
       default:
@@ -165,6 +186,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     ShooterSubsystem.resetEncoders();
+    DriveSubsystem.setBrakeMode(false);
+
   }
 
   /**

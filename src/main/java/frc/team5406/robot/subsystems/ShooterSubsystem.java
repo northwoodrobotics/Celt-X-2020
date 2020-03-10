@@ -275,7 +275,13 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public static double getTurretPosition(){
-    return turretEncoder.getPosition();
+    return 360*turretEncoder.getPosition()/Constants.TURRET_GEAR_RATIO;
+
+  }
+
+  public static double getTurretVelocity() {
+
+    return turretEncoder.getVelocity() * 1 / Constants.TURRET_GEAR_RATIO;
   }
 
   public static double getAbsHoodPosition(){
