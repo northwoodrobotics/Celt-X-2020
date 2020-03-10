@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -35,14 +36,14 @@ import frc.team5406.robot.commands.AlignTurret;
 import frc.team5406.robot.commands.AutoIntake;
 import frc.team5406.robot.commands.AutoShoot;
 
-public class SevenBallRight {
+public class EightBallRight {
 
     private final DriveSubsystem drive = new DriveSubsystem();
     private final ShooterSubsystem shooter = new ShooterSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
 
 
-    public SevenBallRight() {
+    public EightBallRight() {
         
     }
 
@@ -67,40 +68,40 @@ public class SevenBallRight {
         List.of(    
 
             new Pose2d(0, 0, new Rotation2d(0)),
-            new Pose2d(2, 0.5, new Rotation2d(0)),
-            new Pose2d(7, 0.5, new Rotation2d(0))
+            new Pose2d(2.3, 0.5, new Rotation2d(Units.degreesToRadians(5))),
+            new Pose2d(5, 0.55, new Rotation2d(0)),
+            new Pose2d(6.35, 0.65, new Rotation2d(Units.degreesToRadians(5)))
         ),
         
         config1
     );
 
     TrajectoryConfig config2 =
-    new TrajectoryConfig(Constants.MAX_SPEED_METERS_PER_SECOND,
-                         Constants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
+    new TrajectoryConfig(3.5,
+                         3.5)
         .setKinematics(Constants.DRIVE_KINEMATICS)
         .addConstraint(autoVoltageConstraint)
         .setReversed(true);
 
+
+
     Trajectory drive2 = TrajectoryGenerator.generateTrajectory(
-        List.of(  
-
-            new Pose2d(7, 0.5, new Rotation2d(0)),  
-            new Pose2d(5, 0.5, new Rotation2d(0)),
-            new Pose2d(2, -0.5, new Rotation2d(0))
-        ),
-
+        new Pose2d(6.35, 0.65, new Rotation2d(Units.degreesToRadians(5))),  
+        List.of(),
+        new Pose2d(1.5, -0.5, new Rotation2d(0)),
         config2
     );
 
         return new SequentialCommandGroup(
-            new AutoTurnTurret(shooter, 150)               
+            new SpinUp(shooter)
+            ,new AutoTurnTurret(shooter, 154)               
             ,new AlignTurret(shooter)
             ,new ParallelDeadlineGroup(
-                new WaitCommand(4)
+                new WaitCommand(2.75)
                 ,new AutoShoot(shooter, intake)      
-            ),
-
-            new ParallelDeadlineGroup(
+            )
+            ,new SpinUp(shooter)
+            ,new ParallelDeadlineGroup(
                 new RamseteCommand(
                     drive1,
                     drive::getPose,
@@ -110,9 +111,9 @@ public class SevenBallRight {
                     drive
                     ).andThen(() -> drive.tankDriveVolts(0, 0))
                 ,new AutoIntake(intake)
-            ),
-
-            new ParallelCommandGroup(
+            )
+            ,new SpinUp(shooter)
+            ,new ParallelCommandGroup(
                 new RamseteCommand(
                     drive2,
                     drive::getPose,
@@ -121,7 +122,8 @@ public class SevenBallRight {
                     drive::outputSpeeds,
                     drive
                     ).andThen(() -> drive.tankDriveVolts(0, 0))
-                ,new AutoTurnTurret(shooter, 180)
+                ,new AutoTurnTurret(shooter, 175)
+                
             )
                 ,new AlignTurret(shooter)
                 ,new AutoShoot(shooter, intake)

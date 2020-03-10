@@ -16,12 +16,14 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import com.revrobotics.CANPIDController;
 
@@ -33,15 +35,16 @@ import frc.team5406.robot.commands.AutoTurnTurret;
 import frc.team5406.robot.commands.AlignTurret;
 import frc.team5406.robot.commands.AutoIntake;
 import frc.team5406.robot.commands.AutoShoot;
+import frc.team5406.robot.commands.AutoShootAndIntake;
 
-public class FiveBallRight {
+public class SevenBallLeft {
 
     private final DriveSubsystem drive = new DriveSubsystem();
     private final ShooterSubsystem shooter = new ShooterSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
 
 
-    public FiveBallRight () {
+    public SevenBallLeft () {
         
     }
 
@@ -63,9 +66,12 @@ public class FiveBallRight {
             .addConstraint(autoVoltageConstraint);
 
     Trajectory drive1 = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(),
-        new Pose2d(2, 0, new Rotation2d(0)),
+        List.of(
+            new Pose2d(0, 0, new Rotation2d(0)),
+            new Pose2d(1,0, new Rotation2d(0)),
+            new Pose2d(2.80, -0.45, new Rotation2d(Units.degreesToRadians(-20)))
+
+        ),
         config1
     );
 
@@ -73,18 +79,29 @@ public class FiveBallRight {
     new TrajectoryConfig(Constants.MAX_SPEED_METERS_PER_SECOND,
                          Constants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
         .setKinematics(Constants.DRIVE_KINEMATICS)
-        .addConstraint(autoVoltageConstraint);
-    config2.setReversed(true);
+        .addConstraint(autoVoltageConstraint)
+        .setReversed(true);
 
-    Rotation2d endpoint = new Rotation2d();
-    endpoint = Rotation2d.fromDegrees(-45);
 
 Trajectory drive2 = TrajectoryGenerator.generateTrajectory(
-    new Pose2d(2, 0, new Rotation2d(0)),
+    new Pose2d(2.80, -0.45, new Rotation2d(Units.degreesToRadians(-20))),
     List.of(),
-    new Pose2d(-1, 3.5, endpoint),
+    new Pose2d(0.8, 3.5, new Rotation2d(Units.degreesToRadians(-25))),
     config2
 );
+
+TrajectoryConfig config3 =
+        new TrajectoryConfig(Constants.MAX_SPEED_METERS_PER_SECOND,
+                             Constants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
+            .setKinematics(Constants.DRIVE_KINEMATICS)
+            .addConstraint(autoVoltageConstraint);
+
+    Trajectory drive3 = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(1, 3.5, new Rotation2d(Units.degreesToRadians(-25))),
+        List.of(),
+        new Pose2d(2.4, 2.7, new Rotation2d(Units.degreesToRadians(-25))),
+        config3
+    );
 
         return   new SequentialCommandGroup(
             new ParallelDeadlineGroup(
@@ -98,6 +115,7 @@ Trajectory drive2 = TrajectoryGenerator.generateTrajectory(
                     ).andThen(() -> drive.tankDriveVolts(0, 0))
                 ,new AutoIntake(intake)
             )
+            ,new SpinUp(shooter)
             ,new ParallelCommandGroup(
                 new RamseteCommand(
                     drive2,
@@ -107,10 +125,29 @@ Trajectory drive2 = TrajectoryGenerator.generateTrajectory(
                     drive::outputSpeeds,
                     drive
                     ).andThen(() -> drive.tankDriveVolts(0, 0))
-                ,new AutoTurnTurret(shooter, 152)
+                ,new AutoTurnTurret(shooter, 160)
             )
             ,new AlignTurret(shooter)
-            ,new AutoShoot(shooter, intake)
+            ,new ParallelDeadlineGroup(
+                new WaitCommand(3.5)
+                ,new AutoShoot(shooter, intake)
+            )
+            ,new SpinUp(shooter)
+            ,new ParallelCommandGroup(
+                new RamseteCommand(
+                    drive3,
+                    drive::getPose,
+                    new RamseteController(Constants.RAMSETE_B, Constants.RAMSETE_ZETA),
+                    Constants.DRIVE_KINEMATICS,
+                    drive::outputSpeeds,
+                    drive
+                    ).andThen(() -> drive.tankDriveVolts(0, 0))
+                    ,new SequentialCommandGroup(
+                 new AutoTurnTurret(shooter, 175)
+               , new AutoShootAndIntake(shooter, intake)
+                 )
+                    )
+
 
         );
 
