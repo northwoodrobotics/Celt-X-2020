@@ -16,6 +16,7 @@ import frc.team5406.robot.subsystems.IntakeSubsystem;
 import frc.team5406.robot.subsystems.ShooterSubsystem;
 import frc.team5406.robot.autos.DriveStraight;
 import frc.team5406.robot.autos.FiveBallRight;
+import frc.team5406.robot.autos.SevenBallRight;
 import frc.team5406.robot.autos.ThreeBallCenter;
 import frc.team5406.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
@@ -38,9 +39,12 @@ public class Robot extends TimedRobot {
   private DriveStraight driveStraight;
   private FiveBallRight fiveBallRight;
   private ThreeBallCenter threeBallCenter;
+  private SevenBallRight sevenBallRight;
   private static final String driveStraightString = "DriveStraight";
   private static final String fiveBallRightString = "FiveBallRight";
   public static final String threeBallCenterString = "ThreeBallCenter";
+  private static final String sevenBallRightString = "SevenBallRight";
+
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -64,6 +68,7 @@ public class Robot extends TimedRobot {
     driveStraight = new DriveStraight();
     fiveBallRight = new FiveBallRight();
     threeBallCenter = new ThreeBallCenter();
+    sevenBallRight = new SevenBallRight();
     // m_robotContainer = new RobotContainer();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
@@ -72,6 +77,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Drive Straight Backwards", driveStraightString);
     m_chooser.addOption("Five Ball, Right", fiveBallRightString);
     m_chooser.addOption("Three Ball, Center", threeBallCenterString);
+    m_chooser.addOption("Seven Ball, Right", sevenBallRightString);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
@@ -126,6 +132,9 @@ public class Robot extends TimedRobot {
         break;
       case threeBallCenterString:
         m_autonomousCommand = threeBallCenter.getAutonomousCommand();
+        break;
+      case sevenBallRightString:
+        m_autonomousCommand = sevenBallRight.getAutonomousCommand();
         break;
       case driveStraightString:
       default:
