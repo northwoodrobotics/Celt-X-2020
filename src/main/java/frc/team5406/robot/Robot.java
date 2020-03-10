@@ -63,6 +63,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     driveStraight = new DriveStraight();
     fiveBallRight = new FiveBallRight();
+    threeBallCenter = new ThreeBallCenter();
     // m_robotContainer = new RobotContainer();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
@@ -171,7 +172,7 @@ public class Robot extends TimedRobot {
     // if((driverGamepad.getY(Hand.kLeft) > Constants.JOYSTICK_DEADBAND ||
     // (driverGamepad.getX(Hand.kRight) > Constants.JOYSTICK_DEADBAND))) {
 
-    robotDrive.arcadeDrive(driverGamepad.getX(Hand.kRight), driverGamepad.getY(Hand.kLeft));
+    robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft), driverGamepad.getX(Hand.kRight));
     /*
      * baselock = false;
      * 
