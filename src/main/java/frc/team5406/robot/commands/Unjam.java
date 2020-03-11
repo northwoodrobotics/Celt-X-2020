@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team5406.robot.subsystems.IntakeSubsystem;
 import frc.team5406.robot.subsystems.ShooterSubsystem;
 
-
 public class Unjam extends CommandBase {
   // The subsystem the command runs on
   private final IntakeSubsystem outtake;
@@ -20,13 +19,13 @@ public class Unjam extends CommandBase {
 
   @Override
   public void initialize() {
-    
+
     IntakeSubsystem.intakeExtend();
   }
 
   @Override
   public void execute() {
-      
+
     IntakeSubsystem.reverseIntake();
     IntakeSubsystem.reverseSerialize();
     ShooterSubsystem.reverseFeeder();
@@ -35,7 +34,7 @@ public class Unjam extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    
+
     return true;
   }
 

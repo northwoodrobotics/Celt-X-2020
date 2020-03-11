@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
   private DriveSubsystem robotDrive = new DriveSubsystem();
   int intakePulseCount = 0;
   boolean baselock;
+  boolean holdingSpinner = false;
 
   boolean dPadPressed = false;
 
@@ -240,15 +241,35 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hood Output", ShooterSubsystem.getHoodVoltage());
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getFeederSpeed());
     SmartDashboard.putNumber("Abs Hood", ShooterSubsystem.getAbsHoodPosition());
+
+
     if (operatorGamepad.getXButton() && !operatorGamepad.getBumper(Hand.kRight)) {
+
       IntakeSubsystem.djSpinnerUp();
-      IntakeSubsystem.spinDJSpinner();
+      if(!holdingSpinner){
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
+        IntakeSubsystem.resetDJSpinnerEncoder();
+        holdingSpinner = true;
+        IntakeSubsystem.spinDjSpinnerRotation();
+      }
+      else if((Math.abs(IntakeSubsystem.getDJSpinnerPosition() - Constants.DJ_SPINNER_ROTATION_CONTROL_RPM) < 20 && Math.abs(IntakeSubsystem.getDJSpinnerVelocity()) < 1200) && holdingSpinner){
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, 1);
+      }
+      else{
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
+      }
+
+    // IntakeSubsystem.spinDJSpinner();
+
     } else if (operatorGamepad.getYButton() && !operatorGamepad.getBumper(Hand.kRight)) {
       IntakeSubsystem.djSpinnerUp();
     } else {
+      holdingSpinner = false;
       IntakeSubsystem.djSpinnerDown();
       IntakeSubsystem.stopDJSpinner();
+
     }
+
     if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) {
       //ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 4000));

@@ -7,8 +7,6 @@ import frc.team5406.robot.subsystems.ShooterSubsystem;
 import frc.team5406.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-
-
 public class AutoShootAndIntake extends CommandBase {
   // The subsystem the command runs on
   private final ShooterSubsystem shooter;
@@ -24,17 +22,15 @@ public class AutoShootAndIntake extends CommandBase {
 
   @Override
   public void initialize() {
-    
+
     ShooterSubsystem.spinShooterAuto();
     ShooterSubsystem.setHoodAngleAuto();
     ShooterSubsystem.spinBooster(Constants.BOOSTER_OUTPUT);
     ShooterSubsystem.compressorDisabled();
-    IntakeSubsystem.intakeExtend();   
+    IntakeSubsystem.intakeExtend();
     IntakeSubsystem.spinRollers();
     ShooterSubsystem.updateLimelightTracking();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-
-
 
   }
 
@@ -44,19 +40,17 @@ public class AutoShootAndIntake extends CommandBase {
 
     if (ShooterSubsystem.llHasValidTarget) {
 
-        ShooterSubsystem.adjustTurret(ShooterSubsystem.llSteer);
+      ShooterSubsystem.adjustTurret(ShooterSubsystem.llSteer);
     }
 
-      
-    if(ShooterSubsystem.checkRPM() && !readyToShoot) {
-      
+    if (ShooterSubsystem.checkRPM() && !readyToShoot) {
+
       readyToShoot = true;
     }
-    if(readyToShoot) {
+    if (readyToShoot) {
 
       ShooterSubsystem.spinFeeder(1000);
       IntakeSubsystem.serialize();
-      
 
     }
 
@@ -64,7 +58,7 @@ public class AutoShootAndIntake extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    
+
     return false;
   }
 

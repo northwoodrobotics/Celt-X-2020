@@ -103,6 +103,18 @@ public final class Constants {
     public static  final double CLIMBER_DOWN_POSITION = 0;
     public static  final double CLIMBER_UP_POSITION = 10;
 
+    public static final double DJ_SPINNER_MAX_VEL_ROTATION = 240 * 8;
+    public static final double DJ_SPINNER_MAX_VEL_POSITION = 240 * 4;
+
+    public static final double DJ_SPINNER_MAX_ACC_ROTATION = 480 * 8;
+    public static final double DJ_SPINNER_MAX_ACC_POSITION = 480 * 4;
+
+    public static final int DJ_SPINNER_ROTATION_SMART_MOTION_SLOT = 0;
+    public static final int DJ_SPINNER_POSITION_SMART_MOTION_SLOT = 1;
+
+    public static final double DJ_SPINNER_ROTATION_CONTROL_RPM = 128;
+
+
     //Fixed speeds
     public static final double INTAKE_ROLLER_OUTPUT = 1;
     public static final double HOPPER_BRUSH_OUTPUT = 0.8;
@@ -175,11 +187,10 @@ public final class Constants {
     public static final double RIGHT_SERIALIZER_PID0_D = 0;
     public static final double RIGHT_SERIALIZER_PID0_F = 1.9e-3;
 
-    public static final double DJ_SPINNER_PID0_P = 3e-4;
-    public static final double DJ_SPINNER_PID0_I = 0;
+    public static final double DJ_SPINNER_PID0_P = 5e-5;
+    public static final double DJ_SPINNER_PID0_I = 1e-6;
     public static final double DJ_SPINNER_PID0_D = 0;
-    public static final double DJ_SPINNER_PID0_F = 1.9e-3;
-
+    public static final double DJ_SPINNER_PID0_F = 0.000156;
     
     public static final double LEFT_DRIVE_PID0_P = 9e-5;
     public static final double LEFT_DRIVE_PID0_I = 0;
