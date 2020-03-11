@@ -202,25 +202,27 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("ts", ts);
     SmartDashboard.putNumber("tx", tx);
 
-    // if((driverGamepad.getY(Hand.kLeft) > Constants.JOYSTICK_DEADBAND ||
-    // (driverGamepad.getX(Hand.kRight) > Constants.JOYSTICK_DEADBAND))) {
+    if((driverGamepad.getY(Hand.kLeft) > Constants.JOYSTICK_DEADBAND ||
+    (driverGamepad.getX(Hand.kRight) > Constants.JOYSTICK_DEADBAND))) {
 
     robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft), driverGamepad.getX(Hand.kRight));
-    /*
-     * baselock = false;
-     * 
-     * } else if(driverGamepad.getY(Hand.kLeft) <= Constants.JOYSTICK_DEADBAND &&
-     * (driverGamepad.getX(Hand.kRight) <= Constants.JOYSTICK_DEADBAND) &&
-     * (Math.abs(DriveSubsystem.getAverageSpeed()) >=
-     * Constants.STATIONARY_SPEED_THRESHOLD)) {
-     * 
-     * DriveSubsystem.stopMotors();
-     * 
-     * } else if(!baselock && (Math.abs(DriveSubsystem.getAverageSpeed()) <
-     * Constants.STATIONARY_SPEED_THRESHOLD)) {
-     * 
-     * DriveSubsystem.baselock(); baselock = true; }
-     */
+    DriveSubsystem.baselockStarted = false;
+    
+    } else if(driverGamepad.getY(Hand.kLeft) <= Constants.JOYSTICK_DEADBAND &&
+    (driverGamepad.getX(Hand.kRight) <= Constants.JOYSTICK_DEADBAND) &&
+    (Math.abs(DriveSubsystem.getAverageSpeed()) >=
+    Constants.STATIONARY_SPEED_THRESHOLD)) {
+    
+    DriveSubsystem.stopMotors();
+    
+    } else if((Math.abs(DriveSubsystem.getAverageSpeed()) <
+    Constants.STATIONARY_SPEED_THRESHOLD) &&
+    driverGamepad.getY(Hand.kLeft) <= Constants.JOYSTICK_DEADBAND &&
+    (driverGamepad.getX(Hand.kRight) <= Constants.JOYSTICK_DEADBAND)) {
+    
+    DriveSubsystem.baselock(); 
+    }
+    
     if (operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()) {
       ClimbSubsystem.setBrake();
     }
