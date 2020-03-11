@@ -17,10 +17,10 @@ import frc.team5406.robot.subsystems.DriveSubsystem;
  * An example command that uses an example subsystem.
  */
 public class Drive extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final DriveSubsystem drive;
-  private final DoubleSupplier m_forward; 
-  private final DoubleSupplier m_rotation; 
+  private final DoubleSupplier m_forward;
+  private final DoubleSupplier m_rotation;
 
   /**
    * Creates a new ExampleCommand.
@@ -42,7 +42,7 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drive.arcadeDrive(m_forward.getAsDouble(), m_rotation.getAsDouble()); 
+    drive.arcadeDrive(m_forward.getAsDouble(), m_rotation.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.team5406.robot.subsystems.IntakeSubsystem;
 
-
 public class AutoIntake extends CommandBase {
   // The subsystem the command runs on
   private final IntakeSubsystem intake;
@@ -16,15 +15,14 @@ public class AutoIntake extends CommandBase {
 
   @Override
   public void initialize() {
-    
-    IntakeSubsystem.intakeExtend();   
+
+    IntakeSubsystem.intakeExtend();
     IntakeSubsystem.spinRollers();
 
   }
 
   @Override
   public void execute() {
-      
 
   }
 
@@ -32,7 +30,7 @@ public class AutoIntake extends CommandBase {
   public boolean isFinished() {
 
     // NEEDS SOME EXTERNAL INPUT OR SEPARATE STOP OUT
-    
+
     return false;
   }
 

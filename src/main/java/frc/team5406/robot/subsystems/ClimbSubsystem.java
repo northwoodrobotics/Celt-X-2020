@@ -83,6 +83,12 @@ public class ClimbSubsystem extends SubsystemBase {
     leftClimbPID.setReference(position, ControlType.kPosition);
   }
 
+  //returns the position
+  public static double getPosition(){
+    double position = climbEncoder.getPosition();
+    return position;
+  }
+
 
 
 

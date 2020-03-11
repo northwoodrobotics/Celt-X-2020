@@ -205,7 +205,7 @@ public class Robot extends TimedRobot {
     // if((driverGamepad.getY(Hand.kLeft) > Constants.JOYSTICK_DEADBAND ||
     // (driverGamepad.getX(Hand.kRight) > Constants.JOYSTICK_DEADBAND))) {
 
-    robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft),driverGamepad.getX(Hand.kRight));
+    robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft), driverGamepad.getX(Hand.kRight));
     /*
      * baselock = false;
      * 

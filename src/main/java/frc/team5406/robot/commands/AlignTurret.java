@@ -7,7 +7,7 @@ import frc.team5406.robot.subsystems.ShooterSubsystem;
 
 public class AlignTurret extends CommandBase {
 
-    // The subsystem the command runs on
+  // The subsystem the command runs on
   private final ShooterSubsystem shooter;
 
   public AlignTurret(ShooterSubsystem subsystem) {
@@ -17,7 +17,7 @@ public class AlignTurret extends CommandBase {
 
   @Override
   public void initialize() {
-    
+
     ShooterSubsystem.updateLimelightTracking();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
 
@@ -29,17 +29,15 @@ public class AlignTurret extends CommandBase {
 
     if (ShooterSubsystem.llHasValidTarget) {
 
-        ShooterSubsystem.adjustTurret(ShooterSubsystem.llSteer);
+      ShooterSubsystem.adjustTurret(ShooterSubsystem.llSteer);
     }
 
   }
 
   @Override
   public boolean isFinished() {
-    return (ShooterSubsystem.llHasValidTarget && Math.abs(NetworkTableInstance.getDefault()
-    .getTable("limelight").getEntry("tx").getDouble(0)) < 1);
-
-    
+    return (ShooterSubsystem.llHasValidTarget
+        && Math.abs(NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0)) < 1);
 
   }
 
