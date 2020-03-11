@@ -4,8 +4,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.team5406.robot.subsystems.ShooterSubsystem;
 
-
-
 public class SpinUp extends CommandBase {
   // The subsystem the command runs on
   private final ShooterSubsystem shooter;
@@ -17,12 +15,12 @@ public class SpinUp extends CommandBase {
 
   @Override
   public void initialize() {
-    
+
   }
 
   @Override
   public void execute() {
-      
+
     ShooterSubsystem.spinBooster(4000);
     ShooterSubsystem.spinShooter(4800);
     ShooterSubsystem.compressorDisabled();
@@ -31,7 +29,7 @@ public class SpinUp extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    
+
     return true;
 
   }
@@ -39,9 +37,10 @@ public class SpinUp extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    /*ShooterSubsystem.stopBooster();
-    ShooterSubsystem.stopShooter();
-    ShooterSubsystem.compressorEnabled();*/
+    /*
+     * ShooterSubsystem.stopBooster(); ShooterSubsystem.stopShooter();
+     * ShooterSubsystem.compressorEnabled();
+     */
 
   }
 }

@@ -6,7 +6,6 @@ import frc.team5406.robot.Constants;
 import frc.team5406.robot.subsystems.ShooterSubsystem;
 import frc.team5406.robot.subsystems.IntakeSubsystem;
 
-
 public class AutoShoot extends CommandBase {
   // The subsystem the command runs on
   private final ShooterSubsystem shooter;
@@ -22,7 +21,7 @@ public class AutoShoot extends CommandBase {
 
   @Override
   public void initialize() {
-    
+
     ShooterSubsystem.spinShooterAuto();
     ShooterSubsystem.setHoodAngleAuto();
     ShooterSubsystem.spinBooster(Constants.BOOSTER_OUTPUT);
@@ -32,17 +31,16 @@ public class AutoShoot extends CommandBase {
 
   @Override
   public void execute() {
-      
-    if(ShooterSubsystem.checkRPM() && !readyToShoot) {
-      
+
+    if (ShooterSubsystem.checkRPM() && !readyToShoot) {
+
       readyToShoot = true;
     }
-    if(readyToShoot) {
+    if (readyToShoot) {
 
       ShooterSubsystem.spinFeeder(1000);
       IntakeSubsystem.pulseRollers();
       IntakeSubsystem.serialize();
-      
 
     }
 
@@ -50,7 +48,7 @@ public class AutoShoot extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    
+
     return false;
   }
 

@@ -8,9 +8,9 @@ import frc.team5406.robot.subsystems.ShooterSubsystem;
 
 public class AdjustTurret extends CommandBase {
 
-    // The subsystem the command runs on
+  // The subsystem the command runs on
   private final ShooterSubsystem shooter;
-  DoubleSupplier m_rotation; 
+  DoubleSupplier m_rotation;
 
   public AdjustTurret(ShooterSubsystem subsystem, DoubleSupplier rotation) {
 
@@ -33,8 +33,8 @@ public class AdjustTurret extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    if(m_rotation.getAsDouble() == 0) {
-        
+    if (m_rotation.getAsDouble() == 0) {
+
     }
 
     return true;
