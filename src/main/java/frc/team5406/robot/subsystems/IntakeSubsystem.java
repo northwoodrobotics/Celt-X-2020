@@ -58,7 +58,10 @@ public class IntakeSubsystem extends SubsystemBase {
     djSpinnerPID.setD(Constants.DJ_SPINNER_PID0_D, 0);
     djSpinnerPID.setIZone(0, 0);
     djSpinnerPID.setFF(Constants.DJ_SPINNER_PID0_F, 0);
-    djSpinnerPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
+    djSpinnerPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, Constants.DJ_SPINNER_ROTATION_SMART_MOTION_SLOT);
+    djSpinnerPID.setSmartMotionMaxVelocity(Constants.DJ_SPINNER_MAX_VEL_ROTATION, Constants.DJ_SPINNER_ROTATION_SMART_MOTION_SLOT);
+  //djSpinnerPID.setSmartMotionMinOutputVelocity(minVel, Constants.DJ_SPINNER_ROTATION_SMART_MOTION_SLOT);
+   // djSpinnerPID.setSmartMotionAllowedClosedLoopError(allowedErr, Constants.DJ_SPINNER_ROTATION_SMART_MOTION_SLOT);
 
     
    leftSerializerPID.setP(Constants.LEFT_SERIALIZER_PID0_P);
@@ -103,7 +106,7 @@ public class IntakeSubsystem extends SubsystemBase {
     if (rpm ==0 ) {
       stopDJSpinner();
   } else {
-    djSpinnerPID.setReference(rpm *  Constants.DJ_SPINNER_GEAR_RATIO, ControlType.kVelocity);
+    djSpinnerPID.setReference(rpm *  Constants.DJ_SPINNER_GEAR_RATIO, ControlType.kSmartMotion, Constants.DJ_SPINNER_ROTATION_SMART_MOTION_SLOT);
 
   }
   
@@ -112,6 +115,22 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public static void spinDJSpinner() {
     setDJSpinnerOutput(Constants.DJ_SPINNER_SPEED * Constants.COLOUR_WHEEL_DIAMETER/Constants.DJ_SPINNER_DIAMETER);
+  }
+
+  public static void spinDjSpinnerRotation(){
+    djSpinnerPID.setReference(Constants.DJ_SPINNER_ROTATION_CONTROL_RPM, ControlType.kSmartMotion, Constants.DJ_SPINNER_ROTATION_SMART_MOTION_SLOT);
+  }
+
+  public static void resetDJSpinnerEncoder(){
+    djSpinnerEncoder.setPosition(0);
+  }
+
+  public static double getDJSpinnerPosition() {
+    return djSpinnerEncoder.getPosition();
+  }
+
+  public static double getDJSpinnerVelocity(){
+    return djSpinnerEncoder.getVelocity();
   }
   public static void setSerializerCircle() {
 
