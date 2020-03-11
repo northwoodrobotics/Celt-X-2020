@@ -149,6 +149,12 @@ public final class Constants {
     public static final double TURRET_PID0_D = 0;
     public static final double TURRET_PID0_F = 9e-5;
 
+    public static final double TURRET_PID2_P = 1e-5;
+    public static final double TURRET_PID2_I = 0;
+    public static final double TURRET_PID2_D = 0;
+    public static final double TURRET_PID2_F = 3e-5;
+
+
     public static final double LEFT_CLIMBER_PID0_P = 3e-4;
     public static final double LEFT_CLIMBER_PID0_I = 0;
     public static final double LEFT_CLIMBER_PID0_D = 0;

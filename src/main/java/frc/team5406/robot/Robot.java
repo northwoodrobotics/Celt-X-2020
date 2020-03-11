@@ -137,30 +137,30 @@ public class Robot extends TimedRobot {
     IntakeSubsystem.djSpinnerDown();
     DriveSubsystem.setBrakeMode(true);
     if (m_autoSelected == null) {
-      m_autoSelected="none";
+      m_autoSelected = "none";
     }
 
     switch (m_autoSelected) {
 
-      case fiveBallLeftString:
-        m_autonomousCommand = fiveBallLeft.getAutonomousCommand();
-        break;
-      case sevenBallLeftString:
-        m_autonomousCommand = sevenBallLeft.getAutonomousCommand();
-        break;
-     case sixBallRightString:
-        m_autonomousCommand = sixBallRight.getAutonomousCommand();
-        break;
-      case threeBallCenterString:
-        m_autonomousCommand = threeBallCenter.getAutonomousCommand();
-        break;
-      case eightBallRightString:
-        m_autonomousCommand = eightBallRight.getAutonomousCommand();
-        break;
-      case driveStraightString:
-      default:
-        m_autonomousCommand = driveStraight.getAutonomousCommand();
-        break;
+    case fiveBallLeftString:
+      m_autonomousCommand = fiveBallLeft.getAutonomousCommand();
+      break;
+    case sevenBallLeftString:
+      m_autonomousCommand = sevenBallLeft.getAutonomousCommand();
+      break;
+    case sixBallRightString:
+      m_autonomousCommand = sixBallRight.getAutonomousCommand();
+      break;
+    case threeBallCenterString:
+      m_autonomousCommand = threeBallCenter.getAutonomousCommand();
+      break;
+    case eightBallRightString:
+      m_autonomousCommand = eightBallRight.getAutonomousCommand();
+      break;
+    case driveStraightString:
+    default:
+      m_autonomousCommand = driveStraight.getAutonomousCommand();
+      break;
     }
 
     if (m_autonomousCommand != null) {
@@ -204,7 +204,7 @@ public class Robot extends TimedRobot {
     // if((driverGamepad.getY(Hand.kLeft) > Constants.JOYSTICK_DEADBAND ||
     // (driverGamepad.getX(Hand.kRight) > Constants.JOYSTICK_DEADBAND))) {
 
-    robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft),driverGamepad.getX(Hand.kRight));
+    robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft), driverGamepad.getX(Hand.kRight));
     /*
      * baselock = false;
      * 
@@ -250,12 +250,12 @@ public class Robot extends TimedRobot {
       IntakeSubsystem.stopDJSpinner();
     }
     if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) {
-      ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
+      //ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 4000));
-      ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+     // ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
       ShooterSubsystem.compressorDisabled();
-      // ShooterSubsystem.spinShooterAuto();
-      // ShooterSubsystem.setHoodAngleAuto();
+       ShooterSubsystem.spinShooterAuto();
+       ShooterSubsystem.setHoodAngleAuto();
       if (ShooterSubsystem.checkRPM()) {
         operatorGamepad.setRumble(RumbleType.kLeftRumble, 1);
 
@@ -323,13 +323,10 @@ public class Robot extends TimedRobot {
 
     if ((Math.abs(operatorGamepad.getX(Hand.kRight)) > 0.1) && (operatorGamepad.getBumper(Hand.kRight))) {
       ShooterSubsystem.adjustTurret(operatorGamepad.getX(Hand.kRight));
-
     } else if (operatorGamepad.getAButton()) {
       ShooterSubsystem.updateLimelightTracking();
       NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-      if (ShooterSubsystem.llHasValidTarget) {
-        ShooterSubsystem.adjustTurret(ShooterSubsystem.llSteer);
-      }
+      ShooterSubsystem.LLAlignTurret();
     } else if (operatorGamepad.getPOV() == 0 && !dPadPressed) {
       dPadPressed = true;
       ShooterSubsystem.turnTurret(0);

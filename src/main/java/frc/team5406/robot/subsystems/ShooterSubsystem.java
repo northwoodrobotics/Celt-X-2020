@@ -103,6 +103,13 @@ public class ShooterSubsystem extends SubsystemBase {
     turretPID.setIZone(0, 0);
     turretPID.setFF(Constants.TURRET_PID0_F, 1);
 
+    turretPID.setP(Constants.TURRET_PID2_P, 2);
+    turretPID.setI(Constants.TURRET_PID2_I, 2);
+    turretPID.setD(Constants.TURRET_PID2_D, 2);
+    turretPID.setIZone(0, 0);
+    turretPID.setFF(Constants.TURRET_PID2_F, 2);
+
+
     turretPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
 
     turretPID.setSmartMotionMaxVelocity(12000, 0);
@@ -112,6 +119,11 @@ public class ShooterSubsystem extends SubsystemBase {
     turretPID.setSmartMotionMaxVelocity(8000, 1);
     turretPID.setSmartMotionMaxAccel(8000, 1);
     turretPID.setSmartMotionAllowedClosedLoopError(0.1, 1);
+
+    turretPID.setSmartMotionMaxVelocity(10000, 2);
+    turretPID.setSmartMotionMaxAccel(20000, 2);
+    turretPID.setSmartMotionAllowedClosedLoopError(0.2, 2);
+
 
     feederPID.setP(Constants.FEEDER_PID0_P);
     feederPID.setI(Constants.FEEDER_PID0_I, 0);
@@ -271,6 +283,17 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public static void adjustTurret(double turn){
     turretPID.setReference(turretEncoder.getPosition() + turn*2, ControlType.kSmartMotion, 1);
+
+  }
+
+  public static void LLAlignTurret(){
+    if (ShooterSubsystem.llHasValidTarget) {
+      double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+      turretPID.setReference(turretEncoder.getPosition() + tx, ControlType.kSmartMotion, 2);
+      }
+
+
+
 
   }
 
