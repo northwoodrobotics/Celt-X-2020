@@ -36,20 +36,20 @@ public class AutoClimb extends CommandBase {
     public void execute() {
 
         if (operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()) {
-            ClimbSubsystem.releaseBreak();
+            ClimbSubsystem.releaseBrake();
             ClimbSubsystem.setPosition(Constants.CLIMBER_UP_POSITION);
 
         }
 
         if (operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()) {
-            ClimbSubsystem.releaseBreak();
+            ClimbSubsystem.releaseBrake();
             ClimbSubsystem.setPosition(Constants.CLIMBER_DOWN_POSITION + 5);
 
         }
 
         if (operatorGamepad.getBumper(Hand.kRight) && (Math.abs(operatorGamepad.getY(Hand.kLeft)) > 0.15)) {
             double leftSpeed = operatorGamepad.getY(Hand.kLeft);
-            ClimbSubsystem.releaseBreak();
+            ClimbSubsystem.releaseBrake();
             ClimbSubsystem.setSpeed(leftSpeed);
         } else {
             ClimbSubsystem.setSpeed(0);

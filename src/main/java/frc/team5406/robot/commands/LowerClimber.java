@@ -7,37 +7,36 @@ import frc.team5406.robot.subsystems.ClimbSubsystem;
 public class LowerClimber extends CommandBase {
   // The subsystem the command runs on
   private final ClimbSubsystem climb;
-
-  public LowerClimber(ClimbSubsystem subsystem) {
+  double position = 0;
+  public LowerClimber(ClimbSubsystem subsystem, double _position) {
     climb = subsystem;
+    position = _position;
     addRequirements(climb);
   }
 
   @Override
   public void initialize() {
 
-    ClimbSubsystem.setupMotors();
+    ClimbSubsystem.setPosition(position);
 
   }
 
   @Override
   public void execute() {
 
-    ClimbSubsystem.setSpeed(Constants.CLIMBER_MOTOR);
-    ClimbSubsystem.setPosition(Constants.CLIMBER_DOWN_POSITION);
 
   }
 
   @Override
   public boolean isFinished() {
+    
 
-    return true;
+    return -1*ClimbSubsystem.getClimberPosition() < -1*position ;
   }
 
   @Override
   public void end(boolean interrupted) {
 
-    ClimbSubsystem.setBrake();
 
   }
 }

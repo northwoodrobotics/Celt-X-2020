@@ -53,17 +53,19 @@ public class IntakeSubsystem extends SubsystemBase {
 
     rightSerializer.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
 
-    djSpinnerPID.setP(Constants.DJ_SPINNER_PID0_P);
+    djSpinnerPID.setP(Constants.DJ_SPINNER_PID0_P, 0);
     djSpinnerPID.setI(Constants.DJ_SPINNER_PID0_I, 0);
     djSpinnerPID.setD(Constants.DJ_SPINNER_PID0_D, 0);
     djSpinnerPID.setIZone(0, 0);
     djSpinnerPID.setFF(Constants.DJ_SPINNER_PID0_F, 0);
     djSpinnerPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, Constants.DJ_SPINNER_ROTATION_SMART_MOTION_SLOT);
-    djSpinnerPID.setSmartMotionMaxVelocity(Constants.DJ_SPINNER_MAX_VEL_ROTATION, Constants.DJ_SPINNER_ROTATION_SMART_MOTION_SLOT);
-  //djSpinnerPID.setSmartMotionMinOutputVelocity(minVel, Constants.DJ_SPINNER_ROTATION_SMART_MOTION_SLOT);
-   // djSpinnerPID.setSmartMotionAllowedClosedLoopError(allowedErr, Constants.DJ_SPINNER_ROTATION_SMART_MOTION_SLOT);
+    djSpinnerPID.setSmartMotionAllowedClosedLoopError(.5, Constants.DJ_SPINNER_ROTATION_SMART_MOTION_SLOT);
 
-    
+    djSpinnerPID.setSmartMotionMaxVelocity(1920, 0);
+    djSpinnerPID.setSmartMotionMaxAccel(1000, 0);
+    djSpinnerPID.setSmartMotionAllowedClosedLoopError(0.2, 0);
+
+
    leftSerializerPID.setP(Constants.LEFT_SERIALIZER_PID0_P);
    leftSerializerPID.setI(Constants.LEFT_SERIALIZER_PID0_I, 0);
    leftSerializerPID.setD(Constants.LEFT_SERIALIZER_PID0_D, 0);

@@ -20,12 +20,14 @@ import frc.team5406.robot.autos.SevenBallLeft;
 import frc.team5406.robot.autos.EightBallRight;
 import frc.team5406.robot.autos.SixBallRight;
 import frc.team5406.robot.autos.ThreeBallCenter;
+import frc.team5406.robot.commands.HookFlip;
 import frc.team5406.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -38,6 +40,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   // private RobotContainer m_robotContainer;
+  private HookFlip hookFlip;
   private DriveStraight driveStraight;
   private FiveBallLeft fiveBallLeft;
   private SevenBallLeft sevenBallLeft;
@@ -57,12 +60,15 @@ public class Robot extends TimedRobot {
   XboxController operatorGamepad = new XboxController(Constants.OPERATOR_CONTROLLER);
   XboxController driverGamepad = new XboxController(Constants.DRIVER_CONTROLLER);
   private DriveSubsystem robotDrive = new DriveSubsystem();
+  private ClimbSubsystem climb = new ClimbSubsystem();
+  int step = 0;
+  double startDelay = 0;
   int intakePulseCount = 0;
   boolean baselock;
   boolean holdingSpinner = false;
 
   boolean dPadPressed = false;
-
+  boolean driveDoneBefore = false;
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -78,10 +84,11 @@ public class Robot extends TimedRobot {
     threeBallCenter = new ThreeBallCenter();
     eightBallRight = new EightBallRight();
     sixBallRight = new SixBallRight();
+    hookFlip = new HookFlip(climb);
     // m_robotContainer = new RobotContainer();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
-    ClimbSubsystem.setupMotors();
+
 
     m_chooser.setDefaultOption("Drive Straight Backwards", driveStraightString);
     m_chooser.addOption("Five Ball, Left", fiveBallLeftString);
@@ -134,6 +141,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+hookFlip.schedule();
+
     m_autoSelected = m_chooser.getSelected();
     IntakeSubsystem.djSpinnerDown();
     DriveSubsystem.setBrakeMode(true);
@@ -188,7 +197,7 @@ public class Robot extends TimedRobot {
     }
     ShooterSubsystem.resetEncoders();
     DriveSubsystem.setBrakeMode(false);
-
+    DriveSubsystem.resetEncoders();
   }
 
   /**
@@ -202,33 +211,44 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("ts", ts);
     SmartDashboard.putNumber("tx", tx);
 
-    if((driverGamepad.getY(Hand.kLeft) > Constants.JOYSTICK_DEADBAND ||
-    (driverGamepad.getX(Hand.kRight) > Constants.JOYSTICK_DEADBAND))) {
-
+    /*if((Math.abs(driverGamepad.getY(Hand.kLeft)) > Constants.JOYSTICK_DEADBAND ||
+    (Math.abs(driverGamepad.getX(Hand.kRight)) > Constants.JOYSTICK_DEADBAND))) {*/
+      if((Math.abs(driverGamepad.getY(Hand.kLeft)) >0.03 ||
+      (Math.abs(driverGamepad.getX(Hand.kRight)) > 0.05))){
     robotDrive.arcadeDrive(driverGamepad.getY(Hand.kLeft), driverGamepad.getX(Hand.kRight));
-    DriveSubsystem.baselockStarted = false;
-    
-    } else if(driverGamepad.getY(Hand.kLeft) <= Constants.JOYSTICK_DEADBAND &&
-    (driverGamepad.getX(Hand.kRight) <= Constants.JOYSTICK_DEADBAND) &&
+    DriveSubsystem.unsetBaselock("drive");
+        driveDoneBefore = true;
+      }else if(driveDoneBefore){
+        driveDoneBefore = false;
+        DriveSubsystem.stopMotors();
+      }
+    /*DriveSubsystem.baselockStarted = false;
+    System.out.println("Baselock OFF");
+
+    } else if(Math.abs(driverGamepad.getY(Hand.kLeft)) <= Constants.JOYSTICK_DEADBAND &&
+    (Math.abs(driverGamepad.getX(Hand.kRight)) <= Constants.JOYSTICK_DEADBAND) &&
     (Math.abs(DriveSubsystem.getAverageSpeed()) >=
     Constants.STATIONARY_SPEED_THRESHOLD)) {
     
     DriveSubsystem.stopMotors();
-    
+    System.out.println("Baselock No MOTORS");
+    //DriveSubsystem.baselockStarted = false;
+
     } else if((Math.abs(DriveSubsystem.getAverageSpeed()) <
     Constants.STATIONARY_SPEED_THRESHOLD) &&
-    driverGamepad.getY(Hand.kLeft) <= Constants.JOYSTICK_DEADBAND &&
-    (driverGamepad.getX(Hand.kRight) <= Constants.JOYSTICK_DEADBAND)) {
+    Math.abs(driverGamepad.getY(Hand.kLeft)) <= Constants.JOYSTICK_DEADBAND &&
+    (Math.abs(driverGamepad.getX(Hand.kRight)) <= Constants.JOYSTICK_DEADBAND)) {
     
     DriveSubsystem.baselock(); 
-    }
-    
+    }*/
+
+
     if (operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()) {
-      ClimbSubsystem.setBrake();
+      ClimbSubsystem.releaseBrake();
     }
 
     if (operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()) {
-      ClimbSubsystem.releaseBreak();
+      ClimbSubsystem.setBrake();
 
     }
     if (operatorGamepad.getBumper(Hand.kRight) && (Math.abs(operatorGamepad.getY(Hand.kLeft)) > 0.15)) {
@@ -243,12 +263,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hood Output", ShooterSubsystem.getHoodVoltage());
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getFeederSpeed());
     SmartDashboard.putNumber("Abs Hood", ShooterSubsystem.getAbsHoodPosition());
+    SmartDashboard.putNumber("Climber Position", ClimbSubsystem.getClimberPosition());
 
 
     if (operatorGamepad.getXButton() && !operatorGamepad.getBumper(Hand.kRight)) {
 
       IntakeSubsystem.djSpinnerUp();
       if(!holdingSpinner){
+        System.out.println("DJ Spin");
         operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
         IntakeSubsystem.resetDJSpinnerEncoder();
         holdingSpinner = true;
@@ -273,6 +295,10 @@ public class Robot extends TimedRobot {
     }
 
     if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) {
+      if((Math.abs(driverGamepad.getY(Hand.kLeft)) <=0.03 &&
+      (Math.abs(driverGamepad.getX(Hand.kRight)) <= 0.05))){
+      DriveSubsystem.baselock(); 
+    }
       //ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
       ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 4000));
      // ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
@@ -296,11 +322,14 @@ public class Robot extends TimedRobot {
     }
     // pre-spin the shooter wheels
     else if (operatorGamepad.getTriggerAxis(Hand.kLeft) > .1) {
+      DriveSubsystem.unsetBaselock("trigger");
+
       ShooterSubsystem.spinShooter(4800);
       ShooterSubsystem.spinBooster(4000);
 
       ShooterSubsystem.compressorDisabled();
     } else {
+      DriveSubsystem.unsetBaselock("release");
       ShooterSubsystem.compressorEnabled();
       ShooterSubsystem.stopShooter();
       ShooterSubsystem.stopBooster();

@@ -53,7 +53,8 @@ public class DriveSubsystem extends SubsystemBase {
   static Pose2d pose = new Pose2d();
   static double leftBrake, rightBrake;
   public static boolean baselockStarted = false;
-
+  static int count = 0;
+  static int count2 = 0;
   public static void setupMotors() {
     setBrakeMode(false);
     leftDriveSlave.follow(leftDriveMotor);
@@ -79,12 +80,29 @@ public class DriveSubsystem extends SubsystemBase {
     leftMotorPID.setFF(Constants.LEFT_DRIVE_PID0_F, 0);
     leftMotorPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
 
+    leftMotorPID.setP(Constants.LEFT_DRIVE_PID1_P, 1);
+    leftMotorPID.setI(Constants.LEFT_DRIVE_PID1_I, 1);
+    leftMotorPID.setD(Constants.LEFT_DRIVE_PID1_D, 1);
+    leftMotorPID.setIZone(0, 1);
+    leftMotorPID.setFF(Constants.LEFT_DRIVE_PID1_F, 1);
+    leftMotorPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 1);
+
+
+
     rightMotorPID.setP(Constants.RIGHT_DRIVE_PID0_P, 0);
     rightMotorPID.setI(Constants.RIGHT_DRIVE_PID0_I, 0);
     rightMotorPID.setD(Constants.RIGHT_DRIVE_PID0_D, 0);
     rightMotorPID.setIZone(0, 0);
     rightMotorPID.setFF(Constants.RIGHT_DRIVE_PID0_F, 0);
     rightMotorPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
+
+    rightMotorPID.setP(Constants.RIGHT_DRIVE_PID1_P, 1);
+    rightMotorPID.setI(Constants.RIGHT_DRIVE_PID1_I, 1);
+    rightMotorPID.setD(Constants.RIGHT_DRIVE_PID1_D, 1);
+    rightMotorPID.setIZone(0, 1);
+    rightMotorPID.setFF(Constants.RIGHT_DRIVE_PID1_F, 1);
+    rightMotorPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 1);
+
     setHeading();
   }
 
@@ -102,12 +120,26 @@ public class DriveSubsystem extends SubsystemBase {
 
   public static void baselock() {
     if (!baselockStarted) {
-
-      leftMotorPID.setReference(leftEncoder.getPosition(), ControlType.kPosition, 0);
-      rightMotorPID.setReference(rightEncoder.getPosition(), ControlType.kPosition, 0);
+      count++;
+      leftEncoder.setPosition(0);
+      rightEncoder.setPosition(0);
+      System.out.println(count + " Baselock ON, " + leftEncoder.getPosition() + " " + rightEncoder.getPosition());
+      leftMotorPID.setReference(0, ControlType.kPosition, 1);
+      rightMotorPID.setReference(0, ControlType.kPosition, 1);
       baselockStarted = true;
     }
   }
+
+  public static void unsetBaselock(String source) {
+    if(baselockStarted){
+      count2++;
+    System.out.println(count2 + ", " + source + " Baselock OFF, " + leftEncoder.getPosition() + " " + rightEncoder.getPosition());
+    stopMotors();
+        baselockStarted = false;
+
+    }
+  }
+
   /*
    * // Set Speed For Both public void setSpeed(double left, double right) {
    * leftDriveMotor.set(left); rightDriveMotor.set(right); }

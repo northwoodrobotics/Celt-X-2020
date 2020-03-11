@@ -75,8 +75,8 @@ public final class Constants {
     public final static int CAN_TIMEOUT = 15; //ms
     public static final double OUTPUT_RANGE_MIN = -1;
     public static final double OUTPUT_RANGE_MAX = 1;
-    public static final double STATIONARY_SPEED_THRESHOLD = 1.5; //inches per second
-    public static final double JOYSTICK_DEADBAND = 0.2;
+    public static final double STATIONARY_SPEED_THRESHOLD = .5; //inches per second
+    public static final double JOYSTICK_DEADBAND = 0.02;
     public static final double SHOOTER_ADJUSTMENT = 0.05;
     public static final int SECONDS_PER_MINUTE = 60;
     public static final double LIMELIGHT_STEER_KP = 0.1; 
@@ -114,6 +114,8 @@ public final class Constants {
 
     public static final double DJ_SPINNER_ROTATION_CONTROL_RPM = 128;
 
+    public static final double CLIMB_HOOK_FLIP_UP = -10;
+    public static final double CLIMB_HOOK_FLIP_DOWN = 4;
 
     //Fixed speeds
     public static final double INTAKE_ROLLER_OUTPUT = 1;
@@ -126,8 +128,8 @@ public final class Constants {
 
     public static final boolean INTAKE_EXTEND = true;
     public static final boolean INTAKE_RETRACT = false;
-    public static final boolean SET_BREAK = true;
-    public static final boolean RELEASE_BREAK = false;
+    public static final boolean SET_BRAKE = false;
+    public static final boolean RELEASE_BRAKE = true;
     public static final boolean DJ_SPINNER_UP = false;
     public static final boolean DJ_SPINNER_DOWN = true;
 
@@ -167,15 +169,11 @@ public final class Constants {
     public static final double TURRET_PID2_F = 3e-5;
 
 
-    public static final double LEFT_CLIMBER_PID0_P = 3e-4;
+    public static final double LEFT_CLIMBER_PID0_P = 1e-4;
     public static final double LEFT_CLIMBER_PID0_I = 0;
     public static final double LEFT_CLIMBER_PID0_D = 0;
-    public static final double LEFT_CLIMBER_PID0_F = 1.9e-3;
+    public static final double LEFT_CLIMBER_PID0_F = 3e-4;
 
-    public static final double RIGHT_CLIMBER_PID0_P = 3e-4;
-    public static final double RIGHT_CLIMBER_PID0_I = 0;
-    public static final double RIGHT_CLIMBER_PID0_D = 0;
-    public static final double RIGHT_CLIMBER_PID0_F = 1.9e-3;
 
     public static final double LEFT_SERIALIZER_PID0_P = 3e-4;
     public static final double LEFT_SERIALIZER_PID0_I = 0;
@@ -201,6 +199,16 @@ public final class Constants {
     public static final double RIGHT_DRIVE_PID0_I = 0;
     public static final double RIGHT_DRIVE_PID0_D = 0;
     public static final double RIGHT_DRIVE_PID0_F = 0;
+
+    public static final double LEFT_DRIVE_PID1_P = 3e-1;
+    public static final double LEFT_DRIVE_PID1_I = 0;
+    public static final double LEFT_DRIVE_PID1_D = 0;
+    public static final double LEFT_DRIVE_PID1_F = 1.5e-1;
+
+    public static final double RIGHT_DRIVE_PID1_P = 3e-1;
+    public static final double RIGHT_DRIVE_PID1_I = 0;
+    public static final double RIGHT_DRIVE_PID1_D = 0;
+    public static final double RIGHT_DRIVE_PID1_F = 1.5e-1;
 
     //Current Limits
     public static final int NEO550_CURRENT_LIMIT = 40;

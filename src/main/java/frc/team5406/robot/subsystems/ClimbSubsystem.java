@@ -49,6 +49,10 @@ public class ClimbSubsystem extends SubsystemBase {
     leftClimbPID.setFF(Constants.LEFT_CLIMBER_PID0_F, 0);
     leftClimbPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
 
+    leftClimbPID.setSmartMotionMaxVelocity(3000, 0);
+    leftClimbPID.setSmartMotionMaxAccel(5000, 0);
+    leftClimbPID.setSmartMotionAllowedClosedLoopError(0.2, 0);
+
     climbEncoder.setPosition(0);
 
     climbCylinder = new Solenoid(Constants.CLIMB_CYLINDER);
@@ -61,40 +65,46 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public static void setBrake() {
 
-    setIntakePosition(Constants.SET_BREAK);
+    setIntakePosition(Constants.SET_BRAKE);
   }
 
-  public static void releaseBreak() {
+  public static void releaseBrake() {
+    System.out.println("release brake");
 
-    setIntakePosition(Constants.RELEASE_BREAK);
+    setIntakePosition(Constants.RELEASE_BRAKE);
   }
 
 
   // Set Speed For Both
   public static void setSpeed(double left) {
+    System.out.println("Set climb speed " +left);
     climbMotor.set(left);
   }
 
   // Set Left & Right Speed
-  public static void setPosition(double speed) {
-    double position = climbEncoder.getPosition();
-    position += 2*speed;
-    System.out.println("left " + position);
-    leftClimbPID.setReference(position, ControlType.kPosition);
+  public static void setPosition(double position) {
+    leftClimbPID.setReference(position, ControlType.kSmartMotion, 0);
   }
 
   //returns the position
-  public static double getPosition(){
-    double position = climbEncoder.getPosition();
-    return position;
+  public static double getClimberPosition(){
+    return climbEncoder.getPosition();
+  }
+
+  public static double getClimberVelocity() {
+
+    return climbEncoder.getVelocity();
   }
 
 
-
+  public static void resetPosition() {
+    System.out.println("Reset Climb Position");
+     climbEncoder.setPosition(0);
+  }
 
 
     public ClimbSubsystem() {
-
+setupMotors();
   }
 
   @Override
