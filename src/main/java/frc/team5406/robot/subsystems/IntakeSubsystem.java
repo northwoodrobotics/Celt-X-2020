@@ -28,10 +28,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private static CANSparkMax leftSerializer = new CANSparkMax(Constants.THROAT_SERIALIZER_MOTOR_ONE, MotorType.kBrushless);
   private static CANSparkMax rightSerializer = new CANSparkMax(Constants.THROAT_SERIALIZER_MOTOR_TWO, MotorType.kBrushless);
-  private static CANSparkMax djSpinner = new CANSparkMax(Constants.DJ_SPINNER, MotorType.kBrushless);
+ // private static CANSparkMax djSpinner = new CANSparkMax(Constants.DJ_SPINNER, MotorType.kBrushless);
 
-  private static CANPIDController leftSerializerPID, rightSerializerPID, djSpinnerPID;
-  private static CANEncoder leftSerializerEncoder, rightSerializerEncoder, djSpinnerEncoder; 
+  private static CANPIDController leftSerializerPID, rightSerializerPID;//, djSpinnerPID;
+  private static CANEncoder leftSerializerEncoder, rightSerializerEncoder;//, djSpinnerEncoder; 
 
   private static Solenoid intakeCylinder, djSpinnerCylinder;
 
@@ -41,11 +41,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
     leftSerializerEncoder = leftSerializer.getEncoder();
     rightSerializerEncoder = rightSerializer.getEncoder();
-    djSpinnerEncoder = djSpinner.getEncoder();
+    //djSpinnerEncoder = djSpinner.getEncoder();
     leftSerializerPID = leftSerializer.getPIDController();
     rightSerializerPID = rightSerializer.getPIDController();
-    djSpinnerPID = djSpinner.getPIDController();
-    djSpinner.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
+   // djSpinnerPID = djSpinner.getPIDController();
+    //djSpinner.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
     intakeRollers.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
     intakeRollers.setIdleMode(IdleMode.kBrake);
 
@@ -53,7 +53,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     rightSerializer.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
 
-    djSpinnerPID.setP(Constants.DJ_SPINNER_PID0_P, 0);
+   /* djSpinnerPID.setP(Constants.DJ_SPINNER_PID0_P, 0);
     djSpinnerPID.setI(Constants.DJ_SPINNER_PID0_I, 0);
     djSpinnerPID.setD(Constants.DJ_SPINNER_PID0_D, 0);
     djSpinnerPID.setIZone(0, 0);
@@ -63,7 +63,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     djSpinnerPID.setSmartMotionMaxVelocity(1920, 0);
     djSpinnerPID.setSmartMotionMaxAccel(1000, 0);
-    djSpinnerPID.setSmartMotionAllowedClosedLoopError(0.2, 0);
+    djSpinnerPID.setSmartMotionAllowedClosedLoopError(0.2, 0);*/
 
 
    leftSerializerPID.setP(Constants.LEFT_SERIALIZER_PID0_P);
@@ -85,7 +85,12 @@ public class IntakeSubsystem extends SubsystemBase {
     rightSerializer.setInverted(true);
 
     intakeCylinder = new Solenoid(Constants.INTAKE_CYLINDER);
-    djSpinnerCylinder = new Solenoid(Constants.DJ_SPINNER_CYLINDER);
+    //djSpinnerCylinder = new Solenoid(Constants.DJ_SPINNER_CYLINDER);
+
+    intakeRollers.burnFlash();
+    leftSerializer.burnFlash();
+    rightSerializer.burnFlash();
+    
   }
 
   public static void setIntakeSpeed(double speed) {
@@ -104,7 +109,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
   }
-  public static void setDJSpinnerOutput(double rpm) {
+  /*public static void setDJSpinnerOutput(double rpm) {
     if (rpm ==0 ) {
       stopDJSpinner();
   } else {
@@ -133,7 +138,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public static double getDJSpinnerVelocity(){
     return djSpinnerEncoder.getVelocity();
-  }
+  }*/
   public static void setSerializerCircle() {
 
     //leftSerializer.set(Constants.SERIALIZER_OUTPUT);
@@ -156,10 +161,10 @@ public class IntakeSubsystem extends SubsystemBase {
     setIntakeSpeed(0);
   }
 
-  public static void stopDJSpinner() {
+ /* public static void stopDJSpinner() {
 
     djSpinner.set(0);
-  }
+  }*/
 
 
   public static void setIntakePosition(boolean out){}
@@ -177,13 +182,13 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeCylinder.set(Constants.INTAKE_RETRACT);
   }
 
-  public static void djSpinnerUp(){
+  /*public static void djSpinnerUp(){
     djSpinnerCylinder.set(Constants.DJ_SPINNER_UP);
   }
 
   public static void djSpinnerDown(){
     djSpinnerCylinder.set(Constants.DJ_SPINNER_DOWN);
-  }
+  }*/
 
   public static void reverseIntake() {
 

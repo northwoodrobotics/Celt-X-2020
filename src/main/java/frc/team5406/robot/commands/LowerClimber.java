@@ -36,7 +36,7 @@ public class LowerClimber extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-
+    ClimbSubsystem.setBrake();
 
   }
 }

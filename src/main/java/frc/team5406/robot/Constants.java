@@ -84,10 +84,13 @@ public final class Constants {
     public static final double LIMELIGHT_STEER_KD = 0.005;
     public static final double LIMELIGHT_STEER_KI = 0.1;
 
-    public static final double DIAMOND_PLATE_SHOOTER_RPM = 2500;
-    public static final double DIAMOND_PLATE_HOOD_ANGLE = 0;
+    public static final double DIAMOND_PLATE_SHOOTER_RPM = 2050;
+    public static final double DIAMOND_PLATE_HOOD_ANGLE = 5;
     public static final double MAX_HOOD_ANGLE = 65;
     public static final double MAX_SHOOTER_RPM = 6500;
+    public static final double FEEDER_RPM = 800;
+    public static final double SHOOTER_THRESHOLD = 1000;
+    
 
     public static final double LL_TARGET_HEIGHT  = 67.5;
     public static final double LL_MOUNT_ANGLE = 30.0;
@@ -100,8 +103,8 @@ public final class Constants {
     public static final float CCW_ABS_TURRET_LIMIT = (float) 20;
 
 
-    public static  final double CLIMBER_DOWN_POSITION = 0;
-    public static  final double CLIMBER_UP_POSITION = 10;
+    public static  final double CLIMBER_DOWN_POSITION = -5;
+    public static  final double CLIMBER_UP_POSITION = -150;
 
     public static final double DJ_SPINNER_MAX_VEL_ROTATION = 240 * 8;
     public static final double DJ_SPINNER_MAX_VEL_POSITION = 240 * 4;
@@ -112,7 +115,8 @@ public final class Constants {
     public static final int DJ_SPINNER_ROTATION_SMART_MOTION_SLOT = 0;
     public static final int DJ_SPINNER_POSITION_SMART_MOTION_SLOT = 1;
 
-    public static final double DJ_SPINNER_ROTATION_CONTROL_RPM = 128;
+    public static final double DJ_SPINNER_ROTATIONS = 4;
+    public static final double DJ_SPINNER_ROTATION_CONTROL_RPM =DJ_SPINNER_ROTATIONS* DJ_SPINNER_GEAR_RATIO* COLOUR_WHEEL_DIAMETER/DJ_SPINNER_DIAMETER;
 
     public static final double CLIMB_HOOK_FLIP_UP = -10;
     public static final double CLIMB_HOOK_FLIP_DOWN = 4;
@@ -171,8 +175,8 @@ public final class Constants {
 
     public static final double LEFT_CLIMBER_PID0_P = 1e-4;
     public static final double LEFT_CLIMBER_PID0_I = 0;
-    public static final double LEFT_CLIMBER_PID0_D = 0;
-    public static final double LEFT_CLIMBER_PID0_F = 3e-4;
+    public static final double LEFT_CLIMBER_PID0_D = 1e-6;
+    public static final double LEFT_CLIMBER_PID0_F = 1e-3;
 
 
     public static final double LEFT_SERIALIZER_PID0_P = 3e-4;

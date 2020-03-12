@@ -49,13 +49,15 @@ public class ClimbSubsystem extends SubsystemBase {
     leftClimbPID.setFF(Constants.LEFT_CLIMBER_PID0_F, 0);
     leftClimbPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 0);
 
-    leftClimbPID.setSmartMotionMaxVelocity(3000, 0);
-    leftClimbPID.setSmartMotionMaxAccel(5000, 0);
+    leftClimbPID.setSmartMotionMaxVelocity(5000, 0);
+    leftClimbPID.setSmartMotionMaxAccel(10000, 0);
     leftClimbPID.setSmartMotionAllowedClosedLoopError(0.2, 0);
 
     climbEncoder.setPosition(0);
 
     climbCylinder = new Solenoid(Constants.CLIMB_CYLINDER);
+
+    climbMotor.burnFlash();
 
   }
 

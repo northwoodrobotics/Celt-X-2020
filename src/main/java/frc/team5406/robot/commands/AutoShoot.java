@@ -38,7 +38,7 @@ public class AutoShoot extends CommandBase {
     }
     if (readyToShoot) {
 
-      ShooterSubsystem.spinFeeder(1000);
+      ShooterSubsystem.spinFeeder(800);
       IntakeSubsystem.pulseRollers();
       IntakeSubsystem.serialize();
 

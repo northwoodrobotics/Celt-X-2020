@@ -16,6 +16,7 @@ public class RaiseClimber extends CommandBase {
 
   @Override
   public void initialize() {
+    ClimbSubsystem.releaseBrake();
 
     ClimbSubsystem.setPosition(position);
 

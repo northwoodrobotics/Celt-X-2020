@@ -145,7 +145,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
     feeder.setSmartCurrentLimit(Constants.NEO550_CURRENT_LIMIT);
     resetEncoders();
-
+    shooterMaster.burnFlash();
+    shooterSlave.burnFlash();
+    booster.burnFlash();
+    hood.burnFlash();
+    turret.burnFlash();
+    feeder.burnFlash();
   }
 
   public static void resetEncoders() {
@@ -234,6 +239,11 @@ public class ShooterSubsystem extends SubsystemBase {
     return hood.getAppliedOutput();
   }
 
+  public static double getShooterVoltage() {
+
+    return shooterMaster.getAppliedOutput();
+  }
+
   public static void stopShooter() {
 
     shooterMaster.set(0);
@@ -289,6 +299,11 @@ public class ShooterSubsystem extends SubsystemBase {
   public static void LLAlignTurret(){
     if (ShooterSubsystem.llHasValidTarget) {
       double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+      /*double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
+      if(ts< -45){
+        ts+= 90;
+      }
+      ts/=4;*/
       turretPID.setReference(turretEncoder.getPosition() + tx, ControlType.kSmartMotion, 2);
       }
 
@@ -353,8 +368,8 @@ public class ShooterSubsystem extends SubsystemBase {
         return;
       }
       double d = (Constants.LL_TARGET_HEIGHT / Math.tan(Units.degreesToRadians(Constants.LL_MOUNT_ANGLE+ty)));
-      hoodAngle = 0.8*(0.0022*ty*ty*ty + 0.0392*ty*ty - 0.8528*ty + 41.301);
-      rpm =1.25*( 0.3936*ty*ty*ty + 6.6869*ty*ty - 69.138*ty + 4184.5);
+      hoodAngle =-0.0202*ty*ty - 0.5546*ty + 33.455;
+      rpm = -0.9122*ty*ty - 47.525*ty + 3389;
 
        if(hoodAngle > Constants.MAX_HOOD_ANGLE){
          hoodAngle = Constants.MAX_HOOD_ANGLE;

@@ -104,6 +104,11 @@ public class DriveSubsystem extends SubsystemBase {
     rightMotorPID.setOutputRange(Constants.OUTPUT_RANGE_MIN, Constants.OUTPUT_RANGE_MAX, 1);
 
     setHeading();
+    leftDriveMotor.burnFlash();
+    leftDriveSlave.burnFlash();
+    rightDriveMotor.burnFlash();
+    rightDriveSlave.burnFlash();  
+
   }
 
   public void arcadeDrive(double speed, double turn) {

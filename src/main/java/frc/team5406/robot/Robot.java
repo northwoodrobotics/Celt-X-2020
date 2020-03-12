@@ -21,6 +21,8 @@ import frc.team5406.robot.autos.EightBallRight;
 import frc.team5406.robot.autos.SixBallRight;
 import frc.team5406.robot.autos.ThreeBallCenter;
 import frc.team5406.robot.commands.HookFlip;
+import frc.team5406.robot.commands.RaiseClimber;
+import frc.team5406.robot.commands.LowerClimber;
 import frc.team5406.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -41,6 +43,8 @@ public class Robot extends TimedRobot {
 
   // private RobotContainer m_robotContainer;
   private HookFlip hookFlip;
+  private RaiseClimber raiseClimber;
+  private LowerClimber lowerClimber;
   private DriveStraight driveStraight;
   private FiveBallLeft fiveBallLeft;
   private SevenBallLeft sevenBallLeft;
@@ -69,6 +73,7 @@ public class Robot extends TimedRobot {
 
   boolean dPadPressed = false;
   boolean driveDoneBefore = false;
+  boolean manualClimbing = false;
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -85,6 +90,8 @@ public class Robot extends TimedRobot {
     eightBallRight = new EightBallRight();
     sixBallRight = new SixBallRight();
     hookFlip = new HookFlip(climb);
+    raiseClimber = new RaiseClimber(climb, Constants.CLIMBER_UP_POSITION);
+    lowerClimber = new LowerClimber(climb, Constants.CLIMBER_DOWN_POSITION);
     // m_robotContainer = new RobotContainer();
     ShooterSubsystem.setupMotors();
     IntakeSubsystem.setupMotors();
@@ -97,6 +104,8 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Eight Ball, Right", eightBallRightString);
     m_chooser.addOption("Six Ball, Right", sixBallRightString);
     SmartDashboard.putData("Auto choices", m_chooser);
+    SmartDashboard.putNumber("Feeder Target RPM", 800);
+
   }
 
   /**
@@ -144,7 +153,7 @@ public class Robot extends TimedRobot {
 hookFlip.schedule();
 
     m_autoSelected = m_chooser.getSelected();
-    IntakeSubsystem.djSpinnerDown();
+    //IntakeSubsystem.djSpinnerDown();
     DriveSubsystem.setBrakeMode(true);
     if (m_autoSelected == null) {
       m_autoSelected = "none";
@@ -242,23 +251,36 @@ hookFlip.schedule();
     DriveSubsystem.baselock(); 
     }*/
 
+    if (operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getYButtonPressed()) {
+      ShooterSubsystem.setupMotors();
+    }
+    if (operatorGamepad.getBumper(Hand.kLeft) && operatorGamepad.getStartButtonPressed()) { 
+      raiseClimber.schedule();
+      manualClimbing = false;
+    }
 
+    if (operatorGamepad.getBumper(Hand.kLeft) && operatorGamepad.getBackButtonPressed()) {
+      lowerClimber.schedule();
+      manualClimbing = false;
+    }
     if (operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getStartButtonPressed()) {
       ClimbSubsystem.releaseBrake();
     }
-
     if (operatorGamepad.getBumper(Hand.kRight) && operatorGamepad.getBackButtonPressed()) {
       ClimbSubsystem.setBrake();
-
     }
-    if (operatorGamepad.getBumper(Hand.kRight) && (Math.abs(operatorGamepad.getY(Hand.kLeft)) > 0.15)) {
+
+    if (operatorGamepad.getBumper(Hand.kRight) && (Math.abs(operatorGamepad.getY(Hand.kLeft)) > 0.1)) {
       double leftSpeed = operatorGamepad.getY(Hand.kLeft);
       ClimbSubsystem.setSpeed(leftSpeed);
-    } else {
+      manualClimbing = true;
+    } else if(manualClimbing){
       ClimbSubsystem.setSpeed(0);
+      manualClimbing = false;
     }
 
     SmartDashboard.putNumber("Shooter RPM", ShooterSubsystem.getShooterSpeed());
+    SmartDashboard.putNumber("Shooter Voltage", ShooterSubsystem.getShooterVoltage());
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getBoosterSpeed());
     SmartDashboard.putNumber("Hood Output", ShooterSubsystem.getHoodVoltage());
     SmartDashboard.putNumber("Feeder RPM", ShooterSubsystem.getFeederSpeed());
@@ -266,7 +288,7 @@ hookFlip.schedule();
     SmartDashboard.putNumber("Climber Position", ClimbSubsystem.getClimberPosition());
 
 
-    if (operatorGamepad.getXButton() && !operatorGamepad.getBumper(Hand.kRight)) {
+    /*if (operatorGamepad.getXButton() && !operatorGamepad.getBumper(Hand.kRight)) {
 
       IntakeSubsystem.djSpinnerUp();
       if(!holdingSpinner){
@@ -292,7 +314,7 @@ hookFlip.schedule();
       IntakeSubsystem.djSpinnerDown();
       IntakeSubsystem.stopDJSpinner();
 
-    }
+    }*/
 
     if (operatorGamepad.getBButton() && !operatorGamepad.getBumper(Hand.kRight)) {
       if((Math.abs(driverGamepad.getY(Hand.kLeft)) <=0.03 &&
@@ -300,11 +322,11 @@ hookFlip.schedule();
       DriveSubsystem.baselock(); 
     }
       //ShooterSubsystem.spinShooter(SmartDashboard.getNumber("Shooter Target RPM", 5000));
-      ShooterSubsystem.spinBooster(SmartDashboard.getNumber("Booster Target RPM", 4000));
-     // ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
+      ShooterSubsystem.spinBooster(Constants.BOOSTER_OUTPUT);
+     //ShooterSubsystem.setHoodAngle(SmartDashboard.getNumber("Hood Target Angle", 0));
       ShooterSubsystem.compressorDisabled();
        ShooterSubsystem.spinShooterAuto();
-       ShooterSubsystem.setHoodAngleAuto();
+      ShooterSubsystem.setHoodAngleAuto();
       if (ShooterSubsystem.checkRPM()) {
         operatorGamepad.setRumble(RumbleType.kLeftRumble, 1);
 
@@ -351,13 +373,15 @@ hookFlip.schedule();
     }
 
     if (operatorGamepad.getTriggerAxis(Hand.kRight) > .1) {
+      if(ShooterSubsystem.getShooterVoltage() > 0.2){
       IntakeSubsystem.pulseRollers();
-      ShooterSubsystem.spinFeeder(1000);
+      ShooterSubsystem.spinFeeder(Constants.FEEDER_RPM);
+     
       // ShooterSubsystem.compressorDisabled();
       if (!(driverGamepad.getTriggerAxis(Hand.kRight) > .1)) {
         IntakeSubsystem.serialize();
       }
-
+}
     } else if (!(driverGamepad.getTriggerAxis(Hand.kLeft) > .1)) {
       ShooterSubsystem.stopFeeder();
       // ShooterSubsystem.compressorEnabled();
